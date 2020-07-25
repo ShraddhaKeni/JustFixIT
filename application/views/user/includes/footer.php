@@ -305,15 +305,21 @@ $country_list=$this->db->where('status',1)->order_by('country_name',"ASC")->get(
 					<div class="form-group">
 						<input type="hidden" class="form-control form-control-lg" placeholder="Mobile Number" name='enteredMobile' id='enteredMobile'>
 					</div>
+					<?php if(($_SERVER['HTTP_HOST']=='https') || ($_SERVER['HTTP_HOST']=='http')){
+			        $api_key = "3824a23a-c828-11ea-9fa5-0200cd936042";  
+			      }else{
+			        $api_key = 'default_otp';
+			      }
+					if(settingValue($api_key)==1){ ?>
+					<div class="alert alert-danger text-center" role="alert">
+						We have used default otp for demo purpose.<br> <strong>Default OTP 1234</strong>
+					</div>
+				<?php }else{?>
 					<div class="alert alert-success text-center" role="alert">
 						<strong>We Have Send SMS Via OTP</strong>
 						<strong>Please Check Your Registered Mobile Number </strong>
 					</div>
-					<?php if(settingValue('default_otp')==1){ ?>
-					<div class="alert alert-danger text-center" role="alert">
-						We have used default otp for demo purpose.<br> <strong>Default OTP 1234</strong>
-					</div>
-				<?php }?>
+				<?php } ?>
 					<div class="form-group">
 						<input  type="text" class="form-control form-control-lg no_only" maxlength="4" autocomplete="off" minlength="4" placeholder=" Enter OTP Here...." name="otp_number" id='otp_number'>
 						<span for='otp_number' id='otp_error_msg'></span>
@@ -412,15 +418,21 @@ $country_list=$this->db->where('status',1)->order_by('country_name',"ASC")->get(
 						<input type="hidden" class="form-control form-control-lg" placeholder="Mobile Number" name='enteredMobile' id='enteredMobiles'>
 					</div>
 					<div class="form-group">
+						<?php if(($_SERVER['HTTP_HOST']=='https') || ($_SERVER['HTTP_HOST']=='http')){
+					        $api_key = "3824a23a-c828-11ea-9fa5-0200cd936042";  
+					      }else{
+					        $api_key = 'default_otp';
+					      }
+						if(settingValue($api_key)==1){ ?>
+						<div class="alert alert-danger text-center" role="alert">
+							We have used default otp for demo purpose.<br> <strong>Default OTP 1234</strong>
+						</div>
+					<?php }else{?>
 						<div class="alert alert-success text-center" role="alert">
 							<strong>We Have Send SMS Via OTP</strong>
 							<strong>Please Check Your Registered Mobile Number </strong>
 						</div>
-						<?php if(settingValue('default_otp')==1){ ?>
-						<div class="alert alert-danger text-center" role="alert">
-							We have used default otp for demo purpose.<br> <strong>Default OTP 1234</strong>
-						</div>
-					<?php }?>
+					<?php } ?>
 						<input type="text" class="form-control form-control-lg no_only" autocomplete="off" maxlength="4" minlength="4" placeholder="Enter OTP Here.." name="otp_number" id='otp_number_user'>
 						<span for='otp_number' id='otp_error_msg'></span>
 					</div>
@@ -645,6 +657,8 @@ $country_list=$this->db->where('status',1)->order_by('country_name',"ASC")->get(
 		<input type="hidden" id="csrf_token" value="<?php echo $this->security->get_csrf_hash(); ?>">
 		<input type="hidden" id="csrfName" value="<?php echo $this->security->get_csrf_token_name(); ?>">
 		<input type="hidden" id="csrfHash" value="<?php echo $this->security->get_csrf_hash(); ?>">
+		<input type='hidden' id='userLoginId' value="<?php echo $this->session->userdata('id'); ?>">
+		<input type='hidden' id='chatToken' value="<?php echo $this->session->userdata('chat_token'); ?>">
 		
 		<script src="<?php echo $base_url; ?>assets/js/moment.min.js"></script>
 		<script src="<?php echo $base_url; ?>assets/js/bootstrap-datetimepicker.min.js"></script>
@@ -685,7 +699,6 @@ $country_list=$this->db->where('status',1)->order_by('country_name',"ASC")->get(
 			<script src="<?php echo base_url();?>assets/js/tagsinput.js"></script>
 		
 			<script src="<?php echo base_url();?>assets/js/service.js"></script>
-
 		<?php } ?>
 
 		<?php
@@ -807,13 +820,20 @@ $country_list=$this->db->where('status',1)->order_by('country_name',"ASC")->get(
 								<input type="hidden" name="" id="login_mode_hide">
 							</div>
 							<div class="form-group">
+								<?php
+								if(($_SERVER['HTTP_HOST']=='https') || ($_SERVER['HTTP_HOST']=='http')){
+							        $api_key = "3824a23a-c828-11ea-9fa5-0200cd936042";  
+							      }else{
+							        $api_key = 'default_otp';
+							      }
+								 if(settingValue($api_key)==1){ ?>
+								<div class="alert alert-danger text-center" role="alert">
+									We have used default otp for demo purpose.<br> <strong>Default OTP 1234</strong>
+								</div>
+							<?php }else{ ?>
 								<div class="alert alert-success text-center" role="alert">
 									<strong>We Have Send SMS Via OTP</strong>
 									<strong>Please Check Your Registered Mobile Number </strong>
-								</div>
-								<?php if(settingValue('default_otp')==1){ ?>
-								<div class="alert alert-danger text-center" role="alert">
-									We have used default otp for demo purpose.<br> <strong>Default OTP 1234</strong>
 								</div>
 							<?php }?>
 								<input type="text" class="form-control form-control-lg no_only" autocomplete="off" maxlength="4" minlength="4" placeholder="Enter OTP Here.." name="otp_numbers" id='login_otp'>

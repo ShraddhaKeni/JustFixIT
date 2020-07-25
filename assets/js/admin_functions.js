@@ -39,7 +39,165 @@
      $('#reject_payment_submit').on('submit',function(){
      var result=reject_payment_submit();
      return result;
-    }); 
+    });
+
+     getSubcategorySelect();
+    function getSubcategorySelect(){
+    	var id = $("#categoryId").val();
+    	var subid = $("#subcategorySelect").val();
+    	var csrf_token=$('#csrf_token').val();
+     	$.ajax({
+    		url : base_url+"/getSubcategory/"+id,
+    		type : "GET",
+    		data : '',
+    		success : function(data){
+    			var jsonData = JSON.parse(data);
+    			var count = jsonData.length;
+    			var subcategoryList = '';
+    			for(var i=0; i<count; i++){
+    				if(subid==jsonData[i]['id']){
+    					subcategoryList+='<option value="'+jsonData[i]['id']+'">'+jsonData[i]['subcategory_name']+'</option>';
+    				}
+    				$('#subcategoryId').html(subcategoryList);
+    			}
+    		},
+    		error : function(data){
+    			console.log(data);	
+    		}
+    	});
+	} 
+
+	
+   $("#registration_submit").on('click',function(){
+   		//e.preventDefault();
+	   	var categoryId = $('#categoryId').val();
+	   var subcategoryId = $('#subcategoryId').val();
+	   var userName = $('#userName').val();
+	   var userEmail = $('#userEmail').val();
+	   var countryCode = $('#countryCode').val();
+	   var userMobile = $('#userMobile').val();
+	   if((categoryId=='') && (subcategoryId=='') && (userName=='') && (userEmail=='')
+			 	&& (countryCode=='') && (userMobile='')) {
+	   		$("#registration_submit").attr('disabled',true);
+	   	//$("#add_providerId").submit();
+	   }else{
+	   		$("#registration_submit").attr('disabled',false);
+	   }
+	});	
+
+    $("#categoryId").on('change',function(){
+    	var id = $(this).val();
+    	var csrf_token=$('#csrf_token').val();
+    	
+	   	$.ajax({
+    		url : base_url+"/getSubcategory/"+id,
+    		type : "GET",
+    		data : '',
+    		success : function(data){
+    			var jsonData = JSON.parse(data);
+    			var count = jsonData.length;
+    			var subcategoryList = '';
+    			for(var i=0; i<count; i++){
+    				subcategoryList+='<option value="'+jsonData[i]['id']+'">'+jsonData[i]['subcategory_name']+'</option>';
+    				$('#subcategoryId').html(subcategoryList);
+    			}
+    		},
+    		error : function(data){
+    			console.log(data);	
+    		}
+    	});
+	});
+   
+   
+
+    $("#userEmail").on('keyup',function(){
+    	var email = $(this).val();
+    	$.ajax({
+    		url: base_url + 'user/login/email_chk',
+    		type:'post',
+    		data:{'userEmail':email},
+    		success : function(data){
+    			var dataSplit = data.split(':');
+    			var result = dataSplit[1];
+    			var results = result.replace(/[^a-z0-9\s]/gi, '').replace(/[_\s]/g, '-')
+    			if(results=='false'){
+    				$("#email_error").text('this email is already exists');
+    				$("#registration_submit").attr('disabled',true);
+    			}else{
+    				$("#registration_submit").attr('disabled',false);
+    				$("#email_error").text('');
+    			}
+    		},
+    		error : function(data){
+    			console.log(data);
+    		}
+    	});
+    });
+
+    $("#userMobile").on('keyup',function(){
+    	var mobile = $(this).val();
+    	var countryCode = $("#countryCode").val();
+    	$.ajax({
+    		url: base_url + 'user/login/mobileCheck',
+    		type:'post',
+    		data:{'userMobile':mobile,'countryCode':countryCode},
+    		success : function(data){
+    			var dataSplit = data.split(':');
+    			var result = dataSplit[1];
+    			var results = result.replace(/[^a-z0-9\s]/gi, '').replace(/[_\s]/g, '-')
+    			if(results=='true'){
+    				$("#mobile_error").text('this mobile is already exists');
+    				$("#registration_submit").attr('disabled',true);
+    			}else{
+    				$("#registration_submit").attr('disabled',false);
+    				$("#mobile_error").text('');
+    			}
+    		},
+    		error : function(data){
+    			console.log(data);
+    		}
+    	});
+    });
+
+    $("#add_discount_per").on('keyup',function(){
+    	var percent = $(this).val();
+    	var subscription_amount = $("#add_subscription_amount").val();
+    	if((percent==0)|| (percent==''))  {
+    		var actual_amount = subscription_amount;
+    	}else{
+    		var pers = (percent / 100) * subscription_amount;
+    		var actual_amount = subscription_amount-pers;
+    	}
+	    $("#add_amount").val(actual_amount);
+    });
+
+    	var path = window.location.href;
+	    var suffix = path.match(/\d+/); 
+	    var curedit = base_url+"edit-subscription/"+suffix[0];
+	    var curadd = base_url+"add-subscription";	
+    	if((path == curedit) || (path == curadd)){
+    		var percent = $('#discount_per').val();
+	    	var subscription_amount = $("#subscription_amount").val();
+	    	if((percent==0)|| (percent==''))  {
+	    		var actual_amount = subscription_amount;
+	    	}else{
+	    		var pers = (percent / 100) * subscription_amount;
+	    		var actual_amount = subscription_amount-pers;
+	    	}
+		    $("#amount").val(actual_amount);
+    	}
+
+    $("#discount_per").on('keyup',function(){
+    	var percent = $(this).val();
+    	var subscription_amount = $("#subscription_amount").val();
+    	if((percent==0)|| (percent==''))  {
+    		var actual_amount = subscription_amount;
+    	}else{
+    		var pers = (percent / 100) * subscription_amount;
+    		var actual_amount = subscription_amount-pers;
+    	}
+	    $("#amount").val(actual_amount);
+    });
 });
 // $('.verified_change').on('click',function(){
 		

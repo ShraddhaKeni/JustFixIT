@@ -115,8 +115,8 @@
 								<button name="form_submit" id="form_submit" class="btn btn-primary pl-5 pr-5" type="submit">Update</button>
 							</div>
 							<input type="hidden" id="country_id_value" value="<?= isset($provider_address['country_id'])?$provider_address['country_id']:'';?>">
-						<input type="hidden" id="state_id_value" value="<?= $provider_address['state_id'];?>">
-						<input type="hidden" id="city_id_value" value="<?= $provider_address['city_id'];?>">
+						<input type="hidden" id="state_id_value" value="<?php //echo $provider_address['state_id'];?>">
+						<input type="hidden" id="city_id_value" value="<?php  //echo $provider_address['city_id'];?>">
 						</div>
 					</form>
 				</div>

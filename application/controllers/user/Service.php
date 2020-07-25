@@ -161,7 +161,9 @@ class Service extends CI_Controller {
      }
 
    }
+   $providerList = $this->service->getProvideById($this->session->userdata('id'));
    $this->data['page'] = 'add_service';
+   $this->data['provider'] = $providerList;
    $this->load->vars($this->data);
    $this->load->view($this->data['theme'].'/template');
  }
@@ -182,6 +184,26 @@ class Service extends CI_Controller {
   $this->load->view($this->data['theme'].'/template');
 
 
+}
+
+public function provider_subscription(){
+  $this->load->model('Subscription_model');
+  $data = [
+      'user_id'=>$this->input->get('subscriber_id'),
+      'subscription_id'=>$this->input->get('subscription_id'),
+      'subscription_date'=>$this->input->get('subscription_id'),
+      'free_service'=>$this->input->get('free_service'),
+      'type'=>$this->input->get('type'),
+      'token'=>$this->input->get('token'),
+      'args'=>$this->input->get('args'),
+  ];
+  $result = $this->Subscription_model->subscription_success($data);
+  if($result==true){
+    $response = "ok";
+  }else{
+    $response = "Error";
+  }
+  echo $response;
 }
 
 public function notification_view(){
@@ -686,6 +708,9 @@ public function update_status_user()
 
 public function book_service()
 {
+  $this->load->model('Wallet_model');
+  $wallet_amt = $this->Wallet_model->wallet_info_id($this->session->userdata('id'),2); 
+  $this->data['wallet_amt'] = $wallet_amt; 
  $this->data['page'] = 'book_service';
  $this->load->vars($this->data);
  $this->load->view($this->data['theme'].'/template');

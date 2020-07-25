@@ -92,7 +92,7 @@ $bookinglist = $this->dashboard->get_bookinglist();
 							</span>
 							<div class="dash-widget-info">
 								<h3>
-								$<?php if(!empty($payment)){ echo $payment;}else{ echo "0"; } ?>
+								₹<?php if(!empty($payment)){ echo $payment;}else{ echo "0"; } ?>
 								</h3>
 								<h6 class="text-muted">Subscription</h6>
 							</div>

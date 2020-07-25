@@ -7,7 +7,7 @@
 				<div class="page-header">
 					<div class="row">
 						<div class="col-sm-12">
-							<h3 class="page-title">Add Subscription</h3>
+							<h3 class="page-title">Edit Subscription</h3>
 						</div>
 					</div>
 				</div>
@@ -15,7 +15,7 @@
 				
 				<div class="card">
 					<div class="card-body">
-                        <form id="editSubscription" method="post">
+                        <form method="post" action="<?php echo base_url().'service/update_subscription' ?>">
                         	
 <input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>" />
     
@@ -26,7 +26,20 @@
                             </div>
                             <div class="form-group">
                                 <label>Subscription Amount</label>
-                                <input class="form-control" type="number" step="0.01" min="0" value="<?php echo $subscription['fee']; ?>" name="amount" id="amount">
+                                <input class="form-control" type="number" step="0.01" min="0" value="<?php echo $subscription['actual_amount']; ?>" name="subscription_amount" id="subscription_amount">
+                            </div>
+                            <div class="form-group">
+                                <label>Discount (discount is in percentage)</label>
+                                <div class="input-group mb-3">
+								    <input class="form-control" type="number" step="1" min="0" value="<?php echo $subscription['discount']; ?>" name="discount_per" id="discount_per" placeholder="Enter Percentage">
+								    <div class="input-group-append">
+								      <span class="input-group-text">%</span>
+								    </div>
+								</div>
+                            </div>
+                            <div class="form-group">
+                                <label> Actual Subscription Amount</label>
+                                <input class="form-control" type="number" step="0.01" min="0" value="" name="amount" id="amount">
                             </div>
                             <div class="form-group">
                                 <label>Subscription Duration</label>

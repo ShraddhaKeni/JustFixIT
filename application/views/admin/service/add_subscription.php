@@ -15,15 +15,34 @@
 				
 				<div class="card">
 					<div class="card-body">
-                        <form id="addSubscription" method="post">
+                        <form action="<?php echo base_url().'service/save_subscription' ?>" method="post">
+                        	<input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>" />
                             <div class="form-group">
                                 <label>Subscription Name</label>
                                 <input class="form-control" type="text" placeholder="Free Trial" name="subscription_name" id="subscription_name">
                             </div>
+                            
                             <div class="form-group">
                                 <label>Subscription Amount</label>
-                                <input class="form-control" type="number" step="0.01" min="0" name="amount" id="amount">
+                                <input class="form-control" type="number" step="0.01" min="0" value="" name="subscription_amount" id="add_subscription_amount">
                             </div>
+                            <div class="form-group">
+                                <label>Discount (discount is in percentage)</label>
+                                <div class="input-group mb-3">
+								    <input class="form-control" type="number" step="1" min="0" value="" name="discount_per" id="add_discount_per" placeholder="Enter Percentage">
+								    <div class="input-group-append">
+								      <span class="input-group-text">%</span>
+								    </div>
+								</div>
+                            </div>
+                            <div class="form-group">
+                                <label> Actual Subscription Amount</label>
+                                <input class="form-control" type="number" step="0.01" min="0" value="" name="amount" id="add_amount">
+                            </div>	
+							<!-- <div class="form-group">
+                                <label>Subscription Amount</label>
+                                <input class="form-control" type="number" step="0.01" min="0" name="amount" id="amount">
+                            </div> -->
                             <div class="form-group">
                                 <label>Subscription Durations</label>
 								<select class="form-control select" name="duration" id="duration">

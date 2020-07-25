@@ -88,7 +88,8 @@
     }); 
     $('.search_service').on('click',function(){
       $('#search_service').submit();
-    }); $('.check_user_reason').on('submit',function(){
+    });
+     $('.check_user_reason').on('submit',function(){
       var result=check_user_reason();
       return result;
     }); 
@@ -196,17 +197,14 @@
      }
 
    }).on('success.form.bv', function(e) {
-
      var otp =         $('#otp_number').val();
      var userMobile =  $('#userMobile').val();
-
      var categorys=    $('#categorys').val();
      var subcategorys= $('#subcategorys').val();
      var userName=     $('#userName').val();
      var userEmail=    $('#userEmail').val();
      var country_code=$('.final_provider_c_code').val();
      var is_agree=   $('#agree_checkbox').val();
-
      $.ajax({
        type: "POST",
        url: base_url+"user/login/check_otp",
@@ -220,35 +218,76 @@
          is_agree:is_agree,
          email:userEmail,
          csrf_token_name:csrf_token,
-
-       }, 
-
-       success: function (data) { 
-
-
-
-         var data=jQuery.parseJSON(data);
-         if(data.response=='ok')
-         {
-           console.log(data);
-           var base_url = window.location.origin;
-           window.location = base_url+"/verified";
-           //window.location.reload();
-         }
-         else if(data.response=='error')
-         {
-           $('#otp_error_msg').show();
-           $('#otp_error_msg').text(data.msg);
-           if(data.result=='otp_expired')
-           {
-             $('#registration_resend').show();
-             $('#registration_final').addClass('invisible');
-
-             $('#registration_resend').removeClass('invisible');
-
-
-           }
-         } 
+        }, 
+        success: function (data) { 
+        var data=jQuery.parseJSON(data);
+        var base_url = window.location.origin;
+           var path = window.location.pathname;
+        var d = new Date();
+        var month = d.getMonth()+1;
+        var expiry_month = '';
+        if(month==1){
+          expiry_month = 7
+        } else if(month==2){
+          expiry_month = 8
+        } else if(month==3){
+          expiry_month = 9
+        } else if (month==4){
+          expiry_month = 10
+        } else if(month==5){
+          expiry_month = 11
+        } else if(month==6){
+          expiry_month = 12
+        } else if(month==7){
+          expiry_month = 1
+        } else if(month==8){
+          expiry_month = 2
+        } else if(month==9){
+          expiry_month = 3
+        } else if(month==10){
+          expiry_month = 4
+        } else if(month==11){
+          expiry_month = 5
+        } else if(month==12){
+          expiry_month = 6
+        }
+        var day = d.getDate();
+        var output = d.getFullYear();
+        var time = d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
+        var subscriber_id = data['login_data']['data']['id'];
+        var subscription_id = 1;
+        var subscription_date = output + '-' + month +'-'+ day + ' ' + time;
+        var expity_date_time = output + '-' + expiry_month +'-'+ day + ' ' + time;
+        var free_service = 'yes';
+        var type = 1;
+        var token = 'Free Subscription';
+        var args = "This plan is valid only for Six months";
+        $.ajax({
+          type : "GET",
+          url : base_url+path+"provider_subscription",
+          data : {'subscriber_id':subscriber_id,'subscription_id':subscription_id,
+          'subscription_date':subscription_date,'type':type,'token':token,'args':args},
+          success: function(data){
+             window.location = base_url+path; 
+          },
+          error: function(data){
+            console.log(data);
+          }
+        });
+        // if(data.response=='ok'){
+        //    var base_url = window.location.origin;
+        //    var path = window.location.pathname;
+        //    //window.location = base_url+path+"/verified";
+        //  }
+         // else if(data.response=='error'){
+         //   $('#otp_error_msg').show();
+         //   $('#otp_error_msg').text(data.msg);
+         //   if(data.result=='otp_expired'){
+         //    $('#registration_resend').show();
+         //    $('#registration_final').addClass('invisible');
+         //    $('#registration_resend').removeClass('invisible');
+         //    }
+         // } 
        }
      });
      return false;
@@ -1588,7 +1627,7 @@ function locations(lat,lng){
 });
 }
 var modules=$('#modules_page').val(); 
-if(modules=="services" || modules=="service"){
+if(modules=="services" || modules=="service" || modules=="home"){
 
  var placeSearch, autocomplete;
 
@@ -1602,6 +1641,19 @@ if(modules=="services" || modules=="service"){
      });
    
    google.maps.event.addDomListener(document.getElementById('service_location'), 'focus', geolocate);
+   autocomplete.addListener('place_changed', get_latitude_longitude);
+ }
+
+ function initialize1() { 
+   // Create the autocomplete object, restricting the search
+   // to geographical location types.
+   autocomplete = new google.maps.places.Autocomplete(
+     /** @type {HTMLInputElement} */
+     (document.getElementById('user_address')), {
+       types: ['geocode']
+     });
+   
+   google.maps.event.addDomListener(document.getElementById('user_address'), 'focus', geolocate);
    autocomplete.addListener('place_changed', get_latitude_longitude);
  }
 
@@ -1640,6 +1692,7 @@ if(modules=="services" || modules=="service"){
  }
 
  initialize();
+ initialize1();
 
 }
 

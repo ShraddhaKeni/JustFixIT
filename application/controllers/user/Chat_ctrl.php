@@ -126,6 +126,7 @@ class Chat_ctrl extends CI_Controller {
 	{
          $this->data['page'] = 'user_chats';
          $chat_lists=$this->Chat_model->get_chat_list($this->chat_token);
+         $provider_lists=$this->Chat_model->get_provider_list();
          $final=[];
          foreach ($chat_lists as $key => $value) {
           if(!empty($value->name)){
@@ -140,6 +141,8 @@ class Chat_ctrl extends CI_Controller {
          $this->data['chat_list']=$final;
          $this->data['server_name']=settingValue('server_name');
          $this->data['port_no']=settingValue('port_no');
+         $this->data['provider_list'] = $provider_lists;
+         $this->data['token'] = $this->chat_token;
 
          $this->load->vars($this->data);
          $this->load->view($this->data['theme'].'/template');

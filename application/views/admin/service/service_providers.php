@@ -14,6 +14,9 @@
 					<a class="btn btn-white filter-btn mr-3" href="javascript:void(0);" id="filter_search">
 						<i class="fas fa-filter"></i>
 					</a>
+					<a class="btn btn-white filter-btn mr-3" href="<?php echo base_url().'add-service-providers'  ?>" id="add-service-providers">
+						<i class="fas fa-user"></i>
+					</a>
 				</div>
 			</div>
 		</div>
@@ -106,6 +109,7 @@
                                         <th>Reg Date</th>
                                         <th>Subscription</th>
 										<th>Verified</th>
+										<th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>

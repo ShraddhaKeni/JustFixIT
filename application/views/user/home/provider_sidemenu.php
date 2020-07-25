@@ -52,7 +52,7 @@ if(!empty($user->profile_img)){
 									</a>
 								</li>
 								<li class="nav-item">
-									<a href="<?php echo base_url()?>provider-subscription" class="nav-link <?= ($this->uri->segment(1)=="provider-subscription")?'active':'';?>" >
+									<a href="<?php echo base_url()?>provider-subscription" class="nav-link <?= ($this->uri->segment(1)=="add-wallet")?'active':'';?>" >
 										<i class="far fa-calendar-alt"></i>
 										<span>Subscription</span>
 									</a>

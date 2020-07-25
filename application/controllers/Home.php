@@ -35,12 +35,11 @@ class Home extends CI_Controller {
 	
 	public function index()
 	{
-
 		 $this->data['page'] = 'index';
 	     $this->data['category']=$this->home->get_category();
 	     $this->data['services']=$this->home->get_service();
-         $this->load->vars($this->data);
-		 $this->load->view($this->data['theme'].'/template');
+	     $this->load->vars($this->data);
+         $this->load->view($this->data['theme'].'/template');
 	}
 	
 	public function contact()

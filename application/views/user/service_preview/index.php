@@ -228,7 +228,7 @@ $days=$hours=$minutes=$seconds=0;
 								<div class="user-info">
 									<div class="row">
 										<span class="col ser-contact"><i class="fas fa-phone mr-1"></i> <span>xxxxxxxx<?=rand(00,99)?></span></span>
-										<span class="col ser-location" title="Coimbatore, Tamil Nadu, India"><span>Coimbatore, Tamil Nadu, India</span> <i class="fas fa-map-marker-alt ml-1"></i></span>
+										<span class="col ser-location" title="Coimbatore, Tamil Nadu, India"><span><?php echo $service['service_location']; ?></span> <i class="fas fa-map-marker-alt ml-1"></i></span>
 									</div>
 								</div>
 							</div>

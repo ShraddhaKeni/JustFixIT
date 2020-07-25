@@ -1,23 +1,15 @@
 <?php
 if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-class Wallet_model extends CI_Model
-{
-
-	public function __construct()
-	{
+class Wallet_model extends CI_Model{
+	public function __construct(){
 		parent::__construct();
 	}
-
- 
  /*wallet info*/
-
   public function get_wallet_info(){
    $val=$this->db->select('*')->from('wallet_table')->get()->result_array();
-   
    $wallet=[];
         if(!empty($val)){
           foreach ($val as $key => $value) {
-            
                if($value['type']==1){
                $user_info=$this->get_user_info($value['user_provider_id'],$value['type']); 
              }else{
@@ -26,8 +18,7 @@ class Wallet_model extends CI_Model
               $profile_img = $user_info['profile_img'];
               if(empty($profile_img)){
                 $profile_img = 'assets/img/user.jpg';
-              }
-             
+              }             
              $wallet[$key]['id']=$value['id'];
              $wallet[$key]['user_name']=$user_info['name'];
              $wallet[$key]['user_mobile']=$user_info['mobileno'];
@@ -37,17 +28,12 @@ class Wallet_model extends CI_Model
              $wallet[$key]['token']=$value['token'];
              $wallet[$key]['date']=$value['created_at'];
              $wallet[$key]['role']=$value['type'];
-
-           
           }
         }
    return $wallet;
   }
-
   /*filter option*/
-
-    public function get_wallet_info_filter($token,$from,$to){
-              
+    public function get_wallet_info_filter($token,$from,$to){              
               if(!empty($from)) {
               $from_date=date("Y-m-d 00:00:00", strtotime($from));
               }else{
@@ -58,7 +44,6 @@ class Wallet_model extends CI_Model
               }else{
               $to_date='';
               }
-
              $val=$this->db->select('*');
              $this->db->from('wallet_table');
           if(!empty($token)){
@@ -70,13 +55,10 @@ class Wallet_model extends CI_Model
           if(!empty($to_date)){
             $this->db->where('created_at <=',$to_date);
           }  
-
           $val=$this->db->get()->result_array();
-   
    $wallet=[];
         if(!empty($val)){
-          foreach ($val as $key => $value) {
-            
+          foreach ($val as $key => $value) {            
                if($value['type']==1){
                $user_info=$this->get_user_info($value['user_provider_id'],$value['type']); 
              }else{
@@ -86,7 +68,6 @@ class Wallet_model extends CI_Model
               if(empty($profile_img)){
                 $profile_img = 'assets/img/user.jpg';
               }
-
              $wallet[$key]['id']=$value['id'];
              $wallet[$key]['user_name']=$user_info['name'];
              $wallet[$key]['user_mobile']=$user_info['mobileno'];
@@ -96,17 +77,13 @@ class Wallet_model extends CI_Model
              $wallet[$key]['token']=$value['token'];
              $wallet[$key]['date']=$value['created_at'];
              $wallet[$key]['role']=$value['type'];
-
-           
           }
         }
    return $wallet;
   }
 
-  public function get_wallet_history(){
-    
+  public function get_wallet_history(){  
     $val=$this->db->select('id,token,user_provider_id,type,current_wallet,credit_wallet,debit_wallet,avail_wallet,total_amt,fee_amt,reason,created_at')->from('wallet_transaction_history')->order_by('id','DESC')->get()->result_array();
-
      $wallet=[];
         if(!empty($val)){
           foreach ($val as $key => $value) {
@@ -237,6 +214,41 @@ class Wallet_model extends CI_Model
     return $val;
   }
 
+  public function add_user_provider_wallet($data){
+    $this->db->insert('wallet_table',$data);
+  }
+  public function update_user_provider_wallet($data,$id){
+    $this->db->where('user_provider_id',$id);
+    $this->db->where('type',$data['type']);
+    $this->db->update('wallet_table',$data);
+  }
+
+
+  public function wallet_info_id($id,$typeVal){
+    $this->db->select('*');
+    $this->db->from('wallet_table');
+    $this->db->where('user_provider_id',$id);
+    $this->db->where('type',$typeVal);
+    $query = $this->db->get();
+    return $query->result();    
+  }
+
+  public function get_system_info(){
+      $this->db->select('*');
+      $this->db->from('system_settings');
+      $this->db->where('status',1);
+      $query = $this->db->get();
+      return $query->result_array();
+  }
+
+  public function getsubscriptionLog($id){
+    $this->db->select('*');
+    $this->db->from('subscription_details');
+    $this->db->where('subscriber_id',$id);
+    $this->db->where('free_service','yes');
+    $require = $this->db->get();
+    return $require->result();
+  }
 		
 }
 ?>

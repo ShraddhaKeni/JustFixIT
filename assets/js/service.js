@@ -12,7 +12,7 @@
 
      //location
 
-     
+     var categoryId = $('#categoryId').val();
      $.ajax({
       type: "GET",
       url: base_url+"user/service/get_category",
@@ -37,7 +37,9 @@
         $(obj).each(function(){
           var option = $('<option />');
           option.attr('value', this.value).text(this.label);           
-          $('#category').append(option);
+          //if(categoryId == this.value){
+            $('#category').append(option);
+          //}
         });       
         $('#category').selectpicker('refresh');
         $("#category").selectpicker();

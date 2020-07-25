@@ -93,8 +93,8 @@ $currency = currency_conversion(settings('currency'));
 											<div class="filter-list">
 												<h4 class="filter-title">Price Range</h4>
 												<div class="price-ranges">
-													$<span class="from d-inline-block" id="min_price"><?php echo $min_price['service_amount']?></span> -
-													$<span class="to d-inline-block" id="max_price"><?php echo  $max_price['service_amount']?></span>
+													₹<span class="from d-inline-block" id="min_price"><?php echo $min_price['service_amount']?></span> -
+													₹<span class="to d-inline-block" id="max_price"><?php echo  $max_price['service_amount']?></span>
 												</div>	
 												<div class="range-slider price-range"></div>										
 											</div>
@@ -198,6 +198,28 @@ $currency = currency_conversion(settings('currency'));
 												
 												<span class="col ser-location"><span><?php echo ucfirst($srows['service_location']);?></span> <i class="fas fa-map-marker-alt ml-1"></i></span>
 												</div>
+												<hr>
+													<div class="">
+														<div class="social-icon">
+															<center>
+															<ul>
+																<li style="display: inline;padding-left: 10px; padding-right: 10px; ">
+																	<a href="http://www.facebook.com/sharer.php?u=<?php echo base_url().$srows['service_title'];?>" target="_blank"><i class="fab fa-facebook-f"></i> </a>
+																</li>
+																<li style="display: inline; padding-left: 10px; padding-right: 10px;">
+																	<a href="http://twitter.com/share?text=<?php echo $srows['service_title']; ?>&url=<?php echo base_url().$srows['service_title'];?>" target="_blank"><i class="fab fa-twitter"></i> </a>
+																</li>
+																<li style="display: inline; padding-left: 10px; padding-right: 10px;">
+																	<a href="https://plus.google.com/share?url=<?php echo base_url().$srows['service_title'];?>" target="_blank"><i class="fab fa-google"></i></a>
+																</li>
+
+																<li style="display: inline; padding-left: 10px; padding-right: 10px;">
+																	<a href="http://www.linkedin.com/shareArticle?mini=true&url==<?php echo base_url().$srows['service_title'];?>
+																	" target="_blank"><i class="fab fa-linkedin" aria-hidden="true"></i></a>
+																</li>
+															</ul></center>
+														</div>
+													</div>
 											</div>
 										</div>
 									</div>

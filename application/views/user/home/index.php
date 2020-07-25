@@ -37,7 +37,8 @@
 									<div class="search-input">
 										<i class="fas fa-location-arrow bficon"></i>
 										<div class="form-group mb-0">
-											<input type="text" class="form-control" value="" name="user_address" id="user_address" placeholder="Your Location">
+											<input type="text" class="form-control" value="" name="user_address" id="user_address" placeholder="Your Location" data-by-field='user_address'>
+
 											<input type="hidden" value="" name="user_latitude" id="user_latitude">
 											<input type="hidden" value="" name="user_longitude" id="user_longitude">
 											<a class="current-loc-icon current_location" data-id="1" href="javascript:void(0);"><i class="fas fa-crosshairs"></i></a>
@@ -51,11 +52,12 @@
 							<div class="search-cat">
 								<i class="fas fa-circle"></i>
 								<span>Popular Searches</span>
-								<?php foreach ($popular as $popular_services) { ?>
+								<?php foreach ($popular as $popular_services) { 
+									if(($popular_services['status']==2) || ($popular_services['status']==0)){}else{ ?>
 								<a href="<?php echo base_url().'service-preview/'.str_replace(' ', '-', $popular_services['service_title']).'?sid='.md5($popular_services['id']);?>">
 									<?php echo $popular_services['service_title']?>
 								</a>
-								<?php } ?>
+								<?php } }?>
 							</div>
 						</div>
 					</div>
@@ -85,6 +87,7 @@
 					<div class="catsec">
 						<div class="row">
 							<?php
+							 //echo "<pre>"; print_r($category);
 							if(!empty($category)) {
 								foreach ($category as $crows) {
 							?>

@@ -112,13 +112,10 @@ class Service_model extends CI_Model
 
      public function update_bookingstatus($book_details,$where)
     {
-      
       $this->db->set($book_details);
       $this->db->where($where);
       $this->db->update('book_service');
       return $this->db->affected_rows() != 0 ? true : false;
-      
-         
     }
 
      public function featured_service()
@@ -131,10 +128,7 @@ class Service_model extends CI_Model
         $this->db->where("s.status = 1");
         $this->db->order_by('r.rating','DESC');
         return $result = $this->db->get()->result_array();
-
-
-        
-     }
+      }
 
      public function popular_service()
      {
@@ -146,10 +140,14 @@ class Service_model extends CI_Model
         $this->db->where("s.status = 1");
         $this->db->order_by('s.total_views','DESC');
         return $result = $this->db->get()->result_array();
+      }
 
-
-        
-     }
+      public function getProvideById($id){
+        $this->db->select('id,category,subcategory');
+        $this->db->from('providers');
+        $this->db->where('id',$id);
+        return $result = $this->db->get()->result_array();
+      }
 
       public function get_profile($user_id)
      {

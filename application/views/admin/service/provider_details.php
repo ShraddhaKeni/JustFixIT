@@ -52,7 +52,12 @@ $user_details = $this->db->where('id',$user_id)->get('providers')->row_array();
 							<span>Personal Details</span>
 						</h5>
 						<h5 class="card-title d-flex justify-content-between col-sm-2">
-							<span>Verified</span>
+							<?php if($user_details['is_verified']==1) { ?>
+								<span>Verified</span>
+							<?php }else {?>
+								<span>Not Verified</span>
+							<?php } ?>
+							
 						</h5>
 						<div class="status-toggle col-sm-2">
 						<?php

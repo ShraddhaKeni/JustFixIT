@@ -116,6 +116,7 @@
 										$service = $this->db->where('id',$rows['service_id'])->get('services')->row_array();
 										$service = $this->db->where('id',$rows['service_id'])->get('services')->row_array();
 										$admin_payment = $this->db->where('booking_id',$rows['id'])->get('admin_payment')->row_array();
+
 										
 										if($rows['status'] == 1) {
                                             $status = 'Pending';
@@ -136,14 +137,15 @@
                                             $status = 'Cancelled by Provider';
 										}
 										?>
+
                                         <tr>
 											<td><?php echo $i++ ?></td> 
 											<td><?=date('d-m-Y',strtotime($rows['service_date']));?></td>
-											<td><?php echo $provider_name['name'] ?></td>
-											<td><?php echo $user_name['name'] ?></td>
-											<td><?php echo $service['service_title']?></td>
-											<td>$<?php echo $rows['amount']?></td>
-											<td><?php echo $status?></td>
+											<td><?php echo $provider_name['name']; ?></td>
+											<td><?php if(isset($user_name['name'])){ echo $user_name['name']; } ?></td>
+											<td><?php echo $service['service_title']; ?></td>
+											<td>₹<?php echo $rows['amount']; ?></td>
+											<td><?php echo $status; ?></td>
 										</tr>
                                     <?php } } else {
                                     ?>
@@ -155,7 +157,7 @@
 									<?php } ?>
                                 </tbody>
                             </table>
-						</div> 
+                        </div> 
 					</div> 
 				</div>
 			</div>

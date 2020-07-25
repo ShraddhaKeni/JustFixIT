@@ -37,8 +37,7 @@
 
                             }
                          ?>
-
-                                    <li class="active history_append_fun" data-token="<?=$value['token'];?>" > <a href="javascript:void(0);">
+                         <li class="active history_append_fun" data-token="<?=$value['token'];?>" > <a href="javascript:void(0);">
                                     <div class="d-flex bd-highlight">
                                     <div class="img_cont"><?=$badge;?>
 
@@ -51,30 +50,42 @@
                                     </li>
 
                         <?php } ?>
-                     
-                  
+                     </ul>
+                        </div>
+                 <hr><div class=""><h2>Provider List</h2>
+                            <ul role="" class="">
+                        <?php foreach( $provider_list as $provider) { 
+                                if($token == $provider->token){ }else{ ?>
+                            <li class="active history_append_fun" data-token="<?=$provider->token;?>" > <a href="javascript:void(0);">
+                                    <div class="d-flex bd-highlight">
+                                    <div class="img_cont">
+                                     <?php if(!empty($provider->profile_img)){
+                                        $path=base_url().$provider->profile_img;
+                                    }else{
+                                        $path=base_url().'assets/img/user.jpg';
+                                    } ?>   
+                                    <img src="<?=$path;?>" class="rounded-circle user_img">
+                                    </div>
+                                    <div class="user_info">
+                                        
+                                            <span class="user-name"><?php echo $provider->name; ?></span><span class="float-right text-muted"></span>
+                                    </div>
+                                    </div></a>
+                                    </li>
+                            <?php } } ?>
                         </ul>
                         </div>
-                 
-
-
                     </div>
                     <div class="card-footer"></div>
                 </div></div>
-                       
                 <div class="col-md-8 col-xl-8 chat d-flex chat-scroll">
-
                     <div class="card flex-fill mb-0 justify-content-center align-items-center" id="home_page">
-					
-						<div class="no-messages">
+					   <div class="no-messages">
 							<i class="far fa-comments"></i>
 						</div>
                     </div>
-                
 <!-- chat history -->
                     <div class="card w-100 mb-0" id="history_page">
-
-
                         <div class="card-header msg_head">
                             <div class="d-flex bd-highlight">
                                 <div class="img_cont">
@@ -86,25 +97,14 @@
                                 </div>
                             </div>
                         </div>
-
                         <div class="card-body msg_card_body" id="chat_box"> 
-
-                          <div id="load_div" class="text-center"></div>
-                          
-                                
+                            <div id="load_div" class="text-center"></div>
                         </div>
-
-
-
                         <div class="card-footer">
-                          
-                           
                                 <input type="hidden" name="chat-seft" id="fromToken" placeholder="" value="" class=""  />
                                 <input type="hidden" name="toToken" value="" id="toToken" placeholder="" class=""  />
                                 <input type="hidden" name="from_name" value="" id="from_name">
                                 <input type="hidden" name="to_name" value="" id="to_name">
-
-
                             <div class="input-group">
                                 <input name="" class="form-control type_msg mh-auto empty_check" id="chat-message" placeholder="Type your message..." maxlength="1000"></input>
                                 <div class="input-group-append">

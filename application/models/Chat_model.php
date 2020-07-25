@@ -10,8 +10,7 @@ class Chat_model extends CI_Model
     }
 
     /*get information base on token*/
-    public function get_token_info($token){
-        
+    public function get_token_info($token){      
         $user_table=$this->db->select('*')->
                         from('users')->
                         where('token',$token)->
@@ -25,20 +24,15 @@ class Chat_model extends CI_Model
         }else{
             return $provider_table;
         }                
-        
     }
-
-      public function get_book_info($book_service_id){
-
-
-    $ret=$this->db->select('tab_1.provider_id,tab_1.user_id,tab_1.status,tab_2.service_title')->
-                    from('book_service as tab_1')->
-                    join('services as tab_2','tab_2.id=tab_1.service_id','LEFT')->
-                    where('tab_1.id',$book_service_id)->limit(1)->
-                    order_by('tab_1.id','DESC')->
-                    get()->row_array();
-    return $ret;
-
+  public function get_book_info($book_service_id){
+      $ret=$this->db->select('tab_1.provider_id,tab_1.user_id,tab_1.status,tab_2.service_title')->
+      from('book_service as tab_1')->
+      join('services as tab_2','tab_2.id=tab_1.service_id','LEFT')->
+      where('tab_1.id',$book_service_id)->limit(1)->
+      order_by('tab_1.id','DESC')->
+      get()->row_array();
+      return $ret;
   }  
 
       public function get_user_info($user_id,$user_type){
@@ -53,16 +47,49 @@ class Chat_model extends CI_Model
   }
 
     /*get last msg*/
+
     public function get_last_msg($token){
       $val=$this->db->select('message,created_at')->
-                      from('chat_table')->
-                      where('sender_token',$token)->
-                      or_where('receiver_token',$token)->
-                      order_by('chat_id','DESC')->
-                      limit(1)->get()->row();
+      from('chat_table')->
+      where('sender_token',$token)->
+      or_where('receiver_token',$token)->
+      order_by('chat_id','DESC')->
+      limit(1)->get()->row();
       return $val;                
-
     }
+    public function get_sender_last_msg($token){
+      $val=$this->db->select('message,created_at')->
+      from('chat_table')->
+      where('sender_token',$token)->
+      order_by('chat_id','DESC')->
+      limit(1)->get()->row();
+      return $val;                
+    }
+    public function get_receiver_last_msg($token){
+     $val=$this->db->select('message,created_at')->
+      from('chat_table')->
+      where('receiver_token',$token)->
+      order_by('chat_id','DESC')->
+      limit(1)->get()->row();
+      return $val; 
+    }
+    public function get_all_chat_msg(){
+      $val=$this->db->select('message,created_at')->from('chat_table')->
+                      order_by('chat_id','DESC')->
+                      get()->result_array();
+      return $val;                
+    }
+    public function get_conversation_info_api($self_token,$partner_token){
+        $return=$this->db->select('*')->
+                from('chat_table')->
+                where("(`sender_token` = '".$self_token."' AND `receiver_token` = '".$partner_token."') OR (`sender_token` = '".$partner_token."' AND `receiver_token` = '".$self_token."')")->
+                where('status',1)->
+                group_by('chat_id')->
+                order_by('chat_id','ASC')->
+                get()->result();
+        return $return;
+    }
+
 
     /*change to read status*/
 
@@ -146,6 +173,12 @@ class Chat_model extends CI_Model
          $this->db->where_in('chat_id',$where);
         $ret=$this->db->update($table,$data);
         return $ret;
+    }
+    public function get_provider_list(){
+        $this->db->select("id,name,token,profile_img");
+        $this->db->from('providers');
+        $query = $this->db->get();
+        return $query->result();
     }
  
 }

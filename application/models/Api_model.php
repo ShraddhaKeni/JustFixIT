@@ -1,8 +1,6 @@
 <?php
 if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-class Api_model extends CI_Model
-{
-
+class Api_model extends CI_Model{
   public function __construct() {
         parent::__construct();
         $this->load->database();
@@ -12,12 +10,17 @@ class Api_model extends CI_Model
         $this->date = utc_date_conversion($this->date);
         $this->date = date('Y-m-d',strtotime($this->date));
         $this->base_url = base_url();
-
     }
  
+    public function existing_user($mobile_no){
+      $this->db->select('*');
+      $this->db->from('users');
+      $this->db->where('mobileno',$mobile_no);
+      $records = $this->db->get();
+      return $records->num_rows();
+    }
 
-    public function get_user_id_using_token($token)
-  {
+    public function get_user_id_using_token($token){
     if($token!=''){
       $this->db->select('*');
       $records = $this->db->get_where('providers', array('token' => $token))->row_array();
@@ -30,8 +33,77 @@ class Api_model extends CI_Model
     return 0;
   }
 
-  public function get_users_id_using_token($token)
-  {
+  public function save_provider($data){
+    $result = $this->db->insert('providers',$data);
+    $user_id = $this->db->insert_id();
+    $subscription_id = 1;
+    $this->db->select('duration');
+       $record = $this->db->get_where('subscription_fee',array('id'=>$subscription_id))->row_array();
+       if(!empty($record)){
+       $duration = $record['duration'];
+       $days = 30;
+       switch ($duration) {
+         case 1:
+           $days = 30;
+           break;
+         case 2:
+           $days = 60;
+           break;
+         case 3:
+           $days = 90;
+           break;
+         case 6:
+           $days = 180;
+           break;
+         case 12:
+           $days = 365;
+           break;
+         case 24:
+           $days = 730;
+           break;
+
+         default:
+           $days = 30;
+           break;
+       }
+        $subscription_date = date('Y-m-d H:i:s');
+        $expiry_date_time =  date('Y-m-d H:i:s',strtotime(date("Y-m-d  H:i:s", strtotime($subscription_date)) ." +".$days."days"));
+
+    $new_details['subscriber_id'] = $stripe['subscriber_id'] = $user_id;
+       $new_details['subscription_id'] = $stripe['subscription_id'] = $subscription_id;
+       $new_details['subscription_date'] = $stripe['subscription_date'] = $subscription_date;
+       $new_details['expiry_date_time'] = $expiry_date_time;
+       $new_details['type']=1;  
+       $this->db->where('subscriber_id', $user_id);
+       $count = $this->db->count_all_results('subscription_details');
+       if($count == 0){
+       $this->db->insert('subscription_details', $new_details);
+       $this->db->insert('subscription_details_history', $new_details);
+       $stripe['sub_id'] = $this->db->insert_id();
+
+       }else{
+
+         $this->db->where('subscriber_id', $user_id);
+        $this->db->update('subscription_details', $new_details);
+          $this->db->insert('subscription_details_history', $new_details);
+         $this->db->where('subscriber_id', $user_id);
+       $details_sub = $this->db->get('subscription_details')->row_array();
+       $stripe['sub_id'] = $details_sub['id'];
+       }
+       $stripe['tokenid'] = 'Free Token';
+       //$stripe['payment_details'] = $data['args'];
+        return $this->db->insert('subscription_payment', $stripe);
+  }
+}
+
+  public function edit_provider($data){
+    //echo "<pre>"; print_r($data['id']); exit;
+    $this->db->where('id',$data['id']);
+    $result = $this->db->update('providers',$data);
+    return $result;
+  }
+
+  public function get_users_id_using_token($token){
     if($token!=''){
       $this->db->select('*');
       $records = $this->db->get_where('users', array('token' => $token))->row_array();
@@ -1575,37 +1647,23 @@ class Api_model extends CI_Model
 
      } 
 
-      public function get_bookinglist_user($user_id,$status)
-     
-       {
-               
+      public function get_bookinglist_user($user_id,$status){
         if(!empty($status)){
-
            if((int)$status==1){
             $query = $this->db->query("SELECT  `b` . * ,  `s`.`service_title` ,  `s`.`service_image` ,  `s`.`service_amount` ,  `s`.`rating` ,  `s`.`service_image` ,  `c`.`category_name` ,  `sc`.`subcategory_name` , `p`.`token` , `p`.`profile_img` ,  `p`.`mobileno` ,  `p`.`country_code` FROM  `book_service`  `b` LEFT JOIN  `services`  `s` ON  `b`.`service_id` =  `s`.`id` LEFT JOIN  `categories`  `c` ON  `c`.`id` =  `s`.`category` LEFT JOIN  `subcategories`  `sc` ON  `sc`.`id` =  `s`.`subcategory` LEFT JOIN  `users`  `p` ON  `b`.`user_id` =  `p`.`id` WHERE  `b`.`user_id` =  $user_id ORDER BY `b`.`id` DESC");
             $result = $query->result_array();
-
-        
-          }
-
-          if((int)$status==2){
+        }if((int)$status==2){
             $query = $this->db->query("SELECT  `b` . * ,  `s`.`service_title` ,  `s`.`service_image` ,  `s`.`service_amount` ,  `s`.`rating` ,  `s`.`service_image` ,  `c`.`category_name` ,  `sc`.`subcategory_name` ,  `p`.`token` , `p`.`profile_img` ,  `p`.`mobileno` ,  `p`.`country_code` FROM  `book_service`  `b` LEFT JOIN  `services`  `s` ON  `b`.`service_id` =  `s`.`id` LEFT JOIN  `categories`  `c` ON  `c`.`id` =  `s`.`category` LEFT JOIN  `subcategories`  `sc` ON  `sc`.`id` =  `s`.`subcategory` LEFT JOIN  `users`  `p` ON  `b`.`user_id` =  `p`.`id` WHERE  `b`.`user_id` =  $user_id AND (`b`.`status` =2 OR  `b`.`status` =3 OR `b`.`status` =5) ORDER BY `b`.`id` DESC");
             $result = $query->result_array();
-
-        
-          }
-          if((int)$status==3){
+        }if((int)$status==3){
              $query = $this->db->query("SELECT  `b` . * ,  `s`.`service_title` ,  `s`.`service_image` ,  `s`.`service_amount` ,  `s`.`rating` ,  `s`.`service_image` ,  `c`.`category_name` ,  `sc`.`subcategory_name` ,   `p`.`token` ,`p`.`profile_img` ,  `p`.`mobileno` ,  `p`.`country_code` FROM  `book_service`  `b` LEFT JOIN  `services`  `s` ON  `b`.`service_id` =  `s`.`id` LEFT JOIN  `categories`  `c` ON  `c`.`id` =  `s`.`category` LEFT JOIN  `subcategories`  `sc` ON  `sc`.`id` =  `s`.`subcategory` LEFT JOIN  `users`  `p` ON  `b`.`user_id` =  `p`.`id` WHERE  `b`.`user_id` =  $user_id AND (`b`.`status` =6) ORDER BY `b`.`id` DESC");
              $result = $query->result_array();          }
           if((int)$status==4){
              $query = $this->db->query("SELECT  `b` . * ,  `s`.`service_title` ,  `s`.`service_image` ,  `s`.`service_amount` ,  `s`.`rating` ,  `s`.`service_image` ,  `c`.`category_name` ,  `sc`.`subcategory_name` ,  `p`.`token` , `p`.`profile_img` ,  `p`.`mobileno` ,  `p`.`country_code` FROM  `book_service`  `b` LEFT JOIN  `services`  `s` ON  `b`.`service_id` =  `s`.`id` LEFT JOIN  `categories`  `c` ON  `c`.`id` =  `s`.`category` LEFT JOIN  `subcategories`  `sc` ON  `sc`.`id` =  `s`.`subcategory` LEFT JOIN  `users`  `p` ON  `b`.`user_id` =  `p`.`id` WHERE  `b`.`user_id` =  $user_id AND (`b`.`status` =7) ORDER BY `b`.`id` DESC");
              $result = $query->result_array();
           }
-
         }
-
           return $result;
-
      }   
 
 
@@ -2335,16 +2393,8 @@ s.service_latitude) *  pi()/180 / 2), 2) +COS(" . $latitude . " * pi()/180) * CO
         $result = $this->db->affected_rows();
 
         }
-         
-
-
-
       return $result;
-
-     }
-
-  
-
+    }
 /*wallet information*/
 
 public function get_wallet($token){
@@ -2354,22 +2404,17 @@ public function get_wallet($token){
      $query = $this->db->query("select * from system_settings WHERE status = 1");
           $result = $query->result_array();
           if(!empty($result))
-          {
-              foreach($result as $data){
+          {foreach($result as $data){
                   if($data['key']=='currency_option'){
                     $setting_currency=$data['value'];
                   }
               }
           }
-
           /*sum of totAL wallet*/
-
               $wallet_tot=$this->db->select('sum(credit_wallet)as total_credit,sum(debit_wallet)as total_debit')->from('wallet_transaction_history')->
                     where('token',$token)->order_by('id','DESC')->
                     get()->row_array();
-   
   if (!empty($val)) {
-   
       $wallet['id']=$val->id;
       $wallet['token']=$val->token;
       $wallet['type']=$val->type;
@@ -2378,7 +2423,6 @@ public function get_wallet($token){
       $wallet['currency_code']=$setting_currency;
       $wallet['total_credit']=(!empty($wallet_tot['total_credit']))?strval($wallet_tot['total_credit']):0;
       $wallet['total_debit']=(!empty($wallet_tot['total_debit']))?strval($wallet_tot['total_debit']):0;
-   
   } 
   if(!empty($wallet)){
     return $wallet;

@@ -106,7 +106,7 @@ if(!empty($my_subscribe)){
 										<p>Started On <?php if(!empty($my_subscribe['subscription_date'])){echo date('d M, Y',strtotime($my_subscribe['subscription_date']));}?></p>
 									</li>
 									<li class="col-6 col-lg-6">
-										<p>Price $<?php if(!empty($subscription_name['fee'])){echo $subscription_name['fee']; }
+										<p>Price ₹<?php if(!empty($subscription_name['fee'])){echo $subscription_name['fee']; }
 													?></p>
 									</li>
 								</ul>

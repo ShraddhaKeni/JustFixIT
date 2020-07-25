@@ -335,8 +335,7 @@
 										$user_info= $user_table;
 									}else{
 										$user_info= $provider_table;
-									}  
-									
+									}  									
 									 	$full_date =date('Y-m-d H:i:s', strtotime($row['utc_date_time']));
 										$date=date('Y-m-d',strtotime($full_date));
 										$date_f=date('d-m-Y',strtotime($full_date));
@@ -353,9 +352,7 @@
 										$profile_img = $user_info->profile_img;
 										if(empty($profile_img)){
 											$profile_img ='assets/img/user.jpg';
-										}
-									 	?>
-
+										} ?>
 									<li class="notification-message">
 										<a href="<?=base_url();?>user-chat">
 											<div class="media">

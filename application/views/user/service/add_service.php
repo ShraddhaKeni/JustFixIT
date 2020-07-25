@@ -7,7 +7,8 @@
 					<h2>Add Services</h2>
 				</div>
 			
-				
+				<input type="hidden" name="" value='<?php echo $provider[0]['category']; ?>' id='categoryId'>
+			<input type="hidden" name="" id='subcategoryId' value='<?php echo $provider[0]['subcategory']; ?>'>
 				
 				<form method="post" enctype="multipart/form-data" autocomplete="off" id="add_service">
 					<input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>">

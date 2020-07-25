@@ -130,51 +130,36 @@
         console.log('updated');
       }else{
         console.log('update not updated');
-
-      }
-      
-    }
+      }}
   })
    $.ajax({
-
     url:base_url+"user/Chat_ctrl/get_chat_history",
     type:"post",
     data:{'partner_token':token,'self_token':self_token,'csrf_token_name':csrf_token},
     async:false,
     success:function(data){
-
      $.ajax({
-
        url:base_url+"user/Chat_ctrl/get_token_informations",
        type:"post",
        data:{'partner_token':token,'self_token':self_token,'csrf_token_name':csrf_token},
        async:false,
        success:function(fetch){
         var Data = JSON.parse(fetch);
-
         $('#from_name').val(Data.self_info.name);
         $('#fromToken').val(Data.self_info.token);
         $('#to_name').val(Data.partner_info.name);
         $('#toToken').val(Data.partner_info.token);
-        
         $('#receiver_name').text(Data.partner_info.name);
-        
         $("#receiver_image").removeAttr("src");
-        
         if(Data.partner_info.profile_img.length>0){
          var img=("src", base_url+Data.partner_info.profile_img);
        }else{
          var img=("src", base_url+'assets/img/user.jpg');
        }
-
-       
-       $("#receiver_image").attr("src", img);
+      $("#receiver_image").attr("src", img);
      }
    })
-
-     
-     $("#chat_box").empty().append(data);
-     
+    $("#chat_box").empty().append(data);
    },
    complete: function(){
     $('#load_div').show();

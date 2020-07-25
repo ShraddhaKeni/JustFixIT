@@ -520,26 +520,31 @@ $config['global_xss_filtering'] = FALSE;
 | 'csrf_regenerate' = Regenerate token on every submission
 | 'csrf_exclude_uris' = Array of URIs which ignore CSRF checks
 */
-if (isset($_SERVER["REQUEST_URI"])) 
-{
-    if(stripos($_SERVER["REQUEST_URI"],'/api') === FALSE)
-    {
-        $config['csrf_protection'] = TRUE;
-    }
-    else
-    {
-        $config['csrf_protection'] = FALSE;
-    } 
-} 
-else 
-{
-    $config['csrf_protection'] = TRUE;
-} 
+if($_SERVER["REQUEST_URI"] === '/axzora/provider_wallet_submit'){
+		$config['csrf_protection'] = FALSE;
+	}else if($_SERVER["REQUEST_URI"] === '/axzora/user_wallet_submit'){
+		$config['csrf_protection'] = FALSE;
+	}else if ($_SERVER["REQUEST_URI"] === '/axzora/provider_subscription_submit'){
+		$config['csrf_protection'] = FALSE;
+	}
+	else{
+		if (isset($_SERVER["REQUEST_URI"])) {
+			if(stripos($_SERVER["REQUEST_URI"],'/api') === FALSE){
+		        $config['csrf_protection'] = TRUE;
+		    }else{
+		        $config['csrf_protection'] = FALSE;
+		    } 
+		} 
+		else {
+		    $config['csrf_protection'] = TRUE;
+		}		
+	}
+ 
 $config['csrf_token_name'] = 'csrf_token_name';
 $config['csrf_cookie_name'] = 'csrf_cookie_name';
 $config['csrf_expire'] = 7200;
 $config['csrf_regenerate'] = FALSE;
-$config['csrf_exclude_uris'] = array('api','user/booking/order_status');
+$config['csrf_exclude_uris'] = array('api','user/booking/order_status','user/dashboard/provider_wallet_submit','user/dashboard/user_wallet_submit');
 
 
 /*

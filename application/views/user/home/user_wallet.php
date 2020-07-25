@@ -99,7 +99,7 @@ $get_details = $this->db->where('id',$this->session->userdata('id'))->get('users
 											<div class="input-group-prepend">
 												<label class="input-group-text display-5"><?=$wallet['currency'];?></label>
 											</div>
-											<input type="text"  maxlength="4" class="form-control isNumber" name="wallet_amt" id="wallet_amt" placeholder="00.00">
+											<input type="text"  maxlength="4" class="form-control isNumber" name="orderAmount" id="orderAmount" placeholder="00.00">
 										</div>
 									</div>
 								</form>
@@ -120,6 +120,32 @@ $get_details = $this->db->where('id',$this->session->userdata('id'))->get('users
 									</ul>
 								</div>
 								<a href="javascript:void(0);"id="stripe_wallet" class="btn btn-primary btn-block withdraw-btn">Add to Wallet</a>
+
+
+									<input type="hidden" name="orderCurrency" id='orderCurrency_wallet' value="INR"/>
+									<input type="hidden" name="orderNote" id='orderNote_wallet' value="test"/>
+									<input type="hidden" name="customerName" id='customerName_wallet' value="<?php echo $this->session->userdata('name'); ?>"/>
+									<input type="hidden" name="customerEmail" id='customerEmail_wallet' value="<?php echo $this->session->userdata('email'); ?>"/>
+									<input type="hidden" name="customerPhone" id='customerPhone_wallet' value="<?php echo $this->session->userdata('mobileno'); ?>"/>
+    								  <input type="hidden" name="appId" id='appId_wallet' value="22541e2b76162c7d85ddf06af14522"/>
+									    <input type="hidden" name="orderId" id='orderId_wallet' class="form-control isNumber" placeholder="value" value="<?php echo rand(100000,999999);  ?>" />
+									    <input type="hidden" name="returnUrl" id='returnUrl_wallet' value="<?php echo base_url().'user_wallet_submit'; ?>"/>
+									    <input type="hidden" name="notifyUrl" id='notifyUrl_wallet' value="<?php echo base_url().'user_wallet_submit'; ?>"/>
+									    <hr>
+								
+								<form id="redirect_userForm" method="post" action="https://test.cashfree.com/billpay/checkout/post/submit">
+									<input type="hidden" name="orderCurrency" id='id_orderCurrency_wallet' value="INR"/>
+									<input type="hidden" name="orderNote" id='id_orderNote_wallet' value="test"/>
+									<input type="hidden" name="customerName" id='id_customerName_wallet' value=""/>
+									<input type="hidden" name="customerEmail" id='id_customerEmail_wallet' value=""/>
+									<input type="hidden" name="customerPhone" id='id_customerPhone_wallet' value=""/>
+								<input type="hidden" id='app_id_wallet' name="appId" value=""/>
+								<input type="hidden" id='order_id_wallet' name="orderId" placeholder="value" value=""/>
+								<input type="hidden" id='order_amount_wallet' name="orderAmount" placeholder="amount" value=""/>
+								<input type="hidden" id='id_returnUrl_wallet' name="returnUrl" value=""/>
+								<input type="hidden" id='id_notifyUrl_wallet' name="notifyUrl" value=""/>
+								<input type="hidden" id="id_signature_wallet" name="signature" value=""/>
+								</form>
 							</div>
 						</div>
 					</div>
@@ -236,7 +262,6 @@ $get_details = $this->db->where('id',$this->session->userdata('id'))->get('users
 			}
 		  
 		  ?>
-		  
 		<input type="hidden" id="stripe_key" value="<?=$stripe_key;?>">
 		<input type="hidden" id="logo_front" value="<?=$web_log;?>">
 		<input type="hidden" id="tokens" value="<?=$this->session->userdata('chat_token');?>">

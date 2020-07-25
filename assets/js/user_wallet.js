@@ -26,37 +26,19 @@
 				return false;
 			}
 		});
-	
-	
-
-	var user_handler = StripeCheckout.configure({
-		key: stripe_key,
-		image: web_logo,
-		locale: 'auto',
-		token: function(token,args) {
-			var tokens=$('#tokens').val();
-			var stripe_amt=$("#wallet_amt").val();
-			var tokenid = token.id;
-			var data="Token="+tokens+"&amount="+stripe_amt+"&tokenid="+tokenid;
-
-			$.ajax({
-				url: base_url+'api/add-user-wallet',
-				data:data,
-				type: 'POST',
-				dataType: 'JSON',
-				success: function(response){
-					console.log(response);
-					window.location.reload();
-				},
-				error: function(error){
-					console.log(error);
-				}
-			});
-		}
-	});
-	$('#stripe_wallet').on('click', function(e) {
-		var stripe_amt=$("#wallet_amt").val();
-		if(stripe_amt =='' || stripe_amt < 1){
+	$('#stripe_wallet').on('click', function() {
+		//var token_id = $("#token_id_wallet").val();
+	    var appId = $("#appId_wallet").val();
+	    var orderId = $("#orderId_wallet").val();
+	    var returnUrl = $("#returnUrl_wallet").val();
+	    var notifyUrl = $("#notifyUrl_wallet").val();
+	    var orderCurrency = $("#orderCurrency_wallet").val();
+	    var orderNote = $("#orderNote_wallet").val();
+	    var customerName = $("#customerName_wallet").val();
+	    var customerPhone = $("#customerPhone_wallet").val();
+	    var customerEmail = $("#customerEmail_wallet").val();
+		var orderAmount=$("#orderAmount").val();
+		if(orderAmount =='' || orderAmount < 1){
 			swal({
 				title: "Empty amount",
 				text: "Wallet field was empty please fill it...",
@@ -65,24 +47,42 @@
 				closeOnEsc: false,
 				closeOnClickOutside: false
 			});
-			$("#wallet_amt").select();
+			$("#orderAmount").select();
 			return false;
+		}else{
+			$.ajax({
+		      url : base_url+"user_wallet_submit",
+		      type : 'get',
+		      data : {'appId':appId,'orderId':orderId,'orderAmount':orderAmount,'returnUrl':returnUrl,
+		      'notifyUrl':notifyUrl,'orderCurrency':orderCurrency,'orderNote':orderNote,'customerName':customerName,
+		      'customerPhone':customerPhone,'customerEmail':customerEmail,
+		      },
+		      success: function(data){
+		        var jsonData = JSON.parse(data);
+		        console.log(jsonData);
+		        //$("#id_token_wallet").val(token_id);
+		        $("#app_id_wallet").val(appId);
+		        $("#order_id_wallet").val(orderId);
+		        $("#order_amount_wallet").val(orderAmount);
+		        $("#id_returnUrl_wallet").val(returnUrl);
+		        $("#id_notifyUrl_wallet").val(notifyUrl);
+		        $("#id_orderCurrency_wallet").val(orderCurrency);
+		        $("#id_orderNote_wallet").val(orderNote);
+		        $("#id_customerName_wallet").val(customerName);
+		        $("#id_customerEmail_wallet").val(customerEmail);
+		        $("#id_customerPhone_wallet").val(customerPhone);
+		        $("#id_signature_wallet").val(jsonData);
+		        $("#redirect_userForm").submit();
+		      },
+		      error:function(data){
+		        console.log(data);
+		      }
+		    });
 		}
-
-	final_gig_amount = (stripe_amt * 100); //  dollar to cent
-	var striep_currency = 'USD';
-	// Open Checkout with further options:
-	user_handler.open({
-		name: base_url,
-		description: 'Wallet Recharge',
-		amount: final_gig_amount,
-		currency:striep_currency
-	});
-	e.preventDefault();
 });
 });
 
 function add_wallet_value(input){
-  $("#wallet_amt").val(input);
+  $("#orderAmount").val(input);
 }   
 })(jQuery);

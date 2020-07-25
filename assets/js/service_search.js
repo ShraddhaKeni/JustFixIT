@@ -40,6 +40,7 @@ function get_services() {
 $('#dataList').empty();
    $.post(base_url+'home/all_services',{min_price:min_price,max_price:max_price,sort_by:sort_by,common_search:common_search,categories:categories,service_latitude:service_latitude,service_longitude:service_longitude,csrf_token_name:csrf_token,user_address:user_address},function(data){
 	   var obj=jQuery.parseJSON(data);
+     console.log(obj);
 		   $('#service_count').html(obj.count);
 		   $('#dataList').html(obj.service_details);
    })

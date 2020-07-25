@@ -1,12 +1,10 @@
 (function($) {
-  "use strict";
+	"use strict";
     var base_url=$('#base_url').val();
   var BASE_URL=$('#base_url').val();
   var csrf_token=$('#csrf_token').val();
   var csrfName=$('#csrfName').val();
   var csrfHash=$('#csrfHash').val();
-  var chatToken = $("#chatToken").val();
-  var final_gig_amount=0;
  $( document ).ready(function() {
    $('.withdraw_wallet_value').on('click',function(){
     var id=$(this).attr('data-amount');
@@ -61,7 +59,46 @@ card.addEventListener('change', function(event) {
   }
   $('#card-errors').css('color','red');
 });
-  
+
+
+// var elements1 = stripe.elements();
+// $('#add_wallet_div').hide();
+// // Custom styling can be passed to options when creating an Element.
+// // (Note that this demo uses a wider set of styles than the guide below.)
+// var style = {
+//   base: {
+//     color: '#32325d',
+//     fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+//     fontSmoothing: 'antialiased',
+//     fontSize: '16px',
+//     '::placeholder': {
+//       color: '#aab7c4'
+//     }
+//   },
+//   invalid: {
+//     color: '#fa755a',
+//     iconColor: '#fa755a'
+//   }
+// };
+
+// function add_wallet_amt(input){
+//   $("#add_wallet_amt").val(input);
+// }  
+// // Create an instance of the card Element.
+// var card1 = elements1.create('card', {style: style, hidePostalCode : true, });
+// // Add an instance of the card Element into the `card-element` <div>.
+// card1.mount('#card-element1');
+// // Handle real-time validation errors from the card Element.
+// card1.addEventListener('change', function(event) {
+//   var displayError1 = document.getElementById('card-errors1');
+//   if (event.error) {
+//     displayError1.textContent = event.error.message;
+//   } else {
+//     displayError1.textContent = '';
+//   }
+//   $('#card-errors1').css('color','red');
+// });
+
 // Handle form submission.
 var sub_btn = document.getElementById('pay_btn');
 
@@ -76,6 +113,7 @@ sub_btn.addEventListener('click', function(event) {
  $('#load_div').html('<img src="'+base_url+'assets/img/loader.gif" alt="" />');
            var tokens=token;
            var stripe_amt=$("#wallet_withdraw_amt").val();
+           
            var tokenid = result.token.id;
            var data="Token="+tokens+"&amount="+stripe_amt+"&tokenid="+tokenid+"&csrf_token_name="+csrf_token;
            $.ajax({
@@ -84,6 +122,7 @@ sub_btn.addEventListener('click', function(event) {
            type: 'POST',
            dataType: 'JSON',
            success: function(response){
+            
            console.log(response);
            if(response.response.response_code==200 || response.response.response_code=='200'){
                         swal({
@@ -133,7 +172,7 @@ sub_btn.addEventListener('click', function(event) {
     }
   });
 });
-  $('#stripe_withdraw_wallet').on('click', function(e) {
+	$('#stripe_withdraw_wallet').on('click', function(e) {
         var stripe_amt=$("#wallet_withdraw_amt").val();
           if(stripe_amt =='' || stripe_amt < 1){
 
@@ -187,89 +226,42 @@ sub_btn.addEventListener('click', function(event) {
 
    });
 
-  // var user_handler = StripeCheckout.configure({
-  //   key: stripe_key,
-  //   locale: 'auto',
-  //   token: function(token,args) {
-  //     var tokens=$('#tokens').val();
-  //     var stripe_amt=$("#wallet_amt").val();
-  //     var tokenid = token.id;
-  //     var data="Token="+tokens+"&amount="+stripe_amt+"&tokenid="+tokenid;
-
-  //     $.ajax({
-  //       url: base_url+'api/add-user-wallet',
-  //       data:data,
-  //       type: 'POST',
-  //       dataType: 'JSON',
-  //       success: function(response){
-  //         console.log(response);
-  //         window.location.reload();
-  //       },
-  //       error: function(error){
-  //         console.log(error);
-  //       }
-  //     });
+  // $("#stripe_add_wallet").on('click',function(){
+  //   var add_amt = $("#add_wallet_amt").val();
+  //   if((add_amt==0) || (add_amt=='')){
+  //     swal({
+  //          title: "Empty amount",
+  //          text: "Wallet field was empty please anter amount",
+  //          icon: "error",
+  //          button: "okay",
+  //          closeOnEsc: false,
+  //          closeOnClickOutside: false
+  //      });
+  //   }else{
+  //    $("#add_wallet_div").show();
+  //    $("#remember_add_wallet").text(add_amt);  
   //   }
   // });
+  // $('#add_btn').on('click',function(){
+  //   var id=$('#userLoginId').val();
+  //   var amt = $("#add_wallet_amt").val();
+  //   var chatToken = $("#chatToken").val();
+  //   $.ajax({
+  //     url : base_url+"api/add-provider-wallet",
+  //     type : 'post',
+  //     data : {'id':id,'type':'1','amt':amt,'token':chatToken},
+  //     success: function(data){
+  //       console.log(data);
+  //     },
+  //     error:function(data){
+  //       console.log(data);
+  //     }
+  //   });
+  // });
 
-
-  $("#stripe_add_wallet").on('click',function(){
-    var secretKey = $("#secretKey").val();
-    var token_id = $("#token_id").val();
-    var appId = $("#appId").val();
-    var orderId = $("#orderId").val();
-    var orderAmount = $("#orderAmount").val();
-    var returnUrl = $("#returnUrl").val();
-    var notifyUrl = $("#notifyUrl").val();
-    var orderCurrency = $("#orderCurrency").val();
-    var orderNote = $("#orderNote").val();
-    var customerName = $("#customerName").val();
-    var customerPhone = $("#customerPhone").val();
-    var customerEmail = $("#customerEmail").val();
-    if((orderAmount==0) || (orderAmount=='')){
-      swal({
-           title: "Empty amount",
-           text: "Wallet field was empty please anter amount",
-           icon: "error",
-           button: "okay",
-           closeOnEsc: false,
-           closeOnClickOutside: false
-       });
-    }else{
-    $.ajax({
-      url : base_url+"provider_wallet_submit",
-      type : 'get',
-      data : {'secretKey':secretKey,'appId':appId,'orderId':orderId,'orderAmount':orderAmount,'returnUrl':returnUrl,
-      'notifyUrl':notifyUrl,'orderCurrency':orderCurrency,'orderNote':orderNote,'customerName':customerName,
-      'customerPhone':customerPhone,'customerEmail':customerEmail,
-      'token':token_id},
-      success: function(data){
-        var jsonData = JSON.parse(data);
-        console.log(jsonData);
-        $("#id_token").val(token_id);
-        $("#app_id").val(appId);
-        $("#order_id").val(orderId);
-        $("#order_amount").val(orderAmount);
-        $("#id_returnUrl").val(returnUrl);
-        $("#id_notifyUrl").val(notifyUrl);
-        $("#id_orderCurrency").val(orderCurrency);
-        $("#id_orderNote").val(orderNote);
-        $("#id_customerName").val(customerName);
-        $("#id_customerEmail").val(customerEmail);
-        $("#id_customerPhone").val(customerPhone);
-        $("#id_signature").val(jsonData);
-        $("#redirectForm").submit();
-      },
-      error:function(data){
-        console.log(data);
-      }
-    });
-    }
-  });
-  
-  $('#cancel_card_btn').on('click', function() {
-    $("#card_form_div").hide();
-    $("#check_wallet_div").show();
+	$('#cancel_card_btn').on('click', function() {
+		$("#card_form_div").hide();
+		$("#check_wallet_div").show();
    });
   
 })(jQuery);

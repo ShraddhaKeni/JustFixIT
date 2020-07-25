@@ -14,7 +14,7 @@ class Home_model extends CI_Model
 	{
 
 			
-		       $this->db->select('c.id,c.category_name,c.category_image, (SELECT COUNT(s.id) FROM services AS s WHERE s.category=c.id AND s.status=1 ) AS category_count');
+		       $this->db->select('c.id,c.category_name,c.category_image, (SELECT COUNT(s.id) FROM services AS s LEFT JOIN subscription_details as sd on s.user_id=sd.subscriber_id WHERE s.category=c.id AND s.status=1 AND sd.expiry_date_time>=SYSDATE() ) AS category_count');
 		       $this->db->from('categories c');
 		       $this->db->where('c.status',1);
 		       $this->db->order_by('category_count','DESC');
@@ -93,7 +93,7 @@ class Home_model extends CI_Model
 	      $this->db->join('categories c', 'c.id = s.category', 'LEFT');
 	      $this->db->where("s.status = 1");
         $this->db->join('subscription_details as sd','sd.subscriber_id=s.user_id','LEFT');
-        $this->db->where('sd.expiry_date_time>=',date('Y-m-d')); 
+        $this->db->where('sd.expiry_date_time>=',date('Y-m-d H:i:s')); 
 
 	     if(isset($inputs['min_price']) && !empty($inputs['min_price']) && isset($inputs['max_price']) && !empty($inputs['max_price']))
 	     {

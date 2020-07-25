@@ -83,18 +83,22 @@ public function check_subscription_name()
 }
 
 public function save_subscription()
-{ removeTag($this->input->post());
+{ 
+  //echo "here into save"; exit;
+  removeTag($this->input->post());
   $data['subscription_name'] = $this->input->post('subscription_name');
-  $data['fee'] = $this->input->post('subscription_amount');
+  $data['fee'] = $this->input->post('amount');
+  $data['discount'] = $this->input->post('discount_per');
+  $data['actual_amount'] =  $this->input->post('subscription_amount');
   $data['currency_code'] = 'USD';
-  $data['duration'] = $this->input->post('subscription_duration');
-  $data['fee_description'] = $this->input->post('fee_description');
+  $data['duration'] = $this->input->post('duration');
+  $data['fee_description'] = $this->input->post('subscription_description');
   $data['status'] = $this->input->post('status');
   $result = $this->db->insert('subscription_fee', $data);
   if(!empty($result))
   {
    $this->session->set_flashdata('success_message','Subscription added successfully');
-   echo 1;
+   redirect(base_url().'subscriptions');
  }
  else
  {
@@ -110,29 +114,32 @@ public function edit_subscription($id)
     $this->data['page'] = 'edit_subscription';
     $this->data['model'] = 'service';
     $this->data['subscription'] = $this->service->subscription_details($id);
+    //echo "<pre>"; print_r($this->data); exit;
     $this->load->vars($this->data);
     $this->load->view($this->data['theme'].'/template');
   }
   else {
    redirect(base_url()."admin");
  }
-
 }
 
 public function update_subscription()
 { removeTag($this->input->post());
   $where['id'] = $this->input->post('subscription_id');
   $data['subscription_name'] = $this->input->post('subscription_name');
-  $data['fee'] = $this->input->post('subscription_amount');
+  $data['fee'] = $this->input->post('amount');
+  $data['discount'] = $this->input->post('discount_per');
+  $data['actual_amount'] =  $this->input->post('subscription_amount');
   $data['currency_code'] = 'USD';
-  $data['duration'] = $this->input->post('subscription_duration');
-  $data['fee_description'] = $this->input->post('fee_description');
+  $data['duration'] = $this->input->post('duration');
+  $data['fee_description'] = $this->input->post('subscription_description');
   $data['status'] = $this->input->post('status');
+  //echo "<pre>"; print_r($data); exit;
   $result = $this->db->update('subscription_fee', $data, $where);
   if(!empty($result))
   {
    $this->session->set_flashdata('success_message','Subscription updated successfully');
-   echo 1;
+   redirect(base_url().'subscriptions');
  }
  else
  {
@@ -140,16 +147,70 @@ public function update_subscription()
   echo 2;
 }
 }
-
-public function service_providers()
-{
-  
+public function service_providers(){
   $this->data['page'] = 'service_providers';
   $this->data['subcategory']=$this->service->get_subcategory();
   $this->load->vars($this->data);
   $this->load->view($this->data['theme'].'/template');
-  
+}
 
+public function getSubcategory($id){
+  $this->load->model('Country_model');
+  $subcategory = $this->Country_model->get_subCategory($id);
+  echo json_encode($subcategory);
+}
+
+public function add_service_providers(){
+  $this->load->model('Country_model');
+  $countries = $this->Country_model->get_all_country_name();
+  $categories = $this->Country_model->get_all_category();
+  $this->data['page'] = 'add_service_providers';
+  $csrf = array(
+        'name' => $this->security->get_csrf_token_name(),
+        'hash' => $this->security->get_csrf_hash()
+);
+  $this->load->vars($this->data);
+  $this->load->view($this->data['theme'].'/template',['countries'=>$countries,'csrf'=>$csrf,'categories'=>$categories]);
+}
+
+public function edit_service_providers($id){
+  $this->load->model('Country_model');
+  $countries = $this->Country_model->get_all_country_name();
+  $categories = $this->Country_model->get_all_category();
+  $provider = $this->Country_model->getProviderById($id);
+  //echo "<pre>"; print_r($provider); exit;
+  $this->data['page'] = 'edit_service_providers';
+  $csrf = array(
+        'name' => $this->security->get_csrf_token_name(),
+        'hash' => $this->security->get_csrf_hash()
+  );
+  $this->load->vars($this->data);
+  $this->load->view($this->data['theme'].'/template',['countries'=>$countries,'csrf'=>$csrf,'categories'=>$categories,'provider'=>$provider]);
+}
+
+public function save_provider(){
+  $data = $this->input->post();
+  $data['token'] = $this->security->get_csrf_hash();
+  $data['created_at'] = date('Y-m-d H:i:s');
+  $data['updated_at'] = date('Y-m-d H:i:s');
+  $data['otp'] = '1234';
+  $this->load->model('Admin_model');
+  if(($data['category']!='')  && ($data['subcategory']!='') && ($data['name']!='') && ($data['email']!='') && ($data['country_code']!='') && ($data['mobileno']!='')){
+      $this->Admin_model->save_provider($data);
+      $this->session->set_flashdata('success_message','Value added successfully');
+      redirect('service-providers');  
+  }else{
+      $this->session->set_flashdata('error_message','Something wrong, Value not added successfully');
+      redirect(base_url().'add-service-providers');
+  }  
+}
+
+public function update_provider($id){
+  $data = $this->input->post();
+  $data['updated_at'] = date('Y-m-d H:i:s');
+  $this->load->model('Admin_model');
+  $this->Admin_model->update_provider($id,$data);
+  redirect('service-providers');
 }
 
 public function provider_details($value='')
@@ -223,6 +284,7 @@ public function provider_list()
   }else{
     $row[]='Verified';
   }
+  $row[]='<a href="'.base_url().'edit-service-providers/'.$template->id.'" class="btn btn-sm bg-success-light" title="Edit" data-id="'.$template->id.'"><i class="far fa-edit mr-1"></i> Edit</a>';
 
   $data[] = $row;
 }
@@ -295,10 +357,8 @@ public function change_Status_service_list(){
       echo "error";
     }
   }
-
-
-
 }
+
 public function change_Status()
 {
   $id=$this->input->post('id');
@@ -421,8 +481,4 @@ public function delete_service()
 
 } 
 }
-
-
-
-
 }
