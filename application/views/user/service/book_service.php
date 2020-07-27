@@ -38,6 +38,8 @@ $service_details  = $this->service->get_service_id($this->uri->segment('2'));
 							<div class="form-group">
 								<label>Service Location <span class="text-danger">*</span></label>
 								<input class="form-control" type="text" name="service_location" id="service_location" required>
+								<input type="hidden" name="service_latitude" id="service_latitude">
+								<input type="hidden" name="service_longitude" id="service_longitude">
 							</div>
 						</div>
 
@@ -68,6 +70,9 @@ $service_details  = $this->service->get_service_id($this->uri->segment('2'));
 								<label>Notes</label>
 								<textarea class="form-control" name="orderNote" id="notes" rows="5"></textarea>
 							<input type="hidden" name="orderCurrency" id='id_orderCurrency_ser' value="INR"/>
+								
+
+
 									<input type="hidden" name="customerName" id='id_customerName_ser' value="<?php echo $this->session->userdata('name');  ?>"/>
 									<input type="hidden" name="customerEmail" id='id_customerEmail_ser' value="<?php echo $this->session->userdata('email');  ?>"/>
 									<input type="hidden" name="customerPhone" id='id_customerPhone_ser' value="<?php echo $this->session->userdata('mobileno');  ?>"/>

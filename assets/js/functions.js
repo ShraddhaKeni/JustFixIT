@@ -1629,7 +1629,7 @@ function locations(lat,lng){
 var modules=$('#modules_page').val(); 
 if(modules=="services" || modules=="service" || modules=="home"){
 
- var placeSearch, autocomplete;
+ var placeSearch, autocomplete,placeSearch1, autocomplete1 ;
 
  function initialize() { 
    // Create the autocomplete object, restricting the search
@@ -1641,19 +1641,6 @@ if(modules=="services" || modules=="service" || modules=="home"){
      });
    
    google.maps.event.addDomListener(document.getElementById('service_location'), 'focus', geolocate);
-   autocomplete.addListener('place_changed', get_latitude_longitude);
- }
-
- function initialize1() { 
-   // Create the autocomplete object, restricting the search
-   // to geographical location types.
-   autocomplete = new google.maps.places.Autocomplete(
-     /** @type {HTMLInputElement} */
-     (document.getElementById('user_address')), {
-       types: ['geocode']
-     });
-   
-   google.maps.event.addDomListener(document.getElementById('user_address'), 'focus', geolocate);
    autocomplete.addListener('place_changed', get_latitude_longitude);
  }
 
@@ -1690,6 +1677,52 @@ if(modules=="services" || modules=="service" || modules=="home"){
      });
    }
  }
+
+
+function initialize1() { 
+   // Create the autocomplete object, restricting the search
+   // to geographical location types.
+   autocomplete1 = new google.maps.places.Autocomplete(
+     /** @type {HTMLInputElement} */
+     (document.getElementById('user_address')), {
+       types: ['geocode']
+     });
+   
+   google.maps.event.addDomListener(document.getElementById('user_address'), 'focus', geolocate1);
+   autocomplete1.addListener('place_changed', get_latitude_longitude1);
+ }
+
+function get_latitude_longitude1() {
+   // Get the place details from the autocomplete object.
+   var place = autocomplete1.getPlace();
+   var key = "AIzaSyDzviwvvZ_S6Y1wS6_b3siJWtSJ5uFQHoc";
+   $.get('https://maps.googleapis.com/maps/api/geocode/json',{address:place.formatted_address,key:key},function(data, status){
+     $(data.results).each(function(key,value){
+       //$('#user_address').val(place.formatted_address);
+       $('#user_latitude').val(value.geometry.location.lat);
+       $('#user_longitude').val(value.geometry.location.lng);
+     });
+   });
+ }
+
+ function geolocate1() {
+
+   if (navigator.geolocation) {
+     navigator.geolocation.getCurrentPosition(function (position) {
+
+       var geolocation = new google.maps.LatLng(
+         position.coords.latitude, position.coords.longitude);
+       var circle = new google.maps.Circle({
+         center: geolocation,
+         radius: position.coords.accuracy
+       });
+       autocomplete1.setBounds(circle.getBounds());
+
+     });
+   }
+ }
+
+
 
  initialize();
  initialize1();
