@@ -218,6 +218,85 @@ class Booking extends CI_Controller {
       echo json_encode(['success'=>true,'msg'=>$result,'paymentUrl'=>$paymentLink]);exit;
    
   }
+
+
+  public function booking_service_submit(){
+if($this->input->post()){
+if($this->input->post('txStatus')=='SUCCESS'){
+$this->load->model('Wallet_model');
+$type = $this->session->userdata('usertype');
+if($type=='provider'){
+$typeVal = 1;
+}else{
+$typeVal = 2;
+}
+
+// echo "<pre>"; print_r($this->session->userdata()); exit;
+// $inputs = array();
+// $service_id = $this->input->get('service_id'); // Package ID
+// $records = $this->booking->get_service($service_id);
+// $inputs['service_id'] = $service_id;
+// $inputs['provider_id'] = $this->input->get('provider_id');
+// $inputs['user_id'] = $this->session->userdata('id');
+// $inputs['token'] = 'old type';
+// $inputs['service_id'] = $service_id;
+// $inputs['amount'] = $records['service_amount'];
+// $inputs['service_date'] = date('Y-m-d',strtotime($this->input->get('booking_date')));
+// $inputs['location'] = $this->input->get('service_location');
+// $inputs['latitude'] = $this->input->get('service_latitude');
+// $inputs['longitude'] = $this->input->get('service_longitude');
+// $inputs['from_time'] = $from_time;
+// $inputs['to_time'] = $to_time;
+// $inputs['notes'] = $this->input->get('notes');
+// $inputs['args'] = 'no response that field ld flow';
+// $inputs['payment_status'] = 1;
+// $result = $this->booking->booking_success($inputs);
+
+// if($result !=''){
+//   $userData=$this->session->userdata();
+//   $serviceData['service']=$this->db->where('id',$service_id)->from('services')->get()->row_array();
+// }
+$this->session->set_flashdata('success_message','Payment has been successfully done');
+redirect(base_url().'user-bookings');
+}
+else{
+$this->session->set_flashdata('error_message','Payment not done');
+echo "<pre>"; print_r($this->input->post());
+redirect(base_url().'user-bookings');
+}
+}else{
+  $secretKey = "48a401703d4f6f03fd4ff5da44689d582776e650";
+$data = [
+//"token" => $this->input->post('tokenId'),
+"appId" => $this->input->get('appId'),
+"orderId" => $this->input->get('orderid'),
+"orderAmount" => $this->input->get('final_gig_amount'),
+"returnUrl" => $this->input->get('returnUrl'),
+"orderCurrency" => $this->input->get('currency'),
+"orderNote" => $this->input->get('notes'),
+"customerName" => $this->input->get('customerName'),
+"customerPhone" => $this->input->get('customerPhone'),
+"customerEmail" => $this->input->get('customerEmail'),
+"notifyUrl" => $this->input->get('notifyUrl'),
+];
+//echo json_encode($data); exit;
+// get secret key from your config
+ksort($data);
+$signatureData = "";
+foreach ($data as $key => $value){
+$signatureData .= $key.$value;
+}
+$signature = hash_hmac('sha256', $signatureData, $secretKey,true);
+$signature = base64_encode($signature);
+$data['signature'] = $signature;
+echo json_encode($signature);
+
+}
+  }
+
+
+
+
   public function order_status(){
     $data = $this->input->get();
     $order_id = $data['order_id'];

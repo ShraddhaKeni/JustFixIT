@@ -526,6 +526,8 @@ if($_SERVER["REQUEST_URI"] === '/axzora/provider_wallet_submit'){
 		$config['csrf_protection'] = FALSE;
 	}else if ($_SERVER["REQUEST_URI"] === '/axzora/provider_subscription_submit'){
 		$config['csrf_protection'] = FALSE;
+	}else if ($_SERVER["REQUEST_URI"] === '/axzora/booking_service_submit'){
+		$config['csrf_protection'] = FALSE;
 	}
 	else{
 		if (isset($_SERVER["REQUEST_URI"])) {

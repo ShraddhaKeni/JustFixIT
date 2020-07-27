@@ -167,6 +167,7 @@ $route['update_status_user']='user/service/update_status_user';
 $route['update_booking/(:any)']='user/service/update_booking/$1';
 $route['user_bookingstatus/(:any)']='user/service/user_bookingstatus/$1';
 $route['book-service/(:any)']='user/service/book_service/$1';
+$route['booking_service_submit']='user/booking/booking_service_submit';
 $route['user-dashboard']='user/service/user_dashboard';
 $route['provider-dashboard']='user/service/provider_dashboard';
 $route['user-settings']='user/dashboard/user_settings';
