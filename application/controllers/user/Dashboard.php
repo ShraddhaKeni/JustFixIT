@@ -1,4 +1,11 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed'); class Dashboard extends CI_Controller { public $data; public function __construct() { parent::__construct(); if(empty($this->session->userdata('id'))){
+<?php defined('BASEPATH') OR exit('No direct script access allowed'); 
+class Dashboard extends CI_Controller { 
+public $data; 
+public function __construct() 
+{ 
+parent::__construct(); 
+if(empty($this->session->userdata('id')))
+{
 redirect(base_url());
 }
 $this->data['theme'] = 'user';
@@ -886,13 +893,7 @@ $temp_height = ( int ) ($width / $source_aspect_ratio);
 * Resize the image into a temporary GD image
 */
 $temp_gdim = imagecreatetruecolor($temp_width, $temp_height);
-imagecopyresampled(
-$temp_gdim,
-$source_gdim,
-0, 0,
-0, 0,
-$temp_width, $temp_height,
-$source_width, $source_height
+imagecopyresampled($temp_gdim,$source_gdim,0, 0,0, 0,$temp_width, $temp_height,$source_width,$source_height
 );
 /*
 * Copy cropped region from temporary image into the desired GD image
@@ -900,13 +901,7 @@ $source_width, $source_height
 $x0 = ($temp_width - $width) / 2;
 $y0 = ($temp_height - $height) / 2;
 $desired_gdim = imagecreatetruecolor($width, $height);
-imagecopy(
-$desired_gdim,
-$temp_gdim,
-0, 0,
-$x0, $y0,
-$width, $height
-);
+imagecopy($desired_gdim,$temp_gdim,0, 0,$x0, $y0,$width, $height);
 /*
 * Render the image
 * Alternatively, you can save the image in file-system or database
