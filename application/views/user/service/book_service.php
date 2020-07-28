@@ -93,8 +93,28 @@ $service_details  = $this->service->get_service_id($this->uri->segment('2'));
 						<?php } ?>
 					</div>
 
+			<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			  <div class="modal-dialog" role="document">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <h5 class="modal-title" id="exampleModalLabel">Choose Pay Option</h5>
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			          <span aria-hidden="true">&times;</span>
+			        </button>
+			      </div>
+			      <div class="modal-body">
+			        <center><a href="<?php echo base_url().'user-wallet'; ?>" class="btn btn-primary submit-btn">Wallet</a></center>
+			        <center>OR</center>
+			        <center><button class="btn btn-primary submit-btn submit_service_book" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Processing Order" data-id="<?php echo $service_details['id']; ?>" data-provider="<?php echo $service_details['user_id']?>" data-amount="<?php echo $service_details['service_amount']; ?>" type="submit">Card/UPI</button><center>
+			      </div>
+			      <div class="modal-footer">
+			        
+			      </div>
+			    </div>
+			  </div>
+			</div>
 
-					
+
 				</form>
 			</div>
 		</div>
