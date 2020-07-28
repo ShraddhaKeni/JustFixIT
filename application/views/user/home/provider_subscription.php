@@ -148,7 +148,7 @@ if (!empty($my_subscribe['expiry_date_time']))
                             			<a href="javascript:void(0);" class="btn btn-primary btn-block callStripe" data-id="<?php echo $list['id']; ?>" data-amount="<?php echo $list['fee'] ?>" data-amount="<?php echo $list['fee']; ?>" data-target="#myModal" data-toggle="modal">Select Plans</a>
 
                             <?php }else{ ?>
-                                <a href="javascript:void(0);" class="btn btn-primary btn-block directweb" data-id="<?php echo $list['id']; ?>" data-amount="<?php echo $list['fee'] ?>" data-amount="<?php echo $list['fee']; ?>" data-target="#myModal" data-toggle="modal">Select Pland</a>
+                                <a href="javascript:void(0);" class="btn btn-primary btn-block directweb" data-id="<?php echo $list['id']; ?>" data-amount="<?php echo $list['fee'] ?>" data-amount="<?php echo $list['fee']; ?>" data-target="#myModal" data-toggle="modal">Select Plan</a>
                             <?php } ?>            
                                         <!-- The Modal -->
                                   <div class="modal fade  myModal_<?php echo $list['id']; ?>">
@@ -347,11 +347,35 @@ if (!empty($my_subscribe['subscription_id']))
                                             <li><i class="far fa-check-circle"></i><?=$list['duration'] * 30; ?> days expiration</li>
                                             </ul>
                                             <?php if (empty($subscription_name['subscription_name']))
-        { ?>
-                                                <a href="javascript:void(0);" class="btn btn-primary btn-block callStripe" data-id="<?php echo $list['id']; ?>" data-amount="<?php echo $list['fee']; ?>" >Select Plan</a><?php
-        }
-        if (!empty($my_subscribe['subscription_id']))
-        {
+        { ?>                                    
+
+                                    <input type="hidden" name="secretKey" id="secretKey_sub_<?php echo $list['id']; ?>" value="<?php echo $secretKey; ?>"/>
+                                    <input type="hidden" name="planId" id="planId_<?php echo $list['id']; ?>" value="<?php echo $list['id']; ?>"/>
+                                <form id="redirectForm_sub_<?php echo $list['id']; ?>" method="post" action="https://test.cashfree.com/billpay/checkout/post/submit">
+                                    <input type="hidden" name="orderCurrency" id='orderCurrency_sub_<?php echo $list['id']; ?>' value="INR"/>
+                                    <input type="hidden" name="orderNote" id='orderNote_sub_<?php echo $list['id']; ?>' value="test"/>
+                                    <input type="hidden" name="customerName" id='customerName_sub_<?php echo $list['id']; ?>' value="<?php echo $this->session->userdata('name'); ?>"/>
+                                    <input type="hidden" name="customerEmail" id='customerEmail_sub_<?php echo $list['id']; ?>' value="<?php echo $this->session->userdata('email'); ?>"/>
+                                    <input type="hidden" name="customerPhone" id='customerPhone_sub_<?php echo $list['id']; ?>' value="<?php echo $this->session->userdata('mobileno'); ?>"/>
+                                    <input type="hidden" id="appid_sub_<?php echo $list['id']; ?>" name="appId" value="<?php echo $stripe_key;  ?>"/>
+                                    <input type="hidden" id='order_sub_<?php echo $list['id']; ?>' name="orderId" placeholder="value" value="<?php echo rand(100000,999999);  ?>"/>
+                                    <input type="hidden" id='order_amount_sub_<?php echo $list['id']; ?>' name="orderAmount" placeholder="amount" value=""/>
+                                    <input type="hidden" id='returnUrl_sub_<?php echo $list['id']; ?>' name="returnUrl" value="<?php echo base_url().'provider_subscription_submit'; ?>"/>
+                                    <input type="hidden" id='notifyUrl_sub_<?php echo $list['id']; ?>' name="notifyUrl" value="<?php echo base_url().'provider_subscription_submit'; ?>"/>
+                                    <input type="hidden" id="signature_sub_<?php echo $list['id']; ?>" name="signature" value=""/>
+                                    <?php if($list['fee']==0) { ?>
+                                        <a href="<?php echo base_url('').'zero_subscribe_plan/'.$list['id']; ?>" class="btn btn-primary btn-block provider_sub"> Select Plan </a>
+
+                                    <?php }else{ ?>
+                                        <input type="button" value='Select Plan' class="btn btn-primary btn-block provider_sub" data-id="<?php echo $list['id']; ?>" data-amount="<?php echo $list['fee']; ?>">
+                                    <?php } ?>
+                                 </form>
+
+
+                             <?php
+                }
+                if (!empty($my_subscribe['subscription_id']))
+                {
             if ($list['id'] == $my_subscribe['subscription_id'] && date('Y-m-d', strtotime($my_subscribe['expiry_date_time'])) > date('Y-m-d'))
             { ?>
                                     <a href="javascript:void(0);" class="btn btn-primary btn-block">Subscribed</a><?php
@@ -368,7 +392,7 @@ if (!empty($my_subscribe['subscription_id']))
                     {
                         if (date('Y-m-d') > date('Y-m-d', strtotime($my_subscribe['expiry_date_time'])))
                         { ?>
-                                        <a href="javascript:void(0);" class="btn btn-primary btn-block callStripe" data-id="<?php echo $list['id']; ?>" data-amount="<?php echo $list['fee']; ?>" >Select Plan</a><?php
+                                        <a href="javascript:void(0);" class="btn btn-primary btn-block callStripe" data-id="<?php echo $list['id']; ?>" data-amount="<?php echo $list['fee']; ?>" >Select Plandd</a><?php
                         }
                         else
                         { ?><?php
@@ -378,12 +402,14 @@ if (!empty($my_subscribe['subscription_id']))
                     {
                         if (date('Y-m-d', strtotime($my_subscribe['expiry_date_time'])) >= date('Y-m-d'))
                         {
-?>
-                                  <a data-toggle="tooltip" title="Your Not Choose This Plan ..!" href="javascript:void(0);"  class="btn btn-primary btn-block plan_notification" >Select Plan</a>
-                                <?php
+                          if ((int)$list['fee'] > (int)$subscription_fee['fee'])
+                            { ?>
+                                  <a data-toggle="tooltip" title="Your Not Choose This Plan ..!" href="javascript:void(0);"  class="btn btn-primary btn-block plan_notification" >Select Plandd</a>
+                                <?php }
                         }
-                        else
-                        { ?><a href="javascript:void(0);" class="btn btn-primary btn-block callStripe" data-id="<?php echo $list['id']; ?>" data-amount="<?php echo $list['fee']; ?>" >Select Plan</a><?php
+                        else{ ?>
+                            <a href="javascript:void(0);" class="btn btn-primary btn-block callStripe" data-id="<?php echo $list['id']; ?>" data-amount="<?php echo $list['fee']; ?>" >Select Planss</a>
+                            <?php
                         }
                     }
                 }

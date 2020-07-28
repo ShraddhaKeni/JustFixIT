@@ -566,7 +566,6 @@ $this->Subscription_model->tempOrder($tempOrder);
 
 $secretKey = $this->input->get('secretKey');
 $data = [
-//"token" => $this->input->get('token'),
 "appId" => $this->input->get('appId'),
 "orderId" => $this->input->get('orderId'),
 "orderAmount" => $this->input->get('orderAmount'),
@@ -588,6 +587,20 @@ $signature = base64_encode($signature);
 $data['signature'] = $signature;
 echo json_encode($signature);
 }
+}
+
+public function zero_subscribe_plan($planid){
+	$this->load->model('Subscription_model');
+$data = [
+'subscriber_id' => $this->session->userdata('id'),
+'subscription_id' => $planid,
+'type' => 1,
+'token' => $this->session->userdata('chat_token'),
+'args' => 'Days plan',
+];
+$result = $this->Subscription_model->subscribe_provider_plan($data);
+$this->session->set_flashdata('success_message','Plan is successfully subscribed');
+redirect(base_url().'provider-subscription');
 }
 
 public function provider_availability()

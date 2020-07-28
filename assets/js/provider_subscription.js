@@ -16,7 +16,6 @@
 			var amount = $(this).attr('data-amount');
 			$("#order_amount_sub_"+id).val(amount);
 			$('.myModal_'+id).modal('show');
-
 			$(".provider_sub_"+id).on('click',function(){
 				var planid = $("#planId_"+id).val();
 				var secretKey = $("#secretKey_sub_"+id).val();
@@ -48,6 +47,42 @@
 			    });
 			  });
 			}); 
+
+
+			
+			$(".provider_sub").on('click',function(){
+				var id = $(this).attr('data-id');
+				var amount = $(this).attr('data-amount');
+				$("#order_amount_sub_"+id).val(amount);
+				var planid = $("#planId_"+id).val();
+				var secretKey = $("#secretKey_sub_"+id).val();
+			    var appId = $("#appid_sub_"+id).val();
+			    var orderId = $("#order_sub_"+id).val();
+			    var orderAmount = $("#order_amount_sub_"+id).val();
+			    var returnUrl = $("#returnUrl_sub_"+id).val();
+			    var notifyUrl = $("#notifyUrl_sub_"+id).val();
+			    var orderCurrency = $("#orderCurrency_sub_"+id).val();
+			    var orderNote = $("#orderNote_sub_"+id).val();
+			    var customerName = $("#customerName_sub_"+id).val();
+			    var customerPhone = $("#customerPhone_sub_"+id).val();
+			    var customerEmail = $("#customerEmail_sub_"+id).val();
+			    $.ajax({
+			      url : base_url+"provider_subscription_submit",
+			      type : 'get',
+			      data : {'secretKey':secretKey,'appId':appId,'orderId':orderId,'orderAmount':orderAmount,'returnUrl':returnUrl,
+			      'notifyUrl':notifyUrl,'orderCurrency':orderCurrency,'orderNote':orderNote,'customerName':customerName,
+			      'customerPhone':customerPhone,'customerEmail':customerEmail,'planid':planid},
+			      success: function(data){
+			        var jsonData = JSON.parse(data);
+			        console.log(jsonData);
+			        $("#signature_sub_"+id).val(jsonData);
+			        $("#redirectForm_sub_"+id).submit();
+			      },
+			      error:function(data){
+			        console.log(data);
+			      }
+			    });
+			  });
 		// $('.plan_notification').on('click',function(){
 		// 	plan_notification();
 		// }); 

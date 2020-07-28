@@ -191,6 +191,7 @@ $route['add-wallet']='user/dashboard/add_wallet';
 $route['provider-payment']='user/dashboard/provider_payment';
 $route['provider-subscription']='user/dashboard/provider_subscription';
 $route['provider_subscription_submit'] = 'user/dashboard/provider_subscription_submit';
+$route['zero_subscribe_plan/(:any)'] = 'user/dashboard/zero_subscribe_plan/$1';
 $route['provider-availability']='user/dashboard/provider_availability';
 $route['provider-accountdetails']='user/dashboard/provider_accountdetails';
 $route['create_availability']='user/dashboard/create_availability';
