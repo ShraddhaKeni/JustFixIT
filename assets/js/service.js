@@ -87,24 +87,24 @@
 
      $('#add_service').bootstrapValidator({
       fields: {
-        service_title: {
-          validators: {
-            remote: {
-             url: base_url + 'user/service/check_service_title',
-             data: function(validator) {
-               return {
-                 service_title: validator.getFieldElements('service_title').val(),
-                 'csrf_token_name':$('#login_csrf').val()
-               };
-             },
-             message: 'This Service is already exist',
-             type: 'POST'
-           },
-           notEmpty: {
-            message: 'Please Enter your service title'
-          }
-        }
-      },
+      //   service_title: {
+      //     validators: {
+      //       remote: {
+      //        url: base_url + 'user/service/check_service_title',
+      //        data: function(validator) {
+      //          return {
+      //            //service_title: validator.getFieldElements('service_title').val(),
+      //            'csrf_token_name':$('#login_csrf').val()
+      //          };
+      //        },
+      //        //message: 'This Service is already exist',
+      //        type: 'POST'
+      //      },
+      //      notEmpty: {
+      //       message: 'Please Enter your service title'
+      //     }
+      //   }
+      // },
       service_sub_title: {
         validators: {
           notEmpty: {
@@ -195,7 +195,7 @@
   function get_latitude_longitude() {
         // Get the place details from the autocomplete object.
         var place = autocomplete.getPlace();
-        var key = "AIzaSyDzviwvvZ_S6Y1wS6_b3siJWtSJ5uFQHoc";
+        var key = "AIzaSyAlkFoFDrBXGkL2uvusBEVAa5yPtoiFNHY";
         $.get('https://maps.googleapis.com/maps/api/geocode/json',{address:place.formatted_address,key:key},function(data, status){
 
           $(data.results).each(function(key,value){

@@ -1647,7 +1647,8 @@ if(modules=="services" || modules=="service" || modules=="home"){
  function get_latitude_longitude() {
    // Get the place details from the autocomplete object.
    var place = autocomplete.getPlace();
-   var key = "AIzaSyDzviwvvZ_S6Y1wS6_b3siJWtSJ5uFQHoc";
+   var key = "AIzaSyAlkFoFDrBXGkL2uvusBEVAa5yPtoiFNHY";
+   //var key = "AIzaSyDzviwvvZ_S6Y1wS6_b3siJWtSJ5uFQHoc";
    $.get('https://maps.googleapis.com/maps/api/geocode/json',{address:place.formatted_address,key:key},function(data, status){
 
      $(data.results).each(function(key,value){
@@ -1695,7 +1696,7 @@ function initialize1() {
 function get_latitude_longitude1() {
    // Get the place details from the autocomplete object.
    var place = autocomplete1.getPlace();
-   var key = "AIzaSyDzviwvvZ_S6Y1wS6_b3siJWtSJ5uFQHoc";
+   var key = "AIzaSyAlkFoFDrBXGkL2uvusBEVAa5yPtoiFNHY";
    $.get('https://maps.googleapis.com/maps/api/geocode/json',{address:place.formatted_address,key:key},function(data, status){
      $(data.results).each(function(key,value){
        //$('#user_address').val(place.formatted_address);

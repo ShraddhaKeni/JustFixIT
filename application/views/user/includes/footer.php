@@ -678,7 +678,7 @@ $country_list=$this->db->where('status',1)->order_by('country_name',"ASC")->get(
 		<script src="<?php echo base_url();?>assets/plugins/toaster/toastr.min.js"></script>
 		<script src="<?php echo base_url();?>assets/plugins/owlcarousel/owl.carousel.min.js"></script>
 		<script src="<?php echo base_url();?>assets/plugins/jquery-ui/jquery-ui.min.js"></script>
-		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDzviwvvZ_S6Y1wS6_b3siJWtSJ5uFQHoc&v=3.exp&libraries=places"></script>
+		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAlkFoFDrBXGkL2uvusBEVAa5yPtoiFNHY&v=3.exp&libraries=places"></script>
 		
 		<input type="hidden" id="modules_page" value="<?php echo $module;?>">
 		<input type="hidden" id="current_page" value="<?php echo $this->uri->segment(1);?>">

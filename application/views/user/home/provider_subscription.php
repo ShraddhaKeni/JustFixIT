@@ -401,7 +401,7 @@ if (!empty($my_subscribe['subscription_id']))
                         {
                           //if ((int)$list['fee'] > (int)$subscription_fee['fee']){ 
                                 ?>
-                                  <a data-toggle="tooltip" title="Your Not Choose This Plan ..!" href="javascript:void(0);"  class="btn btn-primary btn-block plan_notification" >Select Plan</a>
+                                  <!-- <a data-toggle="tooltip" title="Your Not Choose This Plan ..!" href="javascript:void(0);"  class="btn btn-primary btn-block plan_notification" >Select Plan</a> -->
                                 
                         <?php //} 
                     }

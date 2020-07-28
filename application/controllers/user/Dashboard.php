@@ -96,7 +96,7 @@ redirect(base_url().'user-wallet');
 	//$secretKey = "48a401703d4f6f03fd4ff5da44689d582776e650";
 	// $apklive = pk_live_51Gzz20HShEbk1dXRqkZYmBp8giBe2DrGrLd4jku82;
 	// $secretkeyLive = sk_live_51Gzz20HShEbk1dXRl28UmwFr6S0OKIxEaXqqxnf2sabeGbdCtgRLYphkji7Ik;
-$secretKey = "48a401703d4f6f03fd4ff5da44689d582776e650";
+$secretKey = "65e2043ddc2a9274637cc9e9c8889ba067f4d8e0";
 $data = [
 //"token" => $this->input->get('token'),
 "appId" => $this->input->get('appId'),

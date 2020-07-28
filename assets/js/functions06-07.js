@@ -1590,7 +1590,7 @@ if(modules=="services" || modules=="service"){
  function get_latitude_longitude() {
    // Get the place details from the autocomplete object.
    var place = autocomplete.getPlace();
-   var key = "AIzaSyDzviwvvZ_S6Y1wS6_b3siJWtSJ5uFQHoc";
+   var key = "AIzaSyAlkFoFDrBXGkL2uvusBEVAa5yPtoiFNHY";
    $.get('https://maps.googleapis.com/maps/api/geocode/json',{address:place.formatted_address,key:key},function(data, status){
 
      $(data.results).each(function(key,value){

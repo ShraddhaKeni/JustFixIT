@@ -310,7 +310,7 @@ public function re_send_otp_user(){
   extract($_POST);
   $user_type=$this->user_login->get_user_type($mobile_no,$country_code);
   if(($_SERVER['HTTP_HOST']=='https') || ($_SERVER['HTTP_HOST']=='http')){
-        $api_key = "3824a23a-c828-11ea-9fa5-0200cd936042";  
+        $api_key = "523977b1-cfcd-11ea-9fa5-0200cd936042";  
       }else{
         $api_key = 'default_otp';
       }
@@ -320,7 +320,7 @@ public function re_send_otp_user(){
       }else{
         $otp = rand(1000,9999);
       }
-  $message='This is Your Login OTP  '.$otp.''; 
+  $message= $otp.' is your OTP at Axzora. This is valid for 5 minutes.'; 
   $user_data['otp']=$otp;
   error_reporting(0);
   // $key=settingValue('sms_key');
@@ -372,7 +372,7 @@ public function re_send_otp_provider(){
   extract($_POST);
   $user_type=$this->user_login->get_user_type($mobile_no,$country_code);
 if(($_SERVER['HTTP_HOST']=='https') || ($_SERVER['HTTP_HOST']=='http')){
-        $api_key = "3824a23a-c828-11ea-9fa5-0200cd936042";  
+        $api_key = "523977b1-cfcd-11ea-9fa5-0200cd936042";  
       }else{
         $api_key = 'default_otp';
       }
@@ -382,7 +382,7 @@ if(($_SERVER['HTTP_HOST']=='https') || ($_SERVER['HTTP_HOST']=='http')){
       }else{
         $otp = rand(1000,9999);
       }
-  $message='This is Your Login OTP  '.$otp.''; 
+  $message= $otp.' is your OTP at Axzora. This is valid for 5 minutes.'; 
   $user_data['otp']=$otp;
   error_reporting(0);
   // $key=settingValue('sms_key');
@@ -432,7 +432,8 @@ if(($_SERVER['HTTP_HOST']=='https') || ($_SERVER['HTTP_HOST']=='http')){
 
 }
 
-public  function send_otp_request(){ 
+public  function send_otp_request(){
+// https://2factor.in/API/V1/523977b1-cfcd-11ea-9fa5-0200cd936042/SMS/8143222351/12345/register_provider 
 $user_data = $this->input->post();
   if(!empty($user_data['mobileno']) && !empty($user_data['email'])){
     $is_available = $this->user_login->otp_check_email($user_data);
@@ -440,7 +441,7 @@ $user_data = $this->input->post();
     if($is_available == 0 ){
      if($is_available_mobile == 0){
       if(($_SERVER['HTTP_HOST']=='https') || ($_SERVER['HTTP_HOST']=='http')){
-        $api_key = "3824a23a-c828-11ea-9fa5-0200cd936042";  
+        $api_key = "523977b1-cfcd-11ea-9fa5-0200cd936042";  
       }else{
         $api_key = 'default_otp';
       }
@@ -450,7 +451,7 @@ $user_data = $this->input->post();
       }else{
         $otp = rand(1000,9999);
       }
-      $message='This is Your Login OTP  '.$otp.''; 
+      $message= $otp.' is your OTP at Axzora. This is valid for 5 minutes.'; 
       $user_data['otp']=$otp;
       error_reporting(0);
       // $key=settingValue('sms_key');
@@ -504,7 +505,7 @@ elseif(!empty($user_data['mobileno'])){
   $is_available_mobile = $this->user_login->otp_check_mobile_no($user_data);
   if($is_available_mobile == 1){
     if(($_SERVER['HTTP_HOST']=='https') || ($_SERVER['HTTP_HOST']=='http')){
-        $api_key = "3824a23a-c828-11ea-9fa5-0200cd936042";  
+        $api_key = "523977b1-cfcd-11ea-9fa5-0200cd936042";  
       }else{
         $api_key = 'default_otp';
       }
@@ -515,7 +516,7 @@ elseif(!empty($user_data['mobileno'])){
         $otp = rand(1000,9999);
       }
 
-    $message='This is Your Login OTP  '.$otp.''; 
+     $message= $otp.' is your OTP at Axzora. This is valid for 5 minutes.';  
     $user_data['otp']=$otp;
 
     error_reporting(0);
@@ -568,7 +569,7 @@ public  function send_otp_request_user(){
     if($is_available == 0 ){
      if($is_available_mobile == 0){
       if(($_SERVER['HTTP_HOST']=='https') || ($_SERVER['HTTP_HOST']=='http')){
-        $api_key = "3824a23a-c828-11ea-9fa5-0200cd936042";  
+        $api_key = "523977b1-cfcd-11ea-9fa5-0200cd936042";  
       }else{
         $api_key = 'default_otp';
       }
@@ -578,7 +579,7 @@ public  function send_otp_request_user(){
       }else{
         $otp = rand(1000,9999);
       }
-      $message='This is Your Login OTP  '.$otp.''; 
+       $message= $otp.' is your OTP at Axzora. This is valid for 5 minutes.';  
       $user_data['otp']=$otp;
       error_reporting(0);
       // $key=settingValue('sms_key');
@@ -628,7 +629,7 @@ elseif(!empty($user_data['mobileno'])){
   $is_available_mobile = $this->user_login->otp_check_mobile_no_user($user_data);
   if($is_available_mobile == 1){
     if(($_SERVER['HTTP_HOST']=='https') || ($_SERVER['HTTP_HOST']=='http')){
-        $api_key = "3824a23a-c828-11ea-9fa5-0200cd936042";  
+        $api_key = "523977b1-cfcd-11ea-9fa5-0200cd936042";  
       }else{
         $api_key = 'default_otp';
       }
@@ -638,7 +639,7 @@ elseif(!empty($user_data['mobileno'])){
       }else{
         $otp = rand(1000,9999);
       }
-    $message='This is Your Login OTP  '.$otp.''; 
+     $message= $otp.' is your OTP at Axzora. This is valid for 5 minutes.'; 
     $user_data['otp']=$otp;
     // error_reporting(0);
     // $key=settingValue('sms_key');
