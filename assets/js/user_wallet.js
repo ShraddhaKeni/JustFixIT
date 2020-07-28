@@ -28,6 +28,7 @@
 		});
 	$('#stripe_wallet').on('click', function() {
 		//var token_id = $("#token_id_wallet").val();
+		var secretKey = $("#secretKey").val();
 	    var appId = $("#appId_wallet").val();
 	    var orderId = $("#orderId_wallet").val();
 	    var returnUrl = $("#returnUrl_wallet").val();
@@ -55,7 +56,7 @@
 		      type : 'get',
 		      data : {'appId':appId,'orderId':orderId,'orderAmount':orderAmount,'returnUrl':returnUrl,
 		      'notifyUrl':notifyUrl,'orderCurrency':orderCurrency,'orderNote':orderNote,'customerName':customerName,
-		      'customerPhone':customerPhone,'customerEmail':customerEmail,
+		      'customerPhone':customerPhone,'customerEmail':customerEmail,'secretKey':secretKey
 		      },
 		      success: function(data){
 		        var jsonData = JSON.parse(data);

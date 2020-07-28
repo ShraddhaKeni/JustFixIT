@@ -263,7 +263,7 @@ redirect(base_url().'user-bookings');
   ];
   $result = $this->booking->booking_success($booking);
   if($result){
-      $secretKey = "65e2043ddc2a9274637cc9e9c8889ba067f4d8e0";
+      $secretKey = $this->input->get('secretKey');
       $data = [
       //"token" => $this->input->post('tokenId'),
       "appId" => $this->input->get('appId'),

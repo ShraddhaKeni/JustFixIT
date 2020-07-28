@@ -309,7 +309,7 @@ public function mobileno_chk_user()
 public function re_send_otp_user(){
   extract($_POST);
   $user_type=$this->user_login->get_user_type($mobile_no,$country_code);
-  if(($_SERVER['HTTP_HOST']=='https') || ($_SERVER['HTTP_HOST']=='http')){
+  if(($_SERVER['HTTP_HOST']=='https://') || ($_SERVER['HTTP_HOST']=='http://')){
         $api_key = "523977b1-cfcd-11ea-9fa5-0200cd936042";  
       }else{
         $api_key = 'default_otp';
@@ -322,14 +322,8 @@ public function re_send_otp_user(){
       }
   $message= $otp.' is your OTP at Axzora. This is valid for 5 minutes.'; 
   $user_data['otp']=$otp;
+  $api_key = "523977b1-cfcd-11ea-9fa5-0200cd936042";
   error_reporting(0);
-  // $key=settingValue('sms_key');
-  // $secret_key=settingValue('sms_secret_key');
-  // $sender_id=settingValue('sms_sender_id');
-  // require_once('vendor/nexmo/src/NexmoMessage.php');
-  // $nexmo_sms = new NexmoMessage($key,$secret_key);
-  // $result = $nexmo_sms->sendText($country_code.$mobile_no,$sender_id,$message);
-  //$this->session->set_tempdata('otp', '$user_data', 300);
   $curl = curl_init();
     curl_setopt_array($curl, array(
     CURLOPT_URL => "https://2factor.in/API/V1/".$api_key."/SMS/".$mobile_no."/".$otp,
@@ -355,23 +349,17 @@ public function re_send_otp_user(){
     'otp'=>$otp,
     'created_at'=>date('Y-m-d H:i:s'),
   );
-
-
   /*check OTP*/
-
   $check_otp_table=$this->user_login->isset_mobile_otp($mobile_no,$country_code,$otp_data);
-
   echo $check_otp_table;
-
   /*find mobile user type*/
-
 }
 
 /*resend otp*/
 public function re_send_otp_provider(){
   extract($_POST);
   $user_type=$this->user_login->get_user_type($mobile_no,$country_code);
-if(($_SERVER['HTTP_HOST']=='https') || ($_SERVER['HTTP_HOST']=='http')){
+if(($_SERVER['HTTP_HOST']=='https://') || ($_SERVER['HTTP_HOST']=='http://')){
         $api_key = "523977b1-cfcd-11ea-9fa5-0200cd936042";  
       }else{
         $api_key = 'default_otp';
@@ -384,14 +372,8 @@ if(($_SERVER['HTTP_HOST']=='https') || ($_SERVER['HTTP_HOST']=='http')){
       }
   $message= $otp.' is your OTP at Axzora. This is valid for 5 minutes.'; 
   $user_data['otp']=$otp;
+  $api_key = "523977b1-cfcd-11ea-9fa5-0200cd936042";
   error_reporting(0);
-  // $key=settingValue('sms_key');
-  // $secret_key=settingValue('sms_secret_key');
-  // $sender_id=settingValue('sms_sender_id');
-  // require_once('vendor/nexmo/src/NexmoMessage.php');
-  // $nexmo_sms = new NexmoMessage($key,$secret_key);
-  // $result = $nexmo_sms->sendText($country_code.$mobile_no,$sender_id,$message);
-  // $this->session->set_tempdata('otp', '$user_data', 300);
     $curl = curl_init();
     curl_setopt_array($curl, array(
     CURLOPT_URL => "https://2factor.in/API/V1/".$api_key."/SMS/".$mobile_no."/".$otp,
@@ -409,10 +391,6 @@ if(($_SERVER['HTTP_HOST']=='https') || ($_SERVER['HTTP_HOST']=='http')){
     $response = curl_exec($curl);
     $err = curl_error($curl);
     curl_close($curl);
-
-
-
-
   $otp_data=array(
     'endtime'=>time()+300,
     'mobile_number'=>$mobile_no,
@@ -420,27 +398,19 @@ if(($_SERVER['HTTP_HOST']=='https') || ($_SERVER['HTTP_HOST']=='http')){
     'otp'=>$otp,
     'created_at'=>date('Y-m-d H:i:s'),
   );
-
-
   /*check OTP*/
-
   $check_otp_table=$this->user_login->isset_mobile_otp($mobile_no,$country_code,$otp_data);
-
-
   echo $check_otp_table;
-
-
 }
 
 public  function send_otp_request(){
-// https://2factor.in/API/V1/523977b1-cfcd-11ea-9fa5-0200cd936042/SMS/8143222351/12345/register_provider 
 $user_data = $this->input->post();
   if(!empty($user_data['mobileno']) && !empty($user_data['email'])){
     $is_available = $this->user_login->otp_check_email($user_data);
     $is_available_mobile = $this->user_login->otp_check_mobile_no($user_data);
     if($is_available == 0 ){
      if($is_available_mobile == 0){
-      if(($_SERVER['HTTP_HOST']=='https') || ($_SERVER['HTTP_HOST']=='http')){
+      if(($_SERVER['HTTP_HOST']=='https://') || ($_SERVER['HTTP_HOST']=='http://')){
         $api_key = "523977b1-cfcd-11ea-9fa5-0200cd936042";  
       }else{
         $api_key = 'default_otp';
@@ -453,13 +423,8 @@ $user_data = $this->input->post();
       }
       $message= $otp.' is your OTP at Axzora. This is valid for 5 minutes.'; 
       $user_data['otp']=$otp;
+      $api_key = "523977b1-cfcd-11ea-9fa5-0200cd936042";
       error_reporting(0);
-      // $key=settingValue('sms_key');
-      // $secret_key=settingValue('sms_secret_key');
-      // $sender_id=settingValue('sms_sender_id');
-      // require_once('vendor/nexmo/src/NexmoMessage.php');
-      // $nexmo_sms = new NexmoMessage($key,$secret_key);
-      // $result = $nexmo_sms->sendText($user_data['countryCode'].$user_data['mobileno'],$sender_id,$message);
       $curl = curl_init();
       curl_setopt_array($curl, array(
       CURLOPT_URL => "https://2factor.in/API/V1/".$api_key."/SMS/".$user_data['mobileno']."/".$otp,
@@ -504,7 +469,7 @@ elseif(!empty($user_data['mobileno'])){
   $is_available = $this->user_login->otp_check_email($user_data);
   $is_available_mobile = $this->user_login->otp_check_mobile_no($user_data);
   if($is_available_mobile == 1){
-    if(($_SERVER['HTTP_HOST']=='https') || ($_SERVER['HTTP_HOST']=='http')){
+    if(($_SERVER['HTTP_HOST']=='https://') || ($_SERVER['HTTP_HOST']=='http://')){
         $api_key = "523977b1-cfcd-11ea-9fa5-0200cd936042";  
       }else{
         $api_key = 'default_otp';
@@ -518,15 +483,8 @@ elseif(!empty($user_data['mobileno'])){
 
      $message= $otp.' is your OTP at Axzora. This is valid for 5 minutes.';  
     $user_data['otp']=$otp;
-
+    $api_key = "523977b1-cfcd-11ea-9fa5-0200cd936042";
     error_reporting(0);
-    // $key=settingValue('sms_key');
-    // $secret_key=settingValue('sms_secret_key');
-    // $sender_id=settingValue('sms_sender_id');
-    // require_once('vendor/nexmo/src/NexmoMessage.php');
-    // $nexmo_sms = new NexmoMessage($key,$secret_key);
-    // $result = $nexmo_sms->sendText($user_data['countryCode'].$user_data['mobileno'],$sender_id,$message);
-    //$this->session->set_tempdata('otp', '$user_data', 300);
       $curl = curl_init();
       curl_setopt_array($curl, array(
       CURLOPT_URL => "https://2factor.in/API/V1/".$api_key."/SMS/".$user_data['mobileno']."/".$otp,
@@ -568,8 +526,8 @@ public  function send_otp_request_user(){
     $is_available_mobile = $this->user_login->otp_check_mobile_no_user($user_data);
     if($is_available == 0 ){
      if($is_available_mobile == 0){
-      if(($_SERVER['HTTP_HOST']=='https') || ($_SERVER['HTTP_HOST']=='http')){
-        $api_key = "523977b1-cfcd-11ea-9fa5-0200cd936042";  
+      if(($_SERVER['HTTP_HOST']=='https://') || ($_SERVER['HTTP_HOST']=='http://')){
+        $api_key = "78a7246c-d102-11ea-9fa5-0200cd936042";  
       }else{
         $api_key = 'default_otp';
       }
@@ -581,13 +539,8 @@ public  function send_otp_request_user(){
       }
        $message= $otp.' is your OTP at Axzora. This is valid for 5 minutes.';  
       $user_data['otp']=$otp;
+      $api_key = "78a7246c-d102-11ea-9fa5-0200cd936042";
       error_reporting(0);
-      // $key=settingValue('sms_key');
-      // $secret_key=settingValue('sms_secret_key');
-      // $sender_id=settingValue('sms_sender_id');
-      // require_once('vendor/nexmo/src/NexmoMessage.php');
-      // $nexmo_sms = new NexmoMessage($key,$secret_key);
-      // $result = $nexmo_sms->sendText($user_data['countryCode'].$user_data['mobileno'],$sender_id,$message);
       $curl = curl_init();
       curl_setopt_array($curl, array(
       CURLOPT_URL => "https://2factor.in/API/V1/".$api_key."/SMS/".$user_data['mobileno']."/".$otp,
@@ -628,7 +581,7 @@ elseif(!empty($user_data['mobileno'])){
   $is_available = $this->user_login->otp_check_uemail($user_data);
   $is_available_mobile = $this->user_login->otp_check_mobile_no_user($user_data);
   if($is_available_mobile == 1){
-    if(($_SERVER['HTTP_HOST']=='https') || ($_SERVER['HTTP_HOST']=='http')){
+    if(($_SERVER['HTTP_HOST']=='https://') || ($_SERVER['HTTP_HOST']=='http://')){
         $api_key = "523977b1-cfcd-11ea-9fa5-0200cd936042";  
       }else{
         $api_key = 'default_otp';
@@ -649,7 +602,7 @@ elseif(!empty($user_data['mobileno'])){
     // $nexmo_sms = new NexmoMessage($key,$secret_key);
     // $result = $nexmo_sms->sendText($user_data['countryCode'].$user_data['mobileno'],$sender_id,$message);
     // $this->session->set_tempdata('otp', '$user_data', 300);
-
+    $api_key = "523977b1-cfcd-11ea-9fa5-0200cd936042";
     $curl = curl_init();
       curl_setopt_array($curl, array(
       CURLOPT_URL => "https://2factor.in/API/V1/".$api_key."/SMS/".$user_data['mobileno']."/".$otp,

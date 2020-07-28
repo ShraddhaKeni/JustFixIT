@@ -704,16 +704,15 @@ public function update_status_user()
   echo '2';
 }
 }
-
-
-public function book_service()
-{
-  $this->load->model('Wallet_model');
-  $wallet_amt = $this->Wallet_model->wallet_info_id($this->session->userdata('id'),2); 
-  $this->data['wallet_amt'] = $wallet_amt; 
- $this->data['page'] = 'book_service';
- $this->load->vars($this->data);
- $this->load->view($this->data['theme'].'/template');
+public function book_service(){
+$this->load->model('Wallet_model'); 
+$getsysteminfo = $this->Wallet_model->get_system_info();
+$this->data['system_info'] = $getsysteminfo;
+$wallet_amt = $this->Wallet_model->wallet_info_id($this->session->userdata('id'),2); 
+$this->data['wallet_amt'] = $wallet_amt; 
+$this->data['page'] = 'book_service';
+$this->load->vars($this->data);
+$this->load->view($this->data['theme'].'/template');
 }
 
 public function service_availability()

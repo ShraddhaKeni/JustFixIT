@@ -24,6 +24,7 @@ var customerName = '';
 var customerPhone = '';
 var customerEmail = '';
 var appId = '';
+var secretKey = '';
 	function booking_proccess(e){
    
 		service_id = $(e).attr('data-id');
@@ -152,6 +153,7 @@ var appId = '';
         });
 
           $('.submit_service_book').on('click',function(){
+            secretKey = $('#secretKey').val();
             service_id = $('.submit_service_book').attr('data-id');
             provider_id = $('.submit_service_book').attr('data-provider');
             final_gig_amount1 = $('.submit_service_book').attr('data-amount');
@@ -179,7 +181,8 @@ var appId = '';
               service_longitude:service_longitude,notes:notes,booking_date:booking_date,
               orderid:orderid,tokenId:tokenId,returnUrl:returnUrl
               ,currency:currency,appId:appId,notifyUrl:notifyUrl,
-              customerName:customerName,customerEmail:customerEmail,customerPhone:customerPhone
+              customerName:customerName,customerEmail:customerEmail,customerPhone:customerPhone,
+              secretKey:secretKey
             },
              type: 'GET',
              //dataType: 'JSON',

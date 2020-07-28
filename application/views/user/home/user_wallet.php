@@ -1,5 +1,48 @@
 <?php 
 $get_details = $this->db->where('id',$this->session->userdata('id'))->get('users')->row_array();
+
+$stripe_option='1';
+    $publishable_key='';
+    $secret_key='';
+    $live_secret_key='';
+    $live_publishable_key='';
+    $logo_front='';
+    foreach ($system_info as $res) {
+      if($res['key'] == 'stripe_option'){
+      $stripe_option = $res['value'];
+      } 
+      if($res['key'] == 'publishable_key'){
+      $publishable_key = $res['value'];
+      }
+      if($res['key'] == 'secret_key'){
+      $secret_key = $res['value'];
+      } 
+       if($res['key'] == 'live_publishable_key'){
+      $live_publishable_key = $res['value'];
+      }
+      if($res['key'] == 'live_secret_key'){
+      $live_secret_key = $res['value'];
+      } 
+
+      if($res['key'] == 'logo_front'){
+      $logo_front = $res['value'];
+      }
+    }
+
+    if($stripe_option==1){
+      $stripe_key= $publishable_key;
+      $secretKey = $secret_key;
+    }else{
+      $stripe_key= $live_publishable_key;
+      $secretKey = $live_secret_key;
+    }
+
+    if(!empty($logo_front)){
+      $web_log=base_url().$logo_front;
+    }else{
+      $web_log=base_url().'assets/img/logo.png';
+    }
+
 ?>
 <div class="content">
 	<div class="container">
@@ -121,13 +164,13 @@ $get_details = $this->db->where('id',$this->session->userdata('id'))->get('users
 								</div>
 								<a href="javascript:void(0);"id="stripe_wallet" class="btn btn-primary btn-block withdraw-btn">Add to Wallet</a>
 
-
+									<input type="hidden" name="secretKey" id='secretKey' value="<?php echo $secretKey;  ?>"/>
 									<input type="hidden" name="orderCurrency" id='orderCurrency_wallet' value="INR"/>
 									<input type="hidden" name="orderNote" id='orderNote_wallet' value="test"/>
 									<input type="hidden" name="customerName" id='customerName_wallet' value="<?php echo $this->session->userdata('name'); ?>"/>
 									<input type="hidden" name="customerEmail" id='customerEmail_wallet' value="<?php echo $this->session->userdata('email'); ?>"/>
 									<input type="hidden" name="customerPhone" id='customerPhone_wallet' value="<?php echo $this->session->userdata('mobileno'); ?>"/>
-    								  <input type="hidden" name="appId" id='appId_wallet' value="1459459be8b3a186d7149dd8f49541"/>
+    								  <input type="hidden" name="appId" id='appId_wallet' value="<?php echo $stripe_key;  ?>"/>
 									    <input type="hidden" name="orderId" id='orderId_wallet' class="form-control isNumber" placeholder="value" value="<?php echo rand(100000,999999);  ?>" />
 									    <input type="hidden" name="returnUrl" id='returnUrl_wallet' value="<?php echo base_url().'user_wallet_submit'; ?>"/>
 									    <input type="hidden" name="notifyUrl" id='notifyUrl_wallet' value="<?php echo base_url().'user_wallet_submit'; ?>"/>

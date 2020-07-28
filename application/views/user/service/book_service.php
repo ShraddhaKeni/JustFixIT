@@ -1,5 +1,49 @@
 <?php 
-$service_details  = $this->service->get_service_id($this->uri->segment('2')); 
+$service_details  = $this->service->get_service_id($this->uri->segment('2'));
+
+$stripe_option='1';
+    $publishable_key='';
+    $secret_key='';
+    $live_secret_key='';
+    $live_publishable_key='';
+    $logo_front='';
+    foreach ($system_info as $res) {
+      if($res['key'] == 'stripe_option'){
+      $stripe_option = $res['value'];
+      } 
+      if($res['key'] == 'publishable_key'){
+      $publishable_key = $res['value'];
+      }
+      if($res['key'] == 'secret_key'){
+      $secret_key = $res['value'];
+      } 
+       if($res['key'] == 'live_publishable_key'){
+      $live_publishable_key = $res['value'];
+      }
+      if($res['key'] == 'live_secret_key'){
+      $live_secret_key = $res['value'];
+      } 
+
+      if($res['key'] == 'logo_front'){
+      $logo_front = $res['value'];
+      }
+    }
+
+    if($stripe_option==1){
+      $stripe_key= $publishable_key;
+      $secretKey = $secret_key;
+    }else{
+      $stripe_key= $live_publishable_key;
+      $secretKey = $live_secret_key;
+    }
+
+    if(!empty($logo_front)){
+      $web_log=base_url().$logo_front;
+    }else{
+      $web_log=base_url().'assets/img/logo.png';
+    }
+
+
 ?>
 <div class="content">
 	<div class="container">
@@ -55,10 +99,9 @@ $service_details  = $this->service->get_service_id($this->uri->segment('2'));
 				</div>
 
 
-
+				<input type="hidden" name="secretKey" id='secretKey' value="<?php echo $secretKey;  ?>"/>
 				<form method="post" action="https://test.cashfree.com/billpay/checkout/post/submit" id="book_services" >
-          
-					<div class="row">
+          			<div class="row">
 						<div class="col-lg-12">
 							<div class="form-group">
 								<div class="text-center">
@@ -66,17 +109,13 @@ $service_details  = $this->service->get_service_id($this->uri->segment('2'));
 								</div>
 								<label>Service amount</label>
 								<input class="form-control" type="text" name="orderAmount" id="service_amount" value="<?php echo $service_details['service_amount'] ?>" readonly="">
-
 								<label>Notes</label>
 								<textarea class="form-control" name="orderNote" id="notes" rows="5"></textarea>
-							<input type="hidden" name="orderCurrency" id='id_orderCurrency_ser' value="INR"/>
-								
-
-
-									<input type="hidden" name="customerName" id='id_customerName_ser' value="<?php echo $this->session->userdata('name');  ?>"/>
+								<input type="hidden" name="orderCurrency" id='id_orderCurrency_ser' value="INR"/>
+								<input type="hidden" name="customerName" id='id_customerName_ser' value="<?php echo $this->session->userdata('name');  ?>"/>
 									<input type="hidden" name="customerEmail" id='id_customerEmail_ser' value="<?php echo $this->session->userdata('email');  ?>"/>
 									<input type="hidden" name="customerPhone" id='id_customerPhone_ser' value="<?php echo $this->session->userdata('mobileno');  ?>"/>
-								<input type="hidden" id='app_id_ser' name="appId" value="1459459be8b3a186d7149dd8f49541"/>
+								<input type="hidden" id='app_id_ser' name="appId" value="<?php echo $stripe_key;  ?>"/>
 								<input type="hidden" id='order_id_ser' name="orderId" placeholder="value" value="<?php echo rand(100000,999999);  ?>"/>
 								<input type="hidden" id='id_returnUrl_ser' name="returnUrl" value="<?php  echo base_url().'booking_service_submit'; ?>"/>
 								<input type="hidden" id='id_notifyUrl_ser' name="notifyUrl" value="<?php  echo base_url().'booking_service_submit'; ?>"/>

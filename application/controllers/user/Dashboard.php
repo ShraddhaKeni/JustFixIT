@@ -44,7 +44,10 @@ $this->load->vars($this->data);
 $this->load->view($this->data['theme'].'/template');
 }
 public function user_wallet(){
+$this->load->model('Wallet_model');	
 $this->data['page'] = 'user_wallet';
+$getsysteminfo = $this->Wallet_model->get_system_info();
+$this->data['system_info'] = $getsysteminfo;
 $this->data['wallet']=$this->api->get_wallet($this->session->userdata('chat_token'));
 $this->data['wallet_history']=$this->api->get_wallet_history_info($this->session->userdata('chat_token'));
 $this->load->vars($this->data);
@@ -96,7 +99,7 @@ redirect(base_url().'user-wallet');
 	//$secretKey = "48a401703d4f6f03fd4ff5da44689d582776e650";
 	// $apklive = pk_live_51Gzz20HShEbk1dXRqkZYmBp8giBe2DrGrLd4jku82;
 	// $secretkeyLive = sk_live_51Gzz20HShEbk1dXRl28UmwFr6S0OKIxEaXqqxnf2sabeGbdCtgRLYphkji7Ik;
-$secretKey = "65e2043ddc2a9274637cc9e9c8889ba067f4d8e0";
+$secretKey =$this->input->get('secretKey');
 $data = [
 //"token" => $this->input->get('token'),
 "appId" => $this->input->get('appId'),

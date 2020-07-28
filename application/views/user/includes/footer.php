@@ -305,8 +305,10 @@ $country_list=$this->db->where('status',1)->order_by('country_name',"ASC")->get(
 					<div class="form-group">
 						<input type="hidden" class="form-control form-control-lg" placeholder="Mobile Number" name='enteredMobile' id='enteredMobile'>
 					</div>
-					<?php if(($_SERVER['HTTP_HOST']=='https') || ($_SERVER['HTTP_HOST']=='http')){
-			        $api_key = "3824a23a-c828-11ea-9fa5-0200cd936042";  
+					<?php if(($_SERVER['HTTP_HOST']=='https://') || ($_SERVER['HTTP_HOST']=='http://')){
+			        //$api_key = "3824a23a-c828-11ea-9fa5-0200cd936042";
+			        $api_key = "523977b1-cfcd-11ea-9fa5-0200cd936042";
+			          
 			      }else{
 			        $api_key = 'default_otp';
 			      }
@@ -418,8 +420,8 @@ $country_list=$this->db->where('status',1)->order_by('country_name',"ASC")->get(
 						<input type="hidden" class="form-control form-control-lg" placeholder="Mobile Number" name='enteredMobile' id='enteredMobiles'>
 					</div>
 					<div class="form-group">
-						<?php if(($_SERVER['HTTP_HOST']=='https') || ($_SERVER['HTTP_HOST']=='http')){
-					        $api_key = "3824a23a-c828-11ea-9fa5-0200cd936042";  
+						<?php if(($_SERVER['HTTP_HOST']=='https://') || ($_SERVER['HTTP_HOST']=='http://')){
+					        $api_key = "523977b1-cfcd-11ea-9fa5-0200cd936042";  
 					      }else{
 					        $api_key = 'default_otp';
 					      }
@@ -821,8 +823,8 @@ $country_list=$this->db->where('status',1)->order_by('country_name',"ASC")->get(
 							</div>
 							<div class="form-group">
 								<?php
-								if(($_SERVER['HTTP_HOST']=='https') || ($_SERVER['HTTP_HOST']=='http')){
-							        $api_key = "3824a23a-c828-11ea-9fa5-0200cd936042";  
+								if(($_SERVER['HTTP_HOST']=='https://') || ($_SERVER['HTTP_HOST']=='http://')){
+							        $api_key = "523977b1-cfcd-11ea-9fa5-0200cd936042";  
 							      }else{
 							        $api_key = 'default_otp';
 							      }
