@@ -516,7 +516,7 @@ public function provider_subscription(){
 $this->data['page'] = 'provider_subscription';
 $this->load->model('Wallet_model');
 $getsysteminfo = $this->Wallet_model->get_system_info();
-$getsubscriptionLog = $this->Wallet_model->getsubscriptionLog($this->session->userdata('chat_token'));
+$getsubscriptionLog = $this->Wallet_model->getsubscriptionLog($this->session->userdata('id'));
 $this->data['suscriptionLog'] = $getsubscriptionLog;
 $this->data['system_info'] = $getsysteminfo;
 $this->data['wallet']=$this->api->get_wallet($this->session->userdata('chat_token'));

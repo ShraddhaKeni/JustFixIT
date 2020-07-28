@@ -92,7 +92,9 @@ if (!empty($my_subscribe['expiry_date_time']))
         } ?></div><?php
     }
 } ?><div class="row pricing-box"><?php foreach ($subscription as $list)
-{
+{      
+    if($suscriptionLog){ 
+
     if ((date('Y-m-d') > date('Y-m-d', strtotime($suscriptionLog[0]->expiry_date_time))) && ($suscriptionLog[0]->free_service == 'yes'))
     {
         if ($list['discount'] == 100){}
@@ -110,47 +112,39 @@ if (!empty($my_subscribe['expiry_date_time']))
                 {
                     $class = '';
                 }
-            }
-            else
-            {
+            }else{
                 $class = '';
-            }
-            if (!isset($class))
-            {
+            }if (!isset($class)){
                 $class = '';
-            }
-?><div class="col-xl-4 col-md-6 <?php echo $class; ?>">
+            }?>
+            <div class="col-xl-4 col-md-6 <?php echo $class; ?>">
 						<div class="card">
-							<div class="card-body"><div class="pricing-header"><h2><?php echo $list['subscription_name'] ?></h2><p>Monthly Price</p></div><?php 
+							<div class="card-body">
+                                <div class="pricing-header"><h2><?php echo $list['subscription_name'] ?></h2><p>Monthly Price</p>
+                                    </div><?php 
                             if ($list['discount'] == 0){ ?>
-                                <div class="pricing-card-price"><h5 class="heading4 price">₹<?php echo $list['fee'] ?></h5><p>Duration: <span><?php echo $list['duration'] ?> Months</span></p></div><?php
-                        }else{ ?>
-                <div class="pricing-card-price"><h5 class="heading4 price"><del>₹<?php echo $list['actual_amount'] ?></del></h5><p>₹<?php echo $list['discount']; ?> % Off </p><h3 class="heading2 price">₹<?php echo $list['fee'] ?></h3><p>Duration: <span><?php echo $list['duration'] ?> Months</span></p></div><?php
-            } ?><ul class="pricing-options"><li><i class="far fa-check-circle"></i> One listing submission</li><li><i class="far fa-check-circle"></i><?=$list['duration'] * 30; ?> days expiration</li></ul><?php if (empty($subscription_name['subscription_name']))
-            {
-?><a href="javascript:void(0);" class="btn btn-primary btn-block callStripe" data-id="<?php echo $list['id']; ?>" data-amount="<?php echo $list['fee']; ?>" >Select Plan</a>
-					<?php
-            }
-            if (!empty($my_subscribe['subscription_id']))
-            {
-                if ($list['id'] == $my_subscribe['subscription_id'] && date('Y-m-d', strtotime($my_subscribe['expiry_date_time'])) > date('Y-m-d'))
-                {
-?><a href="javascript:void(0);" class="btn btn-primary btn-block">Subscribed</a><?php
-                }
-                else
-                {
+                                <div class="pricing-card-price">
+                                    <h5 class="heading4 price">₹<?php echo $list['fee'] ?></h5><p>Duration: <span><?php echo $list['duration'] ?> Months</span></p>
+                                </div>
+                            <?php }else{ ?>
+                <div class="pricing-card-price">
+                    <h5 class="heading4 price"><del>₹<?php echo $list['actual_amount'] ?></del></h5>
+                    <p>₹<?php echo $list['discount']; ?> % Off </p><h3 class="heading2 price">₹<?php echo $list['fee'] ?></h3><p>Duration: <span><?php echo $list['duration'] ?> Months</span></p></div>
+            <?php } ?><ul class="pricing-options"><li><i class="far fa-check-circle"></i> One listing submission</li><li><i class="far fa-check-circle"></i><?=$list['duration'] * 30; ?> days expiration</li></ul>
+            <?php if (empty($subscription_name['subscription_name'])) { ?>
+                <a href="javascript:void(0);" class="btn btn-primary btn-block callStripe" data-id="<?php echo $list['id']; ?>" data-amount="<?php echo $list['fee']; ?>" >Select Plan</a>
+					<?php } if (!empty($my_subscribe['subscription_id'])) {
+                if ($list['id'] == $my_subscribe['subscription_id'] && date('Y-m-d', strtotime($my_subscribe['expiry_date_time'])) > date('Y-m-d')){ ?>
+                    <a href="javascript:void(0);" class="btn btn-primary btn-block">Subscribed</a>
+                <?php } else {
                     $subscription_fee = $this
                         ->db
                         ->where('id', $my_subscribe['subscription_id'])->get('subscription_fee')
                         ->row_array();
-                    if (!empty($subscription_fee))
-                    {
-                        if ((int)$list['fee'] > (int)$subscription_fee['fee'])
-                        {
-                            if (date('Y-m-d') > date('Y-m-d', strtotime($my_subscribe['expiry_date_time'])))
-                            { 
-                                if($wallet['wallet_amt'] >= $list['fee']){
-                            ?>
+                    if (!empty($subscription_fee)){
+                        if ((int)$list['fee'] > (int)$subscription_fee['fee']){
+                            if (date('Y-m-d') > date('Y-m-d', strtotime($my_subscribe['expiry_date_time']))){ 
+                                if($wallet['wallet_amt'] >= $list['fee']){ ?>
                             			<a href="javascript:void(0);" class="btn btn-primary btn-block callStripe" data-id="<?php echo $list['id']; ?>" data-amount="<?php echo $list['fee'] ?>" data-amount="<?php echo $list['fee']; ?>" data-target="#myModal" data-toggle="modal">Select Plans</a>
 
                             <?php }else{ ?>
@@ -195,14 +189,8 @@ if (!empty($my_subscribe['expiry_date_time']))
                                       </div>
                                     </div>
                                   </div>
-                        <?php
-                            }
-                            else
-                            { ?><?php
-                            }
-                        }
-                        else
-                        {
+                        <?php } else { ?><?php }
+                        } else {
                             if (date('Y-m-d', strtotime($my_subscribe['expiry_date_time'])) >= date('Y-m-d'))
                             { ?>
 								  	<a data-toggle="tooltip" title="Your Not Choose This Plan ..!" href="javascript:void(0);"  class="btn btn-primary btn-block plan_notification" >Select Plan</a><?php
@@ -314,7 +302,104 @@ if (!empty($my_subscribe['expiry_date_time']))
 ?></div>
 								</div>
 								</div><?php
-    } }  ?>
+    }} else{ 
+
+if (!empty($my_subscribe['subscription_id']))
+        {
+            if ($list['id'] == $my_subscribe['subscription_id'])
+            {
+                if (date('Y-m-d', strtotime($my_subscribe['expiry_date_time'])) >= date('Y-m-d'))
+                {
+                    $class = "pricing-selected";
+                }
+            }
+            else
+            {
+                $class = '';
+            }
+        }
+        else
+        {
+            $class = '';
+        }
+        if (!isset($class))
+        {
+            $class = '';
+        }
+?><div class="col-xl-4 col-md-6 <?php echo $class; ?>">
+                        <div class="card">
+                            <div class="card-body"><div class="pricing-header"><h2><?php echo $list['subscription_name'] ?></h2><p>Monthly Price</p></div>
+                            <?php if ($list['discount'] == 0)
+        { ?>
+                                <div class="pricing-card-price"><h5 class="heading4 price">₹<?php echo $list['fee'] ?></h5><p>Duration: <span><?php echo $list['duration'] ?> Months</span></p></div><?php
+        }
+        else
+        { ?>
+                                    <div class="pricing-card-price">
+                                        <h5 class="heading4 price"><del>₹<?php echo $list['actual_amount'] ?></del></h5>
+                                        <p>₹<?php echo $list['discount']; ?> % Off </p>
+                                        <h3 class="heading2 price">₹<?php echo $list['fee'] ?></h3>
+                                        <p>Duration: <span><?php echo $list['duration'] ?> Months</span></p>
+                                        </div><?php
+        } ?>
+                                        <ul class="pricing-options">
+                                            <li><i class="far fa-check-circle"></i> One listing submission</li>
+                                            <li><i class="far fa-check-circle"></i><?=$list['duration'] * 30; ?> days expiration</li>
+                                            </ul>
+                                            <?php if (empty($subscription_name['subscription_name']))
+        { ?>
+                                                <a href="javascript:void(0);" class="btn btn-primary btn-block callStripe" data-id="<?php echo $list['id']; ?>" data-amount="<?php echo $list['fee']; ?>" >Select Plan</a><?php
+        }
+        if (!empty($my_subscribe['subscription_id']))
+        {
+            if ($list['id'] == $my_subscribe['subscription_id'] && date('Y-m-d', strtotime($my_subscribe['expiry_date_time'])) > date('Y-m-d'))
+            { ?>
+                                    <a href="javascript:void(0);" class="btn btn-primary btn-block">Subscribed</a><?php
+            }
+            else
+            {
+                $subscription_fee = $this
+                    ->db
+                    ->where('id', $my_subscribe['subscription_id'])->get('subscription_fee')
+                    ->row_array();
+                if (!empty($subscription_fee))
+                {
+                    if ((int)$list['fee'] > (int)$subscription_fee['fee'])
+                    {
+                        if (date('Y-m-d') > date('Y-m-d', strtotime($my_subscribe['expiry_date_time'])))
+                        { ?>
+                                        <a href="javascript:void(0);" class="btn btn-primary btn-block callStripe" data-id="<?php echo $list['id']; ?>" data-amount="<?php echo $list['fee']; ?>" >Select Plan</a><?php
+                        }
+                        else
+                        { ?><?php
+                        }
+                    }
+                    else
+                    {
+                        if (date('Y-m-d', strtotime($my_subscribe['expiry_date_time'])) >= date('Y-m-d'))
+                        {
+?>
+                                  <a data-toggle="tooltip" title="Your Not Choose This Plan ..!" href="javascript:void(0);"  class="btn btn-primary btn-block plan_notification" >Select Plan</a>
+                                <?php
+                        }
+                        else
+                        { ?><a href="javascript:void(0);" class="btn btn-primary btn-block callStripe" data-id="<?php echo $list['id']; ?>" data-amount="<?php echo $list['fee']; ?>" >Select Plan</a><?php
+                        }
+                    }
+                }
+?><?php
+            }
+        }
+?></div>
+                                </div>
+                                </div>
+
+
+
+
+
+
+    <?php } }  ?>
 								</div><?php if (!empty($my_subscribe))
 { ?>
 									<div class="card"><div class="card-body"><div class="plan-det"><h6 class="title">Plan Details</h6><ul class="row"><li class="col-sm-4"><p><span class="text-muted">Started On</span><?php if (!empty($my_subscribe['subscription_date']))
