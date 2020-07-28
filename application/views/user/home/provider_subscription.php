@@ -392,21 +392,19 @@ if (!empty($my_subscribe['subscription_id']))
                     {
                         if (date('Y-m-d') > date('Y-m-d', strtotime($my_subscribe['expiry_date_time'])))
                         { ?>
-                                        <a href="javascript:void(0);" class="btn btn-primary btn-block callStripe" data-id="<?php echo $list['id']; ?>" data-amount="<?php echo $list['fee']; ?>" >Select Plandd</a><?php
-                        }
-                        else
-                        { ?><?php
-                        }
+                                        <a href="javascript:void(0);" class="btn btn-primary btn-block callStripe" data-id="<?php echo $list['id']; ?>" data-amount="<?php echo $list['fee']; ?>" >Select Plan</a><?php
+                        }else{}
                     }
                     else
                     {
                         if (date('Y-m-d', strtotime($my_subscribe['expiry_date_time'])) >= date('Y-m-d'))
                         {
-                          if ((int)$list['fee'] > (int)$subscription_fee['fee'])
-                            { ?>
-                                  <a data-toggle="tooltip" title="Your Not Choose This Plan ..!" href="javascript:void(0);"  class="btn btn-primary btn-block plan_notification" >Select Plandd</a>
-                                <?php }
-                        }
+                          //if ((int)$list['fee'] > (int)$subscription_fee['fee']){ 
+                                ?>
+                                  <a data-toggle="tooltip" title="Your Not Choose This Plan ..!" href="javascript:void(0);"  class="btn btn-primary btn-block plan_notification" >Select Plan</a>
+                                
+                        <?php //} 
+                    }
                         else{ ?>
                             <a href="javascript:void(0);" class="btn btn-primary btn-block callStripe" data-id="<?php echo $list['id']; ?>" data-amount="<?php echo $list['fee']; ?>" >Select Planss</a>
                             <?php
