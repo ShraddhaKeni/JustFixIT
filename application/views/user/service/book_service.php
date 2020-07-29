@@ -100,7 +100,12 @@ $stripe_option='1';
 
 
 				<input type="hidden" name="secretKey" id='secretKey' value="<?php echo $secretKey;  ?>"/>
+				<?php if($_SERVER['HTTP_HOST']=='localhost') { ?>
 				<form method="post" action="https://test.cashfree.com/billpay/checkout/post/submit" id="book_services" >
+			<?php }else{ ?>
+				<form id="book_services" method="post" action="https://www.cashfree.com/checkout/post/submit">
+			<?php } ?>
+				
           			<div class="row">
 						<div class="col-lg-12">
 							<div class="form-group">

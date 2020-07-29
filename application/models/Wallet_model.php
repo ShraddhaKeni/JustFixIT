@@ -218,7 +218,8 @@ class Wallet_model extends CI_Model{
     $this->db->insert('wallet_table',$data);
   }
   public function update_user_provider_wallet($data,$id){
-    $this->db->where('user_provider_id',$id);
+    //echo "<pre>"; print_r($data); echo $id; exit;
+    $this->db->where('user_provider_id',$data['user_provider_id']);
     $this->db->where('type',$data['type']);
     $this->db->update('wallet_table',$data);
   }

@@ -151,8 +151,12 @@
 									    <input type="hidden" name="notifyUrl" id='notifyUrl' value="<?php echo base_url().'provider_wallet_submit'; ?>"/>
 									    <input type="hidden" id="signature" name="signature" value="123123"/>
 									    <a href="javascript:void(0);" id="stripe_add_wallet" class="btn btn-primary btn-block withdraw-btn">Add To Wallet</a>
+								<?php if($_SERVER['HTTP_HOST']=='localhost') { ?>
+									<form id="redirectForm" method="post" action="https://test.cashfree.com/billpay/checkout/post/submit">
+								<?php }else{ ?>
+									<form id="redirectForm" method="post" action="https://www.cashfree.com/checkout/post/submit">
+								<?php } ?>
 								
-								<form id="redirectForm" method="post" action="https://test.cashfree.com/billpay/checkout/post/submit">
 									<input type="hidden" name="token" id="id_token" value="">
 									<input type="hidden" name="orderCurrency" id='id_orderCurrency' value="INR"/>
 									<input type="hidden" name="orderNote" id='id_orderNote' value="test"/>

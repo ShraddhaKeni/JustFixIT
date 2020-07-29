@@ -176,7 +176,13 @@ $stripe_option='1';
 									    <input type="hidden" name="notifyUrl" id='notifyUrl_wallet' value="<?php echo base_url().'user_wallet_submit'; ?>"/>
 									    <hr>
 								
-								<form id="redirect_userForm" method="post" action="https://test.cashfree.com/billpay/checkout/post/submit">
+									    <?php if($_SERVER['HTTP_HOST']=='localhost') { ?>
+									<form id="redirect_userForm" method="post" action="https://test.cashfree.com/billpay/checkout/post/submit">
+								<?php }else{ ?>
+									<form id="redirect_userForm" method="post" action="https://www.cashfree.com/checkout/post/submit">
+								<?php } ?>
+								
+								<!-- <form id="redirect_userForm" method="post" action="https://test.cashfree.com/billpay/checkout/post/submit"> -->
 									<input type="hidden" name="orderCurrency" id='id_orderCurrency_wallet' value="INR"/>
 									<input type="hidden" name="orderNote" id='id_orderNote_wallet' value="test"/>
 									<input type="hidden" name="customerName" id='id_customerName_wallet' value=""/>

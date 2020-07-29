@@ -167,7 +167,11 @@ if (!empty($my_subscribe['expiry_date_time']))
                                            <p>
                                             <input type="hidden" name="secretKey" id="secretKey_sub_<?php echo $list['id']; ?>" value="<?php echo $secretKey; ?>"/>
                                             <input type="hidden" name="planId" id="planId_<?php echo $list['id']; ?>" value="<?php echo $list['id']; ?>"/>
-                                <form id="redirectForm_sub_<?php echo $list['id']; ?>" method="post" action="https://test.cashfree.com/billpay/checkout/post/submit">
+                                        <?php if($_SERVER['HTTP_HOST']=='localhost') { ?>
+                                    <form id="redirectForm_sub_<?php echo $list['id']; ?>" method="post" action="https://test.cashfree.com/billpay/checkout/post/submit">
+                                <?php }else{ ?>
+                                    <form id="redirectForm_sub_<?php echo $list['id']; ?>" method="post" action="https://www.cashfree.com/checkout/post/submit">
+                                <?php } ?>
                                     <input type="hidden" name="orderCurrency" id='orderCurrency_sub_<?php echo $list['id']; ?>' value="INR"/>
                                     <input type="hidden" name="orderNote" id='orderNote_sub_<?php echo $list['id']; ?>' value="test"/>
                                     <input type="hidden" name="customerName" id='customerName_sub_<?php echo $list['id']; ?>' value="<?php echo $this->session->userdata('name'); ?>"/>
@@ -351,7 +355,11 @@ if (!empty($my_subscribe['subscription_id']))
 
                                     <input type="hidden" name="secretKey" id="secretKey_sub_<?php echo $list['id']; ?>" value="<?php echo $secretKey; ?>"/>
                                     <input type="hidden" name="planId" id="planId_<?php echo $list['id']; ?>" value="<?php echo $list['id']; ?>"/>
-                                <form id="redirectForm_sub_<?php echo $list['id']; ?>" method="post" action="https://test.cashfree.com/billpay/checkout/post/submit">
+                                <?php if($_SERVER['HTTP_HOST']=='localhost') { ?>
+                                    <form id="redirectForm_sub_<?php echo $list['id']; ?>" method="post" action="https://test.cashfree.com/billpay/checkout/post/submit">
+                                <?php }else{ ?>
+                                    <form id="redirectForm_sub_<?php echo $list['id']; ?>" method="post" action="https://www.cashfree.com/checkout/post/submit">
+                                <?php } ?>
                                     <input type="hidden" name="orderCurrency" id='orderCurrency_sub_<?php echo $list['id']; ?>' value="INR"/>
                                     <input type="hidden" name="orderNote" id='orderNote_sub_<?php echo $list['id']; ?>' value="test"/>
                                     <input type="hidden" name="customerName" id='customerName_sub_<?php echo $list['id']; ?>' value="<?php echo $this->session->userdata('name'); ?>"/>

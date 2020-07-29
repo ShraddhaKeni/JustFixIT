@@ -434,6 +434,7 @@ $this->data['system_info'] = $getsysteminfo;
 $this->data['page'] = 'provider_wallet';
 $this->data['wallet']=$this->api->get_wallet($this->session->userdata('chat_token'));
 $this->data['wallet_history']=$this->api->get_wallet_history_info($this->session->userdata('chat_token'));
+//echo "<pre>"; print_r($this->data); exit;
 $this->load->vars($this->data);
 $this->load->view($this->data['theme'].'/template');
 }
@@ -449,23 +450,27 @@ $typeVal = 2;
 }
 $checkuser = $this->Wallet_model->wallet_info_id($this->session->userdata('id'),$typeVal);
 $getamount = 0;
-for($i=0; $i<count($checkuser); $i++){ $getamount=$checkuser[$i]->wallet_amt;
+for($i=0; $i<count($checkuser); $i++){ 
+	$getamount=$checkuser[$i]->wallet_amt;
 }
-if(count($checkuser) >= 1){
+ if(count($checkuser) >= 1){
 $data = [
 'user_provider_id' => $this->session->userdata('id'),
 'type' => $typeVal,
 'wallet_amt' =>$this->input->post('orderAmount')+ $getamount,
 'token' => $this->session->userdata('chat_token'),
+'reason'=>'',
 'updated_on' => date('Y-m-d H:i:s'),
 ];
 $result = $this->Wallet_model->update_user_provider_wallet($data,$this->session->userdata('id'));
+//echo "<pre>"; print_r($result); exit;
 }else{
 $data = [
 'user_provider_id' => $this->session->userdata('id'),
 'type' => $typeVal,
 'wallet_amt' =>$this->input->post('orderAmount'),
 'token' => $this->session->userdata('chat_token'),
+'reason'=>'',
 'created_at' => date('Y-m-d H:i:s'),
 ];
 $result = $this->Wallet_model->add_user_provider_wallet($data);
