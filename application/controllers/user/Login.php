@@ -319,29 +319,28 @@ public function re_send_otp_user(){
         $otp ='1234';
       }else{
         $otp = rand(1000,9999);
+        $message= $otp.' is your OTP at Axzora. This is valid for 5 minutes.'; 
+        $user_data['otp']=$otp;
+        $api_key = "523977b1-cfcd-11ea-9fa5-0200cd936042";
+        error_reporting(0);
+        $curl = curl_init();
+          curl_setopt_array($curl, array(
+          CURLOPT_URL => "https://2factor.in/API/V1/".$api_key."/SMS/".$mobile_no."/".$otp,
+          CURLOPT_RETURNTRANSFER => true,
+          CURLOPT_ENCODING => "",
+          CURLOPT_MAXREDIRS => 10,
+          CURLOPT_TIMEOUT => 30,
+          CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+          CURLOPT_CUSTOMREQUEST => "GET",
+          CURLOPT_POSTFIELDS => "",
+          CURLOPT_HTTPHEADER => array(
+            "content-type: application/x-www-form-urlencoded"
+          ),
+        ));
+          $response = curl_exec($curl);
+          $err = curl_error($curl);
+          curl_close($curl);
       }
-  $message= $otp.' is your OTP at Axzora. This is valid for 5 minutes.'; 
-  $user_data['otp']=$otp;
-  $api_key = "523977b1-cfcd-11ea-9fa5-0200cd936042";
-  error_reporting(0);
-  $curl = curl_init();
-    curl_setopt_array($curl, array(
-    CURLOPT_URL => "https://2factor.in/API/V1/".$api_key."/SMS/".$mobile_no."/".$otp,
-    CURLOPT_RETURNTRANSFER => true,
-    CURLOPT_ENCODING => "",
-    CURLOPT_MAXREDIRS => 10,
-    CURLOPT_TIMEOUT => 30,
-    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-    CURLOPT_CUSTOMREQUEST => "GET",
-    CURLOPT_POSTFIELDS => "",
-    CURLOPT_HTTPHEADER => array(
-      "content-type: application/x-www-form-urlencoded"
-    ),
-  ));
-    $response = curl_exec($curl);
-    $err = curl_error($curl);
-    curl_close($curl);
-
   $otp_data=array(
     'endtime'=>time()+300,
     'mobile_number'=>$mobile_no,
@@ -369,28 +368,28 @@ if(($_SERVER['HTTP_HOST']=='https://') || ($_SERVER['HTTP_HOST']=='http://')){
         $otp ='1234';
       }else{
         $otp = rand(1000,9999);
+        $message= $otp.' is your OTP at Axzora. This is valid for 5 minutes.'; 
+        $user_data['otp']=$otp;
+        $api_key = "523977b1-cfcd-11ea-9fa5-0200cd936042";
+        error_reporting(0);
+          $curl = curl_init();
+          curl_setopt_array($curl, array(
+          CURLOPT_URL => "https://2factor.in/API/V1/".$api_key."/SMS/".$mobile_no."/".$otp,
+          CURLOPT_RETURNTRANSFER => true,
+          CURLOPT_ENCODING => "",
+          CURLOPT_MAXREDIRS => 10,
+          CURLOPT_TIMEOUT => 30,
+          CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+          CURLOPT_CUSTOMREQUEST => "GET",
+          CURLOPT_POSTFIELDS => "",
+          CURLOPT_HTTPHEADER => array(
+            "content-type: application/x-www-form-urlencoded"
+          ),
+        ));
+          $response = curl_exec($curl);
+          $err = curl_error($curl);
+          curl_close($curl);
       }
-  $message= $otp.' is your OTP at Axzora. This is valid for 5 minutes.'; 
-  $user_data['otp']=$otp;
-  $api_key = "523977b1-cfcd-11ea-9fa5-0200cd936042";
-  error_reporting(0);
-    $curl = curl_init();
-    curl_setopt_array($curl, array(
-    CURLOPT_URL => "https://2factor.in/API/V1/".$api_key."/SMS/".$mobile_no."/".$otp,
-    CURLOPT_RETURNTRANSFER => true,
-    CURLOPT_ENCODING => "",
-    CURLOPT_MAXREDIRS => 10,
-    CURLOPT_TIMEOUT => 30,
-    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-    CURLOPT_CUSTOMREQUEST => "GET",
-    CURLOPT_POSTFIELDS => "",
-    CURLOPT_HTTPHEADER => array(
-      "content-type: application/x-www-form-urlencoded"
-    ),
-  ));
-    $response = curl_exec($curl);
-    $err = curl_error($curl);
-    curl_close($curl);
   $otp_data=array(
     'endtime'=>time()+300,
     'mobile_number'=>$mobile_no,
@@ -420,28 +419,29 @@ $user_data = $this->input->post();
         $otp ='1234';
       }else{
         $otp = rand(1000,9999);
+        $message= $otp.' is your OTP at Axzora. This is valid for 5 minutes.'; 
+        $user_data['otp']=$otp;
+        $api_key = "523977b1-cfcd-11ea-9fa5-0200cd936042";
+        error_reporting(0);
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+        CURLOPT_URL => "https://2factor.in/API/V1/".$api_key."/SMS/".$user_data['mobileno']."/".$otp,
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => "",
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 30,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => "GET",
+        CURLOPT_POSTFIELDS => "",
+        CURLOPT_HTTPHEADER => array(
+          "content-type: application/x-www-form-urlencoded"
+        ),
+      ));
+      $response = curl_exec($curl);
+      $err = curl_error($curl);
+      curl_close($curl);
       }
-      $message= $otp.' is your OTP at Axzora. This is valid for 5 minutes.'; 
-      $user_data['otp']=$otp;
-      $api_key = "523977b1-cfcd-11ea-9fa5-0200cd936042";
-      error_reporting(0);
-      $curl = curl_init();
-      curl_setopt_array($curl, array(
-      CURLOPT_URL => "https://2factor.in/API/V1/".$api_key."/SMS/".$user_data['mobileno']."/".$otp,
-      CURLOPT_RETURNTRANSFER => true,
-      CURLOPT_ENCODING => "",
-      CURLOPT_MAXREDIRS => 10,
-      CURLOPT_TIMEOUT => 30,
-      CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-      CURLOPT_CUSTOMREQUEST => "GET",
-      CURLOPT_POSTFIELDS => "",
-      CURLOPT_HTTPHEADER => array(
-        "content-type: application/x-www-form-urlencoded"
-      ),
-    ));
-    $response = curl_exec($curl);
-    $err = curl_error($curl);
-    curl_close($curl);
+      
       $this->db->where('country_code', $user_data['countryCode']);
       $this->db->where('mobile_number', $user_data['mobileno']);
       $this->db->where('status', 1);
@@ -479,29 +479,28 @@ elseif(!empty($user_data['mobileno'])){
         $otp ='1234';
       }else{
         $otp = rand(1000,9999);
+        $message= $otp.' is your OTP at Axzora. This is valid for 5 minutes.';  
+        $user_data['otp']=$otp;
+        $api_key = "523977b1-cfcd-11ea-9fa5-0200cd936042";
+        error_reporting(0);
+          $curl = curl_init();
+          curl_setopt_array($curl, array(
+          CURLOPT_URL => "https://2factor.in/API/V1/".$api_key."/SMS/".$user_data['mobileno']."/".$otp,
+          CURLOPT_RETURNTRANSFER => true,
+          CURLOPT_ENCODING => "",
+          CURLOPT_MAXREDIRS => 10,
+          CURLOPT_TIMEOUT => 30,
+          CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+          CURLOPT_CUSTOMREQUEST => "GET",
+          CURLOPT_POSTFIELDS => "",
+          CURLOPT_HTTPHEADER => array(
+            "content-type: application/x-www-form-urlencoded"
+          ),
+        ));
+        $response = curl_exec($curl);
+        $err = curl_error($curl);
+        curl_close($curl);
       }
-
-     $message= $otp.' is your OTP at Axzora. This is valid for 5 minutes.';  
-    $user_data['otp']=$otp;
-    $api_key = "523977b1-cfcd-11ea-9fa5-0200cd936042";
-    error_reporting(0);
-      $curl = curl_init();
-      curl_setopt_array($curl, array(
-      CURLOPT_URL => "https://2factor.in/API/V1/".$api_key."/SMS/".$user_data['mobileno']."/".$otp,
-      CURLOPT_RETURNTRANSFER => true,
-      CURLOPT_ENCODING => "",
-      CURLOPT_MAXREDIRS => 10,
-      CURLOPT_TIMEOUT => 30,
-      CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-      CURLOPT_CUSTOMREQUEST => "GET",
-      CURLOPT_POSTFIELDS => "",
-      CURLOPT_HTTPHEADER => array(
-        "content-type: application/x-www-form-urlencoded"
-      ),
-    ));
-    $response = curl_exec($curl);
-    $err = curl_error($curl);
-    curl_close($curl);
     $this->db->where('country_code', $user_data['countryCode']);
     $this->db->where('mobile_number', $user_data['mobileno']);
     $this->db->where('status', 1);
@@ -536,28 +535,28 @@ public  function send_otp_request_user(){
         $otp ='1234';
       }else{
         $otp = rand(1000,9999);
+        $message= $otp.' is your OTP at Axzora. This is valid for 5 minutes.';  
+        $user_data['otp']=$otp;
+        $api_key = "78a7246c-d102-11ea-9fa5-0200cd936042";
+        error_reporting(0);
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+        CURLOPT_URL => "https://2factor.in/API/V1/".$api_key."/SMS/".$user_data['mobileno']."/".$otp,
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => "",
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 30,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => "GET",
+        CURLOPT_POSTFIELDS => "",
+        CURLOPT_HTTPHEADER => array(
+          "content-type: application/x-www-form-urlencoded"
+        ),
+      ));
+      $response = curl_exec($curl);
+      $err = curl_error($curl);
+      curl_close($curl);
       }
-       $message= $otp.' is your OTP at Axzora. This is valid for 5 minutes.';  
-      $user_data['otp']=$otp;
-      $api_key = "78a7246c-d102-11ea-9fa5-0200cd936042";
-      error_reporting(0);
-      $curl = curl_init();
-      curl_setopt_array($curl, array(
-      CURLOPT_URL => "https://2factor.in/API/V1/".$api_key."/SMS/".$user_data['mobileno']."/".$otp,
-      CURLOPT_RETURNTRANSFER => true,
-      CURLOPT_ENCODING => "",
-      CURLOPT_MAXREDIRS => 10,
-      CURLOPT_TIMEOUT => 30,
-      CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-      CURLOPT_CUSTOMREQUEST => "GET",
-      CURLOPT_POSTFIELDS => "",
-      CURLOPT_HTTPHEADER => array(
-        "content-type: application/x-www-form-urlencoded"
-      ),
-    ));
-    $response = curl_exec($curl);
-    $err = curl_error($curl);
-    curl_close($curl);
       $this->db->where('country_code', $user_data['countryCode']);
       $this->db->where('mobile_number', $user_data['mobileno']);
       $this->db->where('status', 1);
@@ -591,35 +590,35 @@ elseif(!empty($user_data['mobileno'])){
         $otp ='1234';
       }else{
         $otp = rand(1000,9999);
+         $message= $otp.' is your OTP at Axzora. This is valid for 5 minutes.'; 
+          $user_data['otp']=$otp;
+          // error_reporting(0);
+          // $key=settingValue('sms_key');
+          // $secret_key=settingValue('sms_secret_key');
+          // $sender_id=settingValue('sms_sender_id');
+          // require_once('vendor/nexmo/src/NexmoMessage.php');
+          // $nexmo_sms = new NexmoMessage($key,$secret_key);
+          // $result = $nexmo_sms->sendText($user_data['countryCode'].$user_data['mobileno'],$sender_id,$message);
+          // $this->session->set_tempdata('otp', '$user_data', 300);
+          $api_key = "523977b1-cfcd-11ea-9fa5-0200cd936042";
+          $curl = curl_init();
+            curl_setopt_array($curl, array(
+            CURLOPT_URL => "https://2factor.in/API/V1/".$api_key."/SMS/".$user_data['mobileno']."/".$otp,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 30,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "GET",
+            CURLOPT_POSTFIELDS => "",
+            CURLOPT_HTTPHEADER => array(
+              "content-type: application/x-www-form-urlencoded"
+            ),
+          ));
+          $response = curl_exec($curl);
+          $err = curl_error($curl);
+          curl_close($curl);
       }
-     $message= $otp.' is your OTP at Axzora. This is valid for 5 minutes.'; 
-    $user_data['otp']=$otp;
-    // error_reporting(0);
-    // $key=settingValue('sms_key');
-    // $secret_key=settingValue('sms_secret_key');
-    // $sender_id=settingValue('sms_sender_id');
-    // require_once('vendor/nexmo/src/NexmoMessage.php');
-    // $nexmo_sms = new NexmoMessage($key,$secret_key);
-    // $result = $nexmo_sms->sendText($user_data['countryCode'].$user_data['mobileno'],$sender_id,$message);
-    // $this->session->set_tempdata('otp', '$user_data', 300);
-    $api_key = "523977b1-cfcd-11ea-9fa5-0200cd936042";
-    $curl = curl_init();
-      curl_setopt_array($curl, array(
-      CURLOPT_URL => "https://2factor.in/API/V1/".$api_key."/SMS/".$user_data['mobileno']."/".$otp,
-      CURLOPT_RETURNTRANSFER => true,
-      CURLOPT_ENCODING => "",
-      CURLOPT_MAXREDIRS => 10,
-      CURLOPT_TIMEOUT => 30,
-      CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-      CURLOPT_CUSTOMREQUEST => "GET",
-      CURLOPT_POSTFIELDS => "",
-      CURLOPT_HTTPHEADER => array(
-        "content-type: application/x-www-form-urlencoded"
-      ),
-    ));
-    $response = curl_exec($curl);
-    $err = curl_error($curl);
-    curl_close($curl);
     $this->db->where('country_code', $user_data['countryCode']);
     $this->db->where('mobile_number', $user_data['mobileno']);
     $this->db->where('status', 1);
