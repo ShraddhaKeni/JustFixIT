@@ -21,15 +21,6 @@ class Home_model extends CI_Model
 	           return $result;
 }
     
-  public function showAllSubcategory($start,$end){
-   $this->db->select('*');
-   $this->db->from('subcategories');
-   $this->db->where('id >=', $start);
-   $this->db->where('id <=', $end);
-   $result = $this->db->get()->result_array();
-   return $result; 
-  }
-
   public function subcategoryCount(){
    $this->db->select('*');
    $this->db->from('subcategories');
@@ -44,15 +35,7 @@ class Home_model extends CI_Model
    $result = $this->db->get()->result_array();
    return $result;
   }
-
-  public function getsubcategoryById($id){
-   $this->db->select('*');
-   $this->db->from('subcategories');
-   $this->db->where('id',$id);
-   $result = $this->db->get()->result_array();
-   return $result;
-  }
-
+  
   public function getservice($id){
    $this->db->select('*,md5(id) as sid');
    $this->db->from('services');

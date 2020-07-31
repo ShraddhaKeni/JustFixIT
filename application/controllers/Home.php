@@ -92,48 +92,17 @@ class Home extends CI_Controller {
 	}
 
 	public function subcategory($id){
-		$request = $this->home->getsubcategory($id);
-		echo json_encode($request);
+		$this->data['subcategory']=$this->home->getsubcategory($id);;
+		$this->data['page']='subcategory';
+		$this->load->vars($this->data);
+		$this->load->view($this->data['theme'].'/template');
 	}
 
 	public function subcategoryById($id){
 		$request = $this->home->getsubcategoryById($id);
 		echo json_encode($request);
 	}
-
-	public function showAllSubcategory(){
-		$start = $this->input->post('start');
-		$end = $this->input->post('end');
-		if($start==''){
-			$startVal = 1;
-			$endVal = 12;
-		}else{
-			$startVal = $start;
-			$endVal = $end;
-		}
-
-		$this->data['category']=$this->home->get_category();
-		$this->data['subcategory']=$this->home->showAllSubcategory($startVal,$endVal);
-		$this->data['subcount']=$this->home->subcategoryCount();
-		$this->data['page']='subcategory';
-		$this->load->vars($this->data);
-		$this->load->view($this->data['theme'].'/template');
-	}
-
-	public function showAllSubcategoryJson(){
-		$start = $this->input->post('start');
-		$end = $this->input->post('end');
-		if($start==''){
-			$startVal = 1;
-			$endVal = 12;
-		}else{
-			$startVal = $start;
-			$endVal = $end;
-		}
-		$subcategory=$this->home->showAllSubcategory($startVal,$endVal);
-		echo json_encode($subcategory);	
-	}
-
+	
 	public function showService($id){
 		$request = $this->home->getservice($id);
 		echo json_encode($request);		

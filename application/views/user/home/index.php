@@ -133,7 +133,7 @@
                             </div>
                             <div class="col-md-6">
                             	<div class="viewall">
-                                    <h4><a href="<?php echo base_url();?>subcategories">View All <i class="fas fa-angle-right"></i></a></h4>
+                                    <h4><a href="<?php echo base_url();?>all-services">View All <i class="fas fa-angle-right"></i></a></h4>
                                     <span>Most Popular</span>
                                 </div>
                             </div>
