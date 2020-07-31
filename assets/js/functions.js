@@ -1394,7 +1394,7 @@ $("#categories").on('change',function(){
   var tokenid = $("input[name=csrf_token_name]").val();
   var categories = $(this).val();
   $.ajax({
-    url : base_url+ 'subcategory/'+ categories,
+    url : base_url+ 'home/subcategoryJson/'+ categories,
     type : 'post',
     data:{'csrf_token_name':tokenid},
     success : function(data){

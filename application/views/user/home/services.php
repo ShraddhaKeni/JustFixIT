@@ -92,13 +92,6 @@ $currency = currency_conversion(settings('currency'));
 												<select id="subcategories" class="form-control form-control selectbox select">
 												</select>
 											</div>
-
-											<div class="filter-list">
-												<h4 class="filter-title">SubCategories</h4>
-												<select id="subcategories" class="form-control form-control selectbox select">
-												</select>
-											</div>
-
 											<div class="filter-list">
 												<h4 class="filter-title">Location</h4>
 												<input class="form-control" type="text" id="service_location" value="<?php if(isset($_POST["user_address"]) && !empty($_POST["user_address"])) echo $_POST["user_address"];?>" placeholder="Search Location" name="user_address" >

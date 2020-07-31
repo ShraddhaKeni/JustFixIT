@@ -98,16 +98,22 @@ class Home extends CI_Controller {
 		$this->load->view($this->data['theme'].'/template');
 	}
 
+	public function subcategoryJson($id){
+		$subcategory=$this->home->getsubcategory($id);;
+		echo json_encode($subcategory);
+	}
+
 	public function subcategoryById($id){
 		$request = $this->home->getsubcategoryById($id);
 		echo json_encode($request);
 	}
-	
+
 	public function showService($id){
 		$request = $this->home->getservice($id);
 		echo json_encode($request);		
 	}
 	public function show_service($id){
+		$this->data['category']=$this->home->get_category();
 		$this->data['page']='services';
 		$this->data['service'] = $this->home->getservice($id);
 		$this->load->vars($this->data);
