@@ -24,7 +24,7 @@
 					<div class="col-lg-12">
 						<div class="section-search">
 							<h3><span> JUST FIX IT!</span></h3>
-							<p>Search From Over <?php echo $services_count?> Home Services! </p>
+							<p> Search From Over <?php echo $services_count?> Home Services! </p>
 							<div class="search-box">
 								<form action="<?php echo base_url();?>search" id="search_service" method="post">
 									<input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>" />
