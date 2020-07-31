@@ -9,8 +9,9 @@
    $( document ).ready(function() {
   $('.get_services').on('click',function(){
       get_services();
-    }); 
-   });
+    });
+
+  });
 function get_services() { 
    var price_range=$('#price_range').val();
    var min_price = $('#min_price').html();
@@ -45,6 +46,8 @@ $('#dataList').empty();
 		   $('#dataList').html(obj.service_details);
    })
 }
+
+
 
 // jquery ui range - price range
 

@@ -211,7 +211,7 @@ $this->load->view($this->data['theme'].'/template');
 public function smssettings ()
 {
  if ($this->input->post('form_submit')) {
-   removeTag($this->input->post());
+  removeTag($this->input->post());
    $this->load->library('upload');
    $data = $this->input->post();
    if($data){

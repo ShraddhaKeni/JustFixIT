@@ -123,7 +123,7 @@ $currency = currency_conversion(settings('currency'));
 					
 						<div class="row align-items-center mb-4">
 							<div class="col-md-6 col">
-								<h4><span id="service_count"><?php echo $count;?></span> Services Found</h4>
+								<h4><span id="service_count"><?php echo count($service);?></span> Services Found</h4>
 							</div>
 							<div class="col-md-6 col-auto">
 								<div class="view-icons ">
@@ -177,7 +177,7 @@ $currency = currency_conversion(settings('currency'));
 													</a>
 													<span class="service-price"><?php echo currency_conversion(settings('currency')).$service_amount;?></span>
 												</div>
-												<div class="cate-list"> <a class="bg-yellow" href="<?php echo base_url().'search/'.str_replace(' ', '-', strtolower($srows['category_name']));?>"><?php echo ucfirst($srows['category_name']);?></a></div>
+<div class="cate-list"> <a class="bg-yellow" href=""><?php echo $srows['service_title'];?></a></div>
 											</div>
 										</div>
 										<div class="service-content">

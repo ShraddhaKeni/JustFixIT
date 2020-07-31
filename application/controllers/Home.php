@@ -49,23 +49,17 @@ class Home extends CI_Controller {
          $this->load->vars($this->data);
 		 $this->load->view($this->data['theme'].'/template');
 	}
-	public function services()
-	{ 
+	public function services(){ 
 		 $conditions['returnType'] = 'count'; 
 		 $inputs=array();
-		 
-		 if(!empty($this->uri->segment('2')))
-		{
-
+		 if(!empty($this->uri->segment('2'))){
 			$category_name=str_replace('-', ' ', $this->uri->segment('2'));
 			$category=$this->home->get_category_id($category_name);
+
 			$inputs['categories'] =$category;
 			$this->data['category_id']=$category;
-			
 		}
-		
-		if(isset($_POST) && !empty($_POST))
-		{ 
+		if(isset($_POST) && !empty($_POST)){ 
 			$inputs['price_range'] = $this->input->post('price_range'); 
 			$inputs['sort_by'] = $this->input->post('sort_by'); 
 			$inputs['common_search'] = $this->input->post('common_search'); 
@@ -74,9 +68,7 @@ class Home extends CI_Controller {
 			$inputs['service_longitude'] = $this->input->post('user_longitude'); 
 			$inputs['user_address']=$this->input->post('user_address');
 		}
-
-        $totalRec = $this->home->get_all_service($conditions,$inputs); 
-         
+		$totalRec = $this->home->get_all_service($conditions,$inputs); 
         // Pagination configuration 
         $config['target']      = '#dataList'; 
         $config['link_func']      = 'getData';
@@ -84,23 +76,73 @@ class Home extends CI_Controller {
         $config['base_url']    = base_url('home/ajaxPaginationData'); 
         $config['total_rows']  = $totalRec; 
         $config['per_page']    = $this->perPage; 
-         
         // Initialize pagination library 
         $this->ajax_pagination->initialize($config); 
-         
         // Get records 
-
-        $conditions = array( 
+		$conditions = array( 
             'limit' => $this->perPage 
         );
-     
-         $this->data['module']    = 'services';
-         $this->data['page'] = 'index';
-         $this->data['service']=$this->home->get_all_service($conditions,$inputs);
-	     $this->data['count']=$totalRec;
-         $this->data['category']=$this->home->get_category();
-	     $this->load->vars($this->data);
-		 $this->load->view($this->data['theme'].'/template');
+     	$this->data['module']    = 'services';
+        $this->data['page'] = 'index';
+        $this->data['service']=$this->home->get_all_service($conditions,$inputs);
+	    $this->data['count']=$totalRec;
+        $this->data['category']=$this->home->get_category();
+        $this->load->vars($this->data);
+		$this->load->view($this->data['theme'].'/template');
+	}
+
+	public function subcategory($id){
+		$request = $this->home->getsubcategory($id);
+		echo json_encode($request);
+	}
+
+	public function subcategoryById($id){
+		$request = $this->home->getsubcategoryById($id);
+		echo json_encode($request);
+	}
+
+	public function showAllSubcategory(){
+		$start = $this->input->post('start');
+		$end = $this->input->post('end');
+		if($start==''){
+			$startVal = 1;
+			$endVal = 12;
+		}else{
+			$startVal = $start;
+			$endVal = $end;
+		}
+
+		$this->data['category']=$this->home->get_category();
+		$this->data['subcategory']=$this->home->showAllSubcategory($startVal,$endVal);
+		$this->data['subcount']=$this->home->subcategoryCount();
+		$this->data['page']='subcategory';
+		$this->load->vars($this->data);
+		$this->load->view($this->data['theme'].'/template');
+	}
+
+	public function showAllSubcategoryJson(){
+		$start = $this->input->post('start');
+		$end = $this->input->post('end');
+		if($start==''){
+			$startVal = 1;
+			$endVal = 12;
+		}else{
+			$startVal = $start;
+			$endVal = $end;
+		}
+		$subcategory=$this->home->showAllSubcategory($startVal,$endVal);
+		echo json_encode($subcategory);	
+	}
+
+	public function showService($id){
+		$request = $this->home->getservice($id);
+		echo json_encode($request);		
+	}
+	public function show_service($id){
+		$this->data['page']='services';
+		$this->data['service'] = $this->home->getservice($id);
+		$this->load->vars($this->data);
+		$this->load->view($this->data['theme'].'/template');		
 	}
 
 	public function featured_services()

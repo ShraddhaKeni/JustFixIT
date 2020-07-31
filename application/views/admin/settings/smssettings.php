@@ -38,7 +38,7 @@
 	</div>
 	<div class="col-auto">
 		<div class="status-toggle">
-			<?php if($user_role==1){?>
+			<?php  if($user_role==1){?>
 			<input  id="default_otp" class="check" type="checkbox" name="default_otp" <?=($default_otp==1)?'checked':'';?>>
 		<?php }else{?>
 <input  id="default_otp" class="check" type="checkbox" name="default_otp" <?=($default_otp==1)?'checked':'';?> disabled>

@@ -88,8 +88,9 @@
 						<div class="row">
 							<?php
 							 //echo "<pre>"; print_r($category);
-							if(!empty($category)) {
+							if(!empty($category)) { $i=0;
 								foreach ($category as $crows) {
+									if($i==6){ break; }
 							?>
 							<div class="col-lg-4 col-md-6">
 								<a href="<?php echo base_url();?>search/<?php echo str_replace(' ', '-', strtolower($crows['category_name']));?>">
@@ -104,7 +105,7 @@
 									</div>
 								</a>
 							</div>
-						<?php } }
+						<?php $i++; } }
 						else { 
 							echo '<div class="col-lg-12">
 								<div class="category">
@@ -132,7 +133,7 @@
                             </div>
                             <div class="col-md-6">
                             	<div class="viewall">
-                                    <h4><a href="<?php echo base_url();?>all-services">View All <i class="fas fa-angle-right"></i></a></h4>
+                                    <h4><a href="<?php echo base_url();?>subcategories">View All <i class="fas fa-angle-right"></i></a></h4>
                                     <span>Most Popular</span>
                                 </div>
                             </div>

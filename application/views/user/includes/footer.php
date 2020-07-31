@@ -765,6 +765,9 @@ $country_list=$this->db->where('status',1)->order_by('country_name',"ASC")->get(
 		<?php if($this->uri->segment(1)=="book-service"){ ?>
 		 <script src="<?php echo base_url(); ?>assets/js/book_service.js"></script>
 		<?php }?>
+		<?php if($this->uri->segment(1)=="subcategories"){ ?>
+		 <script src="<?php echo base_url(); ?>assets/js/subcategory.js"></script>
+		<?php }?>
 		<!---External js end-->
 
 		<div class="modal account-modal fade" id="tab_login_modal">

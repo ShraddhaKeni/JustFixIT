@@ -1390,6 +1390,29 @@ function update_pro_cancel_booking_status(bookid,status,rowid,review){
 
 }
 
+$("#categories").on('change',function(){
+  var tokenid = $("input[name=csrf_token_name]").val();
+  var categories = $(this).val();
+  $.ajax({
+    url : base_url+ 'subcategory/'+ categories,
+    type : 'post',
+    data:{'csrf_token_name':tokenid},
+    success : function(data){
+      var JsonVal = $.parseJSON(data);
+      var subcategory = '';
+      subcategory+="<option>Select Subcategory</option>";
+      for (var i = 0; i < JsonVal.length; i++) {
+             var text = JsonVal[i];
+             subcategory+= "<option value='"+text['id']+"'>"+text['subcategory_name']+"</option>";
+              }
+          $('#subcategories').html(subcategory);
+      },
+    error : function(data){
+      console.log(data);
+    }
+  });
+});
+
 
 /*user update the status*/
 
