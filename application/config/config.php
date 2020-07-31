@@ -520,13 +520,13 @@ $config['global_xss_filtering'] = FALSE;
 | 'csrf_regenerate' = Regenerate token on every submission
 | 'csrf_exclude_uris' = Array of URIs which ignore CSRF checks
 */
-if($_SERVER["REQUEST_URI"] === '/axzora/provider_wallet_submit'){
+if($_SERVER["REQUEST_URI"] === '/provider_wallet_submit'){
 		$config['csrf_protection'] = FALSE;
-	}else if($_SERVER["REQUEST_URI"] === '/axzora/user_wallet_submit'){
+	}else if($_SERVER["REQUEST_URI"] === '/user_wallet_submit'){
 		$config['csrf_protection'] = FALSE;
-	}else if ($_SERVER["REQUEST_URI"] === '/axzora/provider_subscription_submit'){
+	}else if ($_SERVER["REQUEST_URI"] === '/provider_subscription_submit'){
 		$config['csrf_protection'] = FALSE;
-	}else if ($_SERVER["REQUEST_URI"] === '/axzora/booking_service_submit'){
+	}else if ($_SERVER["REQUEST_URI"] === '/booking_service_submit'){
 		$config['csrf_protection'] = FALSE;
 	}
 	else{
