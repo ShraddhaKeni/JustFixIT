@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <?php
     $query = $this->db->query("select * from system_settings WHERE status = 1");
     $result = $query->result_array();
@@ -30,11 +30,11 @@
 ?>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title><?php echo $this->website_name;?></title>
+	<title>AXZORA | One-stop destination for expert local services</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="description" content="">
-	<meta name="keywords" content="">
-	<meta name="author" content="Dreamguy's Technologies">
+	<meta name="description" content="AXZORA is Goa's best, One-stop destination for expert local services like Beauty, Repair, Cleaning, Grooming, Painting, Spa & More Services by Expert Professionals in Goa. Get dozens of trusted professionals near you to take care of all your home and beauty needs.">
+	<meta name="keywords" content="Beauty, Repair, Cleaning, Grooming, Painting, Car Serices, Salon at Home ">
+	<meta name="author" content="Axzora Private Limited">
     <link rel="shortcut icon" type="image/x-icon" href="<?php echo $fav;?>">
 	
 	<link rel="stylesheet" href="<?php echo base_url();?>assets/plugins/bootstrap/css/bootstrap.min.css">
