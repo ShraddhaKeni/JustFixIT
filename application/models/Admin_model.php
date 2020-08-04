@@ -246,5 +246,13 @@ class Admin_model extends CI_Model
 			$this->db->where('id',$id);
 			$this->db->update('providers',$data);
 		}
+
+		public function delete_provider($id){
+			$this->db->where('id',$id);
+			$request = $this->db->delete('providers');
+			$this->db->where('user_id',$id);
+			$this->db->delete('services');
+			return $request;
+		}
 }
 ?>

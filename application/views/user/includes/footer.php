@@ -536,7 +536,7 @@ $country_list=$this->db->where('status',1)->order_by('country_name',"ASC")->get(
 						?>
 						<ul>
 							<?php foreach ($result as $res) { ?>
-								<li><a href="<?php echo base_url();?>search/<?php echo str_replace(' ', '-', $res['category_name']);?>"><?php echo ucfirst($res['category_name']);?></a></li>
+								<li><a href="<?php echo base_url();?>subcategory/<?php echo $res['id'];?>"><?php echo ucfirst($res['category_name']); ?></a></li>
 							<?php } ?>
 						</ul>
 					</div>

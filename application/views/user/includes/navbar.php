@@ -50,7 +50,12 @@
 							<a href="<?php echo base_url();?>all-categories">Categories <i class="fas fa-chevron-down"></i></a>
 							<ul class="submenu">
 								<?php foreach ($result as $res) { ?>
-								<li><a href="<?php echo base_url();?>search/<?php echo str_replace(' ', '-',strtolower($res['category_name']));?>"><?php echo ucfirst($res['category_name']);?></a></li>
+								<li>
+									<!-- <a href="<?php echo base_url();?>search/<?php echo str_replace(' ', '-',strtolower($res['category_name'])); ?>"><?php echo ucfirst($res['category_name']); echo $res['id']; ?></a> -->
+
+									<a href="<?php echo base_url();?>subcategory/<?php echo $res['id'];  ?>"><?php echo ucfirst($res['category_name']); ?></a>
+
+								</li>
 								<?php } ?>
 							</ul>
 						</li>

@@ -100,8 +100,11 @@ class Service extends CI_Controller {
         }
       }
 
+      $string = str_replace(' ', ' ', $this->input->post('service_title'));
+      $title = preg_replace('/[^A-Za-z0-9\-]/', ' ', $string);
+      
       $inputs['user_id']= $this->session->userdata('id');
-      $inputs['service_title']=$this->input->post('service_title');
+      $inputs['service_title']=$title;
       $inputs['service_sub_title']=$this->input->post('service_sub_title');
       $inputs['category']=$this->input->post('category');
       $inputs['subcategory']=$this->input->post('subcategory');
@@ -117,6 +120,7 @@ class Service extends CI_Controller {
       $inputs['created_at']=date('Y-m-d H:i:s');
       $inputs['updated_at']=date('Y-m-d H:i:s');
 
+      
       $result=$this->service->create_service($inputs);
 
       if(count($_POST['service_offered'])>0){

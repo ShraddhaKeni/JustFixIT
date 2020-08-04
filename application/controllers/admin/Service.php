@@ -188,6 +188,11 @@ public function edit_service_providers($id){
   $this->load->view($this->data['theme'].'/template',['countries'=>$countries,'csrf'=>$csrf,'categories'=>$categories,'provider'=>$provider]);
 }
 
+public function delete_service_providers($id){
+  $this->load->model('Admin_model');
+  echo $this->Admin_model->delete_provider($id);
+}
+
 public function save_provider(){
   $data = $this->input->post();
   $data['token'] = $this->security->get_csrf_hash();
@@ -284,7 +289,11 @@ public function provider_list()
   }else{
     $row[]='Verified';
   }
-  $row[]='<a href="'.base_url().'edit-service-providers/'.$template->id.'" class="btn btn-sm bg-success-light" title="Edit" data-id="'.$template->id.'"><i class="far fa-edit mr-1"></i> Edit</a>';
+  $row[]='<a href="'.base_url().'edit-service-providers/'.$template->id.'" class="btn btn-sm bg-success-light" title="Edit" data-id="'.$template->id.'"><i class="far fa-edit mr-1"></i> Edit</a>
+
+  <a href="javascript:void(0)" data-id="'.$template->id.'" class="btn btn-sm bg-danger-light delete_provider" title="Delete" data-id="'.$template->id.'"><i class="far fa-trash mr-1"></i> Delete</a>
+
+  ';
 
   $data[] = $row;
 }

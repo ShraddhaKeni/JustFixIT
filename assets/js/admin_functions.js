@@ -308,6 +308,47 @@ if($('#world-map-markers').length > 0 ){
 if(page == 'service-providers' ||page == 'stripe_payment_gateway' || page == 'service-list' ||page == 'users'||page == 'provider_list' ||page == 'provider-details'){ 
 
 	var providers_table = $('#providers_table').on('init.dt', function () {
+
+		$('.delete_provider').on('click',function(){
+    		var dataId = $(this).attr('data-id');
+    		if(confirm("Are You Sure you want to delete this provider?")){
+    			console.log(base_url);
+    			$.ajax({
+    				url : base_url+"delete-service-providers/"+dataId,
+    				type : "post",
+    				data : {'csrf_token_name':csrf_token},
+    				success : function (data){
+    					if(data==1){
+    						swal({
+                                 title: "Provider Delete",
+                                 text: "Provider SuccessFully Delete",
+                                 icon: "success",
+                                 button: "okay",
+                               	 closeOnEsc: false,
+								 closeOnClickOutside: false
+                           }).then(function(){
+                     		window.location.reload();
+						});
+    					}
+    				},
+    				error : function (data){
+    					swal({
+                                 title: "Provider Delete",
+                                 text: "Something happen provider not delete",
+                                 icon: "success",
+                                 button: "okay",
+                               	 closeOnEsc: false,
+								 closeOnClickOutside: false
+                           }).then(function(){
+                     		window.location.reload();
+						});
+    				}
+    			});
+    		}
+    		
+    		return false;
+    	});
+
 	} ).DataTable({
 			"processing": true, //Feature control the processing indicator.
 			"serverSide": true, //Feature control DataTables' server-side processing mode.

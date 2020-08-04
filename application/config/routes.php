@@ -119,6 +119,7 @@ $route['edit-ratingstype/(:num)'] = 'admin/ratingstype/edit_ratingstype/$1';
 $route['service-providers'] = 'admin/service/service_providers';
 $route['add-service-providers'] = 'admin/service/add_service_providers';
 $route['edit-service-providers/(:num)'] = 'admin/service/edit_service_providers/$1';
+$route['delete-service-providers/(:num)'] = 'admin/service/delete_service_providers/$1';
 $route['getSubcategory/(:num)'] = 'admin/service/getSubcategory/$1';
 $route['save_provider'] = 'admin/service/save_provider';
 $route['update_provider/(:num)'] = 'admin/service/update_provider/$1';

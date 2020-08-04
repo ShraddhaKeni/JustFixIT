@@ -41,9 +41,7 @@ class Home extends CI_Controller {
 	     $this->load->vars($this->data);
          $this->load->view($this->data['theme'].'/template');
 	}
-	
-	public function contact()
-	{
+	public function contact(){
 		
 		 $this->data['page'] = 'contact';
          $this->load->vars($this->data);
