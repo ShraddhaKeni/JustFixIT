@@ -563,19 +563,24 @@ $this->load->view($this->data['theme'].'/template');
 
 public function featured_services()
 {
- $this->data['page'] = 'featured_services';
- $this->data['services']=$this->service->featured_service();
- $this->load->vars($this->data);
- $this->load->view($this->data['theme'].'/template');
+ // $this->data['page'] = 'featured_services';
+ // $this->data['services']=$this->service->featured_service();
+ // $this->load->vars($this->data);
+ // $this->load->view($this->data['theme'].'/template');
+
+  $services=$this->service->featured_service();
+  echo json_encode($services);
 }
 public function popular_services()
 {
- $this->data['page'] = 'popular_services';
- $this->data['services']=$this->service->popular_service();
- $this->load->vars($this->data);
- $this->load->view($this->data['theme'].'/template');
-}
+ // $this->data['page'] = 'popular_services';
+ // $this->data['services']=$this->service->popular_service();
+ // $this->load->vars($this->data);
+ // $this->load->view($this->data['theme'].'/template');
 
+ $services=$this->service->popular_service();
+ echo json_encode($services);
+}
 public function update_booking()
 {
   if(empty($this->session->userdata('id'))){

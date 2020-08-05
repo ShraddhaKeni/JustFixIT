@@ -168,7 +168,6 @@ class Chat_ctrl extends CI_Controller {
       extract($_GET);
        
         $data=$this->Chat_model->get_book_info($book_id);
-
              if(!empty($data)){
               $self_info=$this->Chat_model->get_token_info($this->session->userdata('chat_token'));
               if($self_info->type==2){
@@ -178,9 +177,6 @@ class Chat_ctrl extends CI_Controller {
               }
          
         }
-
-        
-
          $this->data['page'] = 'user_chats';
           $chat_lists=$this->Chat_model->get_token_info($user_token['token']);
        
@@ -223,6 +219,8 @@ class Chat_ctrl extends CI_Controller {
 
   public function insert_message(){
     extract($_POST);
+    echo $_POST;
+    exit;
    date_default_timezone_set('Asia/Kolkata');
       $data=array(
         "sender_token"=>$fromToken,
