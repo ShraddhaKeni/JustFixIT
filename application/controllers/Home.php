@@ -34,7 +34,8 @@ class Home extends CI_Controller {
 
 	
 	public function index()
-	{
+	{ 
+		 error_reporting(0);
 		 $this->data['page'] = 'index';
 	     $this->data['category']=$this->home->get_category();
 	     $this->data['services']=$this->home->get_service();
@@ -48,7 +49,7 @@ class Home extends CI_Controller {
 		 $this->load->view($this->data['theme'].'/template');
 	}
 	public function services(){ 
-		error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
+		error_reporting(0);
 		 $conditions['returnType'] = 'count'; 
 		 $inputs=array();
 		 if(!empty($this->uri->segment('2'))){
@@ -91,7 +92,7 @@ class Home extends CI_Controller {
 	}
 
 	public function subcategory($id){
-		error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
+		error_reporting(0);
 		$this->data['subcategory']=$this->home->getsubcategory($id);;
 		$this->data['page']='subcategory';
 		$this->load->vars($this->data);
@@ -113,7 +114,7 @@ class Home extends CI_Controller {
 		echo json_encode($request);		
 	}
 	public function show_service($id){
-		error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
+		error_reporting(0);
 		$this->data['category']=$this->home->get_category();
 		$this->data['page']='services';
 		$this->data['service'] = $this->home->getservice($id);

@@ -505,6 +505,12 @@ public function provider_edit_post(){
     $this->response($result, REST_Controller::HTTP_OK); 
 }
 
+public function delete_provider_post(){
+  $id = $this->input->post('id');
+  $this->load->model('Admin_model');
+  echo $this->Admin_model->delete_provider($id);
+}
+
 public function subcategory_services_post()
 {  
 
@@ -1862,13 +1868,13 @@ $this->response($result, REST_Controller::HTTP_OK);
 
 public function book_service_post(){ 
   $user_data = array();
-          $user_data =  getallheaders(); // Get Header Data
+          //$user_data =  getallheaders(); // Get Header Data
           $user_post_data = $this->post();
-          $token = (!empty($user_data['token']))?$user_data['token']:'';
-          if(empty($token)){
-            $token = (!empty($user_data['Token']))?$user_data['Token']:'';
-          }
-
+          // $token = (!empty($user_data['token']))?$user_data['token']:'';
+          // if(empty($token)){
+          //   $token = (!empty($user_data['Token']))?$user_data['Token']:'';
+          // }
+          $token = $this->input->post('token');
 
           $data = array();
           $response_code = '-1';
@@ -1918,7 +1924,7 @@ public function book_service_post(){
                 $result = $this->api->get_service_id($inputs);
                 $provider_details = $this->api->provider_hours($result['user_id']);
                 $availability_details = json_decode($provider_details['availability'],true);
-
+                //echo json_encode($availability_details); exit;
                 $alldays = false;
                 foreach ($availability_details as $details) 
                 {
@@ -2050,12 +2056,7 @@ public function book_service_post(){
             }                    
 
             $data['availability'] = $timing_array;
-
-
-
                       // Booking availability
-
-
             $booking_from_time = $user_post_data['from_time'];
             $booking_end_time = $user_post_data['to_time'];
 
@@ -2147,9 +2148,6 @@ public function book_service_post(){
             $charges_array['source']       = $user_post_data['tokenid'];
             $charges_array['source']       = $user_post_data['tokenid'];
             $provider_id = $result['user_id'];
-
-
-
             $user_post_data['currency_code']     = settings('currency');
             $user_post_data['provider_id']  = $provider_id;
             $user_post_data['user_id'] = $this->users_id;
@@ -3751,8 +3749,8 @@ public function generate_otp_provider_post(){
             $device_data['device_id'] = $user_data['device_id'];
             $result = $this->api->provider_signup($user_details,$device_data);
             if($result != ''){
-              if(($_SERVER['HTTP_HOST']=='https') || ($_SERVER['HTTP_HOST']=='http')){
-                $api_key = "3824a23a-c828-11ea-9fa5-0200cd936042";  
+              if(($_SERVER['HTTP_HOST']=='https://') || ($_SERVER['HTTP_HOST']=='http://')){
+                $api_key = "523977b1-cfcd-11ea-9fa5-0200cd936042";  
               }else{
                 $api_key = 'default_otp';
               }
@@ -3760,36 +3758,30 @@ public function generate_otp_provider_post(){
               if($default_otp==1){
                 $otp ='1234';
               }else{
+                $api_key = "523977b1-cfcd-11ea-9fa5-0200cd936042";
                 $otp = rand(1000,9999);
+                error_reporting(0);
+                $curl = curl_init();
+                curl_setopt_array($curl, array(
+                CURLOPT_URL => "https://2factor.in/API/V1/".$api_key."/SMS/".$user_data['mobileno']."/".$otp,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => "",
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 30,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => "GET",
+                CURLOPT_POSTFIELDS => "",
+                CURLOPT_HTTPHEADER => array(
+                  "content-type: application/x-www-form-urlencoded"
+                ),
+              ));
+              $response = curl_exec($curl);
+              $err = curl_error($curl);
+              curl_close($curl);
               }
               $message='Your OTP is '.$otp.''; 
               $user_data['otp']=$otp;
-              error_reporting(0);
               
-              // $key=settingValue('sms_key');
-              // $secret_key=settingValue('sms_secret_key');
-              // $sender_id=settingValue('sms_sender_id');
-              // require_once('vendor/nexmo/src/NexmoMessage.php');
-              // $nexmo_sms = new NexmoMessage($key,$secret_key);
-              // $result = $nexmo_sms->sendText($user_data['country_code'].$user_data['mobileno'],$sender_id,$message);
-              // $this->session->set_tempdata('otp', '$user_data', 300);
-              $curl = curl_init();
-              curl_setopt_array($curl, array(
-              CURLOPT_URL => "https://2factor.in/API/V1/".$api_key."/SMS/".$user_data['mobileno']."/".$otp,
-              CURLOPT_RETURNTRANSFER => true,
-              CURLOPT_ENCODING => "",
-              CURLOPT_MAXREDIRS => 10,
-              CURLOPT_TIMEOUT => 30,
-              CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-              CURLOPT_CUSTOMREQUEST => "GET",
-              CURLOPT_POSTFIELDS => "",
-              CURLOPT_HTTPHEADER => array(
-                "content-type: application/x-www-form-urlencoded"
-              ),
-            ));
-            $response = curl_exec($curl);
-            $err = curl_error($curl);
-            curl_close($curl);
             $otp_data=array(
                 'endtime'=>time()+300,
                 'mobile_number'=>$user_data['mobileno'],
@@ -3823,8 +3815,8 @@ public function generate_otp_provider_post(){
             $response_code = '201';
             $response_message = 'Mobile number already exists as user. Please use another mobile number';
           }else{
-            if(($_SERVER['HTTP_HOST']=='https') || ($_SERVER['HTTP_HOST']=='http')){
-              $api_key = "3824a23a-c828-11ea-9fa5-0200cd936042";  
+            if(($_SERVER['HTTP_HOST']=='https://') || ($_SERVER['HTTP_HOST']=='http://')){
+              $api_key = "523977b1-cfcd-11ea-9fa5-0200cd936042";  
             }else{
               $api_key = 'default_otp';
             }
@@ -3832,35 +3824,29 @@ public function generate_otp_provider_post(){
             if($default_otp==1){
               $otp ='1234';
             }else{
+              $api_key = "523977b1-cfcd-11ea-9fa5-0200cd936042";
               $otp = rand(1000,9999);
+              error_reporting(0);
+              $curl = curl_init();
+                curl_setopt_array($curl, array(
+                CURLOPT_URL => "https://2factor.in/API/V1/".$api_key."/SMS/".$user_data['mobileno']."/".$otp,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => "",
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 30,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => "GET",
+                CURLOPT_POSTFIELDS => "",
+                CURLOPT_HTTPHEADER => array(
+                  "content-type: application/x-www-form-urlencoded"
+                ),
+              ));
+              $response = curl_exec($curl);
+              $err = curl_error($curl);
+              curl_close($curl);
             }
             $message='Your OTP is '.$otp.''; 
             $user_data['otp']=$otp;
-            error_reporting(0);
-            // $key=settingValue('sms_key');
-            // $secret_key=settingValue('sms_secret_key');
-            // $sender_id=settingValue('sms_sender_id');
-            // require_once('vendor/nexmo/src/NexmoMessage.php');
-            // $nexmo_sms = new NexmoMessage($key,$secret_key);
-            // $result = $nexmo_sms->sendText($user_data['country_code'].$user_data['mobileno'],$sender_id,$message);
-            // $this->session->set_tempdata('otp', '$user_data', 300);
-            $curl = curl_init();
-              curl_setopt_array($curl, array(
-              CURLOPT_URL => "https://2factor.in/API/V1/".$api_key."/SMS/".$user_data['mobileno']."/".$otp,
-              CURLOPT_RETURNTRANSFER => true,
-              CURLOPT_ENCODING => "",
-              CURLOPT_MAXREDIRS => 10,
-              CURLOPT_TIMEOUT => 30,
-              CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-              CURLOPT_CUSTOMREQUEST => "GET",
-              CURLOPT_POSTFIELDS => "",
-              CURLOPT_HTTPHEADER => array(
-                "content-type: application/x-www-form-urlencoded"
-              ),
-            ));
-            $response = curl_exec($curl);
-            $err = curl_error($curl);
-            curl_close($curl);
             $otp_data=array(
               'endtime'=>time()+300,
               'mobile_number'=>$user_data['mobileno'],
@@ -3921,7 +3907,7 @@ public function generate_otp_user_post(){
             $result = $this->api->user_signup($user_details,$device_data);
             if($result != ''){
               if(($_SERVER['HTTP_HOST']=='https') || ($_SERVER['HTTP_HOST']=='http')){
-                  $api_key = "3824a23a-c828-11ea-9fa5-0200cd936042";  
+                  $api_key = "523977b1-cfcd-11ea-9fa5-0200cd936042";  
                 }else{
                   $api_key = 'default_otp';
                 }
@@ -3929,37 +3915,29 @@ public function generate_otp_user_post(){
              if($default_otp==1){
               $otp ='1234';
             }else{
+              $api_key = "523977b1-cfcd-11ea-9fa5-0200cd936042";
               $otp = rand(1000,9999);
+              error_reporting(0);
+              $curl = curl_init();
+                curl_setopt_array($curl, array(
+                CURLOPT_URL => "https://2factor.in/API/V1/".$api_key."/SMS/".$user_data['mobileno']."/".$otp,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => "",
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 30,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => "GET",
+                CURLOPT_POSTFIELDS => "",
+                CURLOPT_HTTPHEADER => array(
+                  "content-type: application/x-www-form-urlencoded"
+                ),
+              ));
+              $response = curl_exec($curl);
+              $err = curl_error($curl);
+              curl_close($curl);
             }
             $message='Your OTP is '.$otp.''; 
             $user_data['otp']=$otp;
-            error_reporting(0);
-
-            // $key=settingValue('sms_key');
-            // $secret_key=settingValue('sms_secret_key');
-            // $sender_id=settingValue('sms_sender_id');
-            // require_once('vendor/nexmo/src/NexmoMessage.php');
-            // $nexmo_sms = new NexmoMessage($key,$secret_key);
-            // $result = $nexmo_sms->sendText($user_data['country_code'].$user_data['mobileno'],$sender_id,$message);
-            // $this->session->set_tempdata('otp', '$user_data', 300);
-            $curl = curl_init();
-              curl_setopt_array($curl, array(
-              CURLOPT_URL => "https://2factor.in/API/V1/".$api_key."/SMS/".$user_data['mobileno']."/".$otp,
-              CURLOPT_RETURNTRANSFER => true,
-              CURLOPT_ENCODING => "",
-              CURLOPT_MAXREDIRS => 10,
-              CURLOPT_TIMEOUT => 30,
-              CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-              CURLOPT_CUSTOMREQUEST => "GET",
-              CURLOPT_POSTFIELDS => "",
-              CURLOPT_HTTPHEADER => array(
-                "content-type: application/x-www-form-urlencoded"
-              ),
-            ));
-            $response = curl_exec($curl);
-            $err = curl_error($curl);
-            curl_close($curl);
-
             $otp_data=array(
               'endtime'=>time()+300,
               'mobile_number'=>$user_data['mobileno'],
@@ -3999,7 +3977,7 @@ public function generate_otp_user_post(){
           $response_message = 'Mobile number already exists as provider. Please use another mobile number';
         }else{
         if(($_SERVER['HTTP_HOST']=='https') || ($_SERVER['HTTP_HOST']=='http')){
-            $api_key = "3824a23a-c828-11ea-9fa5-0200cd936042";  
+            $api_key = "523977b1-cfcd-11ea-9fa5-0200cd936042";  
           }else{
             $api_key = 'default_otp';
           }
@@ -4007,36 +3985,30 @@ public function generate_otp_user_post(){
          if($default_otp==1){
           $otp ='1234';
         }else{
+          $api_key = "523977b1-cfcd-11ea-9fa5-0200cd936042";
           $otp = rand(1000,9999);
+          error_reporting(0);
+          $curl = curl_init();
+          curl_setopt_array($curl, array(
+          CURLOPT_URL => "https://2factor.in/API/V1/".$api_key."/SMS/".$user_data['mobileno']."/".$otp,
+          CURLOPT_RETURNTRANSFER => true,
+          CURLOPT_ENCODING => "",
+          CURLOPT_MAXREDIRS => 10,
+          CURLOPT_TIMEOUT => 30,
+          CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+          CURLOPT_CUSTOMREQUEST => "GET",
+          CURLOPT_POSTFIELDS => "",
+          CURLOPT_HTTPHEADER => array(
+            "content-type: application/x-www-form-urlencoded"
+          ),
+        ));
+        $response = curl_exec($curl);
+        $err = curl_error($curl);
+        curl_close($curl);
+
         }
         $message='Your OTP is '.$otp.''; 
         $user_data['otp']=$otp;
-        error_reporting(0);
-        // $key=settingValue('sms_key');
-        // $secret_key=settingValue('sms_secret_key');
-        // $sender_id=settingValue('sms_sender_id');
-        // require_once('vendor/nexmo/src/NexmoMessage.php');
-        // $nexmo_sms = new NexmoMessage($key,$secret_key);
-        // $result = $nexmo_sms->sendText($user_data['country_code'].$user_data['mobileno'],$sender_id,$message);
-        // $this->session->set_tempdata('otp', '$user_data', 300);
-        $curl = curl_init();
-        curl_setopt_array($curl, array(
-        CURLOPT_URL => "https://2factor.in/API/V1/".$api_key."/SMS/".$user_data['mobileno']."/".$otp,
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_ENCODING => "",
-        CURLOPT_MAXREDIRS => 10,
-        CURLOPT_TIMEOUT => 30,
-        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-        CURLOPT_CUSTOMREQUEST => "GET",
-        CURLOPT_POSTFIELDS => "",
-        CURLOPT_HTTPHEADER => array(
-          "content-type: application/x-www-form-urlencoded"
-        ),
-      ));
-      $response = curl_exec($curl);
-      $err = curl_error($curl);
-      curl_close($curl);
-
         $otp_data=array(
           'endtime'=>time()+300,
           'mobile_number'=>$user_data['mobileno'],
@@ -4284,11 +4256,11 @@ public function chat_post()
 
   $params = $this->post();
   $user_post_data = getallheaders(); 
-
-  $token = (!empty($user_post_data['token']))?$user_post_data['token']:'';
-  if(empty($token)){
-    $token = (!empty($user_post_data['Token']))?$user_post_data['Token']:'';
-  }
+  $token = $this->input->post('token');
+  // $token = (!empty($user_post_data['token']))?$user_post_data['token']:'';
+  // if(empty($token)){
+  //   $token = (!empty($user_post_data['Token']))?$user_post_data['Token']:'';
+  // }
   if (!empty($token)) {
     if(!empty($params['to']) && !empty($params['content']))
     {
@@ -4404,6 +4376,7 @@ public function chat_post()
 $result = $this->data_format($response_code,$response_message,$history);
 $this->response($result, REST_Controller::HTTP_OK);
 }else{
+  echo "error here"; exit;
  $this->token_error();
 }
 }
@@ -4430,8 +4403,6 @@ public function all_chat_detail_get(){
   echo json_encode($query);
 }
 public function conversation_info_get($sender_token,$receiver_token){
-  // $sender_token = "16yZWVT7swiIEGhz";
-  // $receiver_token = "29f0KMjcIoaZMbwC";
   $query = $this->Chat_model->get_conversation_info_api($sender_token,$receiver_token);
   echo json_encode($query);
 }

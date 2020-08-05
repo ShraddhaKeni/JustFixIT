@@ -132,7 +132,7 @@ class Service_model extends CI_Model
 
      public function popular_service()
      {
-       $this->db->select("s.id,s.user_id,s.service_title,s.service_amount,s.mobile_image,s.currency,c.category_name,c.category_image,r.rating,sc.subcategory_name");
+       $this->db->select("s.id,s.user_id,s.service_title,s.service_amount,s.mobile_image,c.category_name,c.category_image,r.rating,sc.subcategory_name");
         $this->db->from('services s');
         $this->db->join('categories c', 'c.id = s.category', 'LEFT');
         $this->db->join('subcategories sc', 'sc.id = s.subcategory', 'LEFT');
