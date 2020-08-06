@@ -1092,8 +1092,8 @@ function check_user_reason(){
 
 function get_pro_subscription(){
  swal({
-   title: "Please Subscription Plan !",
-   text: "Choose your plan to subscribe.....",
+   title: "Uh-Oh!",
+   text: "Seems like you have not subscribed yet.\n\n To get on-board please subscribe.",
    icon: "error",
    button: "okay",
    closeOnEsc: false,

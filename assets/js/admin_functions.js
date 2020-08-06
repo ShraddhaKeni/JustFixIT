@@ -312,7 +312,6 @@ if(page == 'service-providers' ||page == 'stripe_payment_gateway' || page == 'se
 		$('.delete_provider').on('click',function(){
     		var dataId = $(this).attr('data-id');
     		if(confirm("Are You Sure you want to delete this provider?")){
-    			console.log(base_url);
     			$.ajax({
     				url : base_url+"delete-service-providers/"+dataId,
     				type : "post",

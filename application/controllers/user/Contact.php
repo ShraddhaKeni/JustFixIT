@@ -39,10 +39,18 @@ class Contact extends CI_Controller {
 	
 	public function contact()
 	{
-		
 		 $this->data['page'] = 'contact';
          $this->load->vars($this->data);
 		 $this->load->view($this->data['theme'].'/template');
+	}
+
+	public function submit_contact(){
+		$data = $this->input->post();
+		$data['date'] = date('Y-m-d H:i:s');
+		//echo "<pre>"; print_r($data); exit;
+		$this->home->save_contact($data);
+		$this->session->set_flashdata('success_message','You Successfully sent message');
+		redirect(base_url().'contact');
 	}
    
 }

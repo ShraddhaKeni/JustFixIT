@@ -151,6 +151,7 @@ $route['about-us'] = 'user/about/about_us';
 $route['verified'] = 'user/verified/verified';
 $route['terms-conditions'] = 'user/terms/terms';
 $route['contact'] = 'user/contact/contact';
+$route['submitcontact'] = 'user/contact/submit_contact';
 $route['search/(:any)'] = 'home/services/$1';
 $route['privacy'] = 'user/privacy/privacy';
 $route['faq'] = 'user/privacy/faq';

@@ -52,7 +52,7 @@
 								<input class="form-control no_only" type="text"  value="<?php echo $get_details['mobileno']?>" name="mobileno" readonly required>
 							</div>
 							<div class="form-group col-xl-6">
-								<label class="mr-sm-2">Date of birth</label>
+								<label class="mr-sm-2">Date of Birth</label>
 								<input type="text" class="form-control provider_datepicker" autocomplete="off" name="dob" value="<?php echo (!empty($get_details['dob']))?date('d-m-Y',strtotime($get_details['dob'])):'';?>">
 							</div>
 							<div class="col-xl-12">
@@ -71,7 +71,7 @@
 								</select>
 							</div>
 							<div class="form-group col-xl-6">
-								<label class="mr-sm-2">Sub Category</label>
+								<label class="mr-sm-2">SubCategory</label>
 								<select class="form-control select provider_subcategory" title="Sub Category" name="subcategorys" id="subcategorys_old" data-live-search="true" required="">
 									<?php foreach ($subcategory as $sub_category) {
 									if($get_details['category']==$sub_category['category']){ ?>

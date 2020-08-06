@@ -212,11 +212,15 @@ $country_list=$this->db->where('status',1)->order_by('country_name',"ASC")->get(
 					<div class="account-box">
 						<div class="login-right">
 							<div class="login-header">
+
+								<p>Missing out on your potential customers ?</p>
+								<p>People don't reach out because they are unaware of your business ?</p>
+								<p>Has the pandemic affected your clientele ?</p>
 								<h3>Join as a Professional</h3>
-								<p class="text-muted">Registration for Provider</p>
+								<p class="text-muted"></p>
 							</div>
 						</div>
-						<label>What Service do you Provide?</label>                
+						<label>What is your service expertise?</label>                
 						<select class="form-control" title="Category" name="categorys" id="categorys">
 							<option value='' >Select your service here...</option>
 						</select>
@@ -250,7 +254,7 @@ $country_list=$this->db->where('status',1)->order_by('country_name',"ASC")->get(
 						<div class="login-right">
 							<div class="login-header">
 								<h3>Join as a Professional</h3>
-								<p class="text-muted">Registration for Provider</p>
+								<p class="text-muted">Registration for Service Provider</p>
 							</div>
 						</div>
 						<form action="" method='post' id="new_third_page">
@@ -299,7 +303,7 @@ $country_list=$this->db->where('status',1)->order_by('country_name',"ASC")->get(
 			<div class="modal-body step-4" data-step="4">
 				<div class="login-header">
 					<h3>OTP</h3>
-					<p class="text-muted">Verification your account</p>
+					<p class="text-muted">Verify your account</p>
 				</div>
 				<form action="<?php echo base_url()?>user/login/send_otp_request" method='post' id="new_fourth_page">
 					<div class="form-group">
@@ -505,13 +509,12 @@ $country_list=$this->db->where('status',1)->order_by('country_name',"ASC")->get(
 					<div class="footer-widget footer-menu">
 						<h2 class="footer-title">Quick Links  </h2>
 						<ul>
-							<li><a href="<?php echo base_url()?>faq">Faq</a></li>
-							<li><a href="<?php echo base_url()?>help">Help</a></li>
-							<?php
+							<li><a href="<?php echo base_url()?>faq">FAQ</a></li>
+							<!-- <?php
 							if(empty($this->session->userdata('id'))){ ?>
 								<li><a href="javascript:void(0);" data-toggle="modal" data-target="#modal-wizard">Create Account</a></li>
 							<?php }
-							?> 
+							?>  -->
 							<li><a href="<?php echo base_url()?>contact">Contact Us</a></li>
 						</ul>
 					</div>
@@ -598,7 +601,7 @@ $country_list=$this->db->where('status',1)->order_by('country_name',"ASC")->get(
 									<div class="social-icon">
 										<ul>
 											<li>
-												<a href="#" target="_blank"><i class="fab fa-facebook-f"></i> </a>
+												<a href="https://www.facebook.com/axzora/" target="_blank"><i class="fab fa-facebook-f"></i> </a>
 											</li>
 											<li>
 												<a href="#" target="_blank"><i class="fab fa-twitter"></i> </a>
@@ -607,7 +610,7 @@ $country_list=$this->db->where('status',1)->order_by('country_name',"ASC")->get(
 												<a href="#" target="_blank"><i class="fab fa-youtube"></i></a>
 											</li>
 											<li>
-												<a href="#" target="_blank"><i class="fab fa-google"></i></a>
+												<a href="www.instagram.com/axzora.goa" target="_blank"><i class="fab fa-instagram"></i></a>
 											</li>
 										</ul>
 									</div>
@@ -786,7 +789,7 @@ $country_list=$this->db->where('status',1)->order_by('country_name',"ASC")->get(
 									<div class="login-right">
 										<div class="login-header">
 											<h3>Login</h3>
-											<p class="text-muted">Access to Axzora</p>
+											<p class="text-muted"></p>
 										</div>
 										<div class="form-group">
 											<label>Mobile Number</label>

@@ -146,7 +146,7 @@
     								  <input type="hidden" name="appId" id='appId' value="<?php echo $stripe_key; ?>"/>
     								  <input type="hidden" name="secretKey" id='secretKey' value="<?php echo $secretKey; ?>"/>
 									    <input type="hidden" name="orderId" id='orderId' class="form-control isNumber" placeholder="value" value="<?php echo rand(100000,999999);  ?>" />
-									    <input type="text" name="orderAmount" id='orderAmount' class="form-control isNumber" placeholder="amount" value=""/>
+									    <input type="text" name="orderAmount" id='orderAmount' class="form-control isNumber" placeholder="Amount" value=""/>
 									    <input type="hidden" name="returnUrl" id='returnUrl' value="<?php echo base_url().'provider_wallet_submit'; ?>"/>
 									    <input type="hidden" name="notifyUrl" id='notifyUrl' value="<?php echo base_url().'provider_wallet_submit'; ?>"/>
 									    <input type="hidden" id="signature" name="signature" value="123123"/>
@@ -180,7 +180,6 @@
 										<div id="card-element">
 											<!-- Stripe Element will be inserted here -->
 										</div>
-
 										<!-- Used to display form errors. -->
 										<div id="card-errors" role="alert"></div>
 										<div class="text-center"><div id="load_div"></div></div>
@@ -228,7 +227,7 @@
 								<?php }?>
 								<thead>
 									<tr>
-									<th>S.No</th>
+									<th>Sr. No</th>
 									<th>Date</th>
 									<th>Wallet</th>
 									<th>Credit</th>

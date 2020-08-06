@@ -23,7 +23,7 @@
 				<div class="row justify-content-center">
 					<div class="col-lg-12">
 						<div class="section-search">
-							<h3><span> JUST FIX IT!</span></h3>
+							<h3> Got a problem? <span> JUST FIX IT!</span></h3>
 							<p> Search From Over <?php echo $services_count?> Home Services! </p>
 							<div class="search-box">
 								<form action="<?php echo base_url();?>search" id="search_service" method="post">
@@ -74,13 +74,12 @@
 						<div class="col-md-6">
 							<div class="heading">
 								<h2>Featured Categories</h2>
-								<span>What do you need to find?</span>
 							</div>
 						</div>
 						<div class="col-md-6">
 							<div class="viewall">
 								<h4><a href="<?php echo base_url();?>all-categories">View All <i class="fas fa-angle-right"></i></a></h4>
-								<span>Featured Categories</span>
+								<span>Top Categories for Launch  </span>
 							</div>
 						</div>
 					</div>						
@@ -128,8 +127,7 @@
                         	<div class="col-md-6">
                             	<div class="heading">
                                     <h2>Most Popular Services</h2>
-									<span>Explore the greates our services. You won’t be disappointed</span>
-                                </div>
+								</div>
                             </div>
                             <div class="col-md-6">
                             	<div class="viewall">

@@ -120,7 +120,7 @@ if (!empty($my_subscribe['expiry_date_time']))
             <div class="col-xl-4 col-md-6 <?php echo $class; ?>">
 						<div class="card">
 							<div class="card-body">
-                                <div class="pricing-header"><h2><?php echo $list['subscription_name'] ?></h2><p>Monthly Price</p>
+                                <div class="pricing-header"><h2><?php echo $list['subscription_name'] ?></h2>
                                     </div><?php 
                             if ($list['discount'] == 0){ ?>
                                 <div class="pricing-card-price">
@@ -130,7 +130,7 @@ if (!empty($my_subscribe['expiry_date_time']))
                 <div class="pricing-card-price">
                     <h5 class="heading4 price"><del>₹<?php echo $list['actual_amount'] ?></del></h5>
                     <p>₹<?php echo $list['discount']; ?> % Off </p><h3 class="heading2 price">₹<?php echo $list['fee'] ?></h3><p>Duration: <span><?php echo $list['duration'] ?> Months</span></p></div>
-            <?php } ?><ul class="pricing-options"><li><i class="far fa-check-circle"></i> One listing submission</li><li><i class="far fa-check-circle"></i><?=$list['duration'] * 30; ?> days expiration</li></ul>
+            <?php } ?><ul class="pricing-options"><li><i class="far fa-check-circle"></i> One listing submission</li><li><i class="far fa-check-circle"></i> <?=$list['duration'] * 30; ?> days expiration</li></ul>
             <?php if (empty($subscription_name['subscription_name'])) { ?>
                 <a href="javascript:void(0);" class="btn btn-primary btn-block callStripe" data-id="<?php echo $list['id']; ?>" data-amount="<?php echo $list['fee']; ?>" >Select Plan</a>
 					<?php } if (!empty($my_subscribe['subscription_id'])) {
@@ -241,7 +241,7 @@ if (!empty($my_subscribe['expiry_date_time']))
         }
 ?><div class="col-xl-4 col-md-6 <?php echo $class; ?>">
 						<div class="card">
-							<div class="card-body"><div class="pricing-header"><h2><?php echo $list['subscription_name'] ?></h2><p>Monthly Price</p></div>
+							<div class="card-body"><div class="pricing-header"><h2><?php echo $list['subscription_name'] ?></h2></div>
 							<?php if ($list['discount'] == 0)
         { ?>
 								<div class="pricing-card-price"><h5 class="heading4 price">₹<?php echo $list['fee'] ?></h5><p>Duration: <span><?php echo $list['duration'] ?> Months</span></p></div><?php
@@ -257,7 +257,7 @@ if (!empty($my_subscribe['expiry_date_time']))
         } ?>
 										<ul class="pricing-options">
 											<li><i class="far fa-check-circle"></i> One listing submission</li>
-											<li><i class="far fa-check-circle"></i><?=$list['duration'] * 30; ?> days expiration</li>
+											<li><i class="far fa-check-circle"></i> <?=$list['duration'] * 30; ?> days expiration</li>
 											</ul>
 											<?php if (empty($subscription_name['subscription_name']))
         { ?>
@@ -332,7 +332,7 @@ if (!empty($my_subscribe['subscription_id']))
         }
 ?><div class="col-xl-4 col-md-6 <?php echo $class; ?>">
                         <div class="card">
-                            <div class="card-body"><div class="pricing-header"><h2><?php echo $list['subscription_name'] ?></h2><p>Monthly Price</p></div>
+                            <div class="card-body"><div class="pricing-header"><h2><?php echo $list['subscription_name'] ?></h2></div>
                             <?php if ($list['discount'] == 0)
         { ?>
                                 <div class="pricing-card-price"><h5 class="heading4 price">₹<?php echo $list['fee'] ?></h5><p>Duration: <span><?php echo $list['duration'] ?> Months</span></p></div><?php
@@ -348,7 +348,7 @@ if (!empty($my_subscribe['subscription_id']))
         } ?>
                                         <ul class="pricing-options">
                                             <li><i class="far fa-check-circle"></i> One listing submission</li>
-                                            <li><i class="far fa-check-circle"></i><?=$list['duration'] * 30; ?> days expiration</li>
+                                            <li><i class="far fa-check-circle"></i> <?=$list['duration'] * 30; ?> days expiration</li>
                                             </ul>
                                             <?php if (empty($subscription_name['subscription_name']))
         { ?>                                    
@@ -434,21 +434,21 @@ if (!empty($my_subscribe['subscription_id']))
     <?php } }  ?>
 								</div><?php if (!empty($my_subscribe))
 { ?>
-									<div class="card"><div class="card-body"><div class="plan-det"><h6 class="title">Plan Details</h6><ul class="row"><li class="col-sm-4"><p><span class="text-muted">Started On</span><?php if (!empty($my_subscribe['subscription_date']))
+									<div class="card"><div class="card-body"><div class="plan-det"><h6 class="title">Plan Details</h6><ul class="row"><li class="col-sm-4"><p><span class="text-muted">Started on </span><?php if (!empty($my_subscribe['subscription_date']))
     {
-        echo date('d M Y', strtotime($my_subscribe['subscription_date']));
-    } ?></p></li><li class="col-sm-4"><p><span class="text-muted">Price</span> $<?php if (!empty($subscription_name['fee']))
+        echo date('d M, Y', strtotime($my_subscribe['subscription_date']));
+    } ?></p></li><li class="col-sm-4"><p><span class="text-muted">Price</span> ₹<?php if (!empty($subscription_name['fee']))
     {
         echo $subscription_name['fee'];
     }
-?></p></li><li class="col-sm-4"><p><span class="text-muted">Expired On</span><?php
+?></p></li><li class="col-sm-4"><p><span class="text-muted">Expired on </span><?php
     if (!empty($my_subscribe['expiry_date_time']))
     {
-        echo date('d M Y', strtotime($my_subscribe['expiry_date_time']));
-    } ?></p></li></ul><h6 class="title">Last Payment</h6><ul class="row"><li class="col-sm-4"><p>Paid at <?php if (!empty($my_subscribe['expiry_date_time']))
+        echo date('d M, Y', strtotime($my_subscribe['expiry_date_time']));
+    } ?></p></li></ul><h6 class="title">Last Payment</h6><ul class="row"><li class="col-sm-4"><p>Paid on <?php if (!empty($my_subscribe['expiry_date_time']))
     {
-        echo date('d M Y', strtotime($my_subscribe['subscription_date']));
-    } ?></p></li><li class="col-sm-4"><p><span class="amount">$<?php if (!empty($subscription_name['fee']))
+        echo date('d M, Y', strtotime($my_subscribe['subscription_date']));
+    } ?></p></li><li class="col-sm-4"><p><span class="amount">₹<?php if (!empty($subscription_name['fee']))
     {
         echo $subscription_name['fee'];
     } ?></span><span class="badge bg-success-light">Paid</span></p></li></ul></div></div></div><h5 class="mb-4">Subscribed Details</h5><div class="card transaction-table mb-0"><div class="card-body"><div class="table-responsive"><table class="table table-center mb-0 no-footer"><thead><tr><th>Plan</th><th>Start Date</th><th>End Date</th><th>Amount</th><th>Status</th></tr></thead><tbody><?php foreach ($my_subscribe_list as $row)
