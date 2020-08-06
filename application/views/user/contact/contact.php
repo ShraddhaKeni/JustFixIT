@@ -30,7 +30,7 @@
 					</p>
                     <hr>
                     <div class="col-md-12">
-						<div class='col-md-4' style="display: inline-block; vertical-align: top;"><b> GOA (include location map)</b><br>
+						<div class='col-md-4' style="display: inline-block; vertical-align: top;"><b> GOA </b><br>
 							Y-11, 5th Floor, Building No. 2<br>
 							Jairam Complex, Neugi Nagar<br>
 							Panaji - Goa, 403 001<br>
@@ -41,7 +41,7 @@
 					</div>
 					<hr>
 					<div class="col-md-12">					
-						<div class="col-md-4" style="display: inline-block; vertical-align: top"><b>HYDERABAD (include location map)</b><br>
+						<div class="col-md-4" style="display: inline-block; vertical-align: top"><b>HYDERABAD</b><br>
 							2nd Floor, Maa Residency,<br>
 							New Nagole Colony,<br>
 							Kothapet, Hyderabad,<br>

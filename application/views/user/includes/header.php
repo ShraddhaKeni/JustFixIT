@@ -35,6 +35,26 @@
 	<meta name="description" content="AXZORA is Goa's best, One-stop destination for expert local services like Beauty, Repair, Cleaning, Grooming, Painting, Spa & More Services by Expert Professionals in Goa. Get dozens of trusted professionals near you to take care of all your home and beauty needs.">
 	<meta name="keywords" content="Beauty, Repair, Cleaning, Grooming, Painting, Car Serices, Salon at Home ">
 	<meta name="author" content="Axzora Private Limited">
+	<!-- SEO Related -->
+	    <meta name="robots" content="index, follow" />
+        <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+        <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+        <link rel="canonical" href="http://www.axzora.com" />
+
+        <meta property="og:locale" content="en_US" />
+            <meta property="og:type" content="website" />
+            <meta property="og:title" content="Beauty, Repair, Cleaning, Grooming, Painting, Car Serices, Salon at Home" />
+            <meta property="og:description" content="AXZORA is Goa's best, One-stop destination for expert local services like Beauty, Repair, Cleaning, Grooming, Painting, Spa & More Services by Expert Professionals in Goa. Get dozens of trusted professionals near you to take care of all your home and beauty needs." />
+            <meta property="og:url" content="http://www.axzora.com/" />
+            <meta property="og:site_name" content="Axzora" />
+            <meta property="article:publisher" content="https://www.facebook.com/axzora/" />
+            <meta property="article:modified_time" content="2020-06-16T04:30:08+00:00" />
+            <meta property="og:image" content="http://axzora.com/uploads/logo/1593695521_logo.png" />
+            <meta name="twitter:card" content="summary_large_image" />
+            <meta name="twitter:creator" content="@axzora" />
+            <meta name="twitter:site" content="@axzora" />
+
+
     <link rel="shortcut icon" type="image/x-icon" href="<?php echo $fav;?>">
 	
 	<link rel="stylesheet" href="<?php echo base_url();?>assets/plugins/bootstrap/css/bootstrap.min.css">

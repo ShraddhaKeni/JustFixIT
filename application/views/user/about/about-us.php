@@ -38,9 +38,6 @@
 
 					<p>So now just sit back and relax in your comfort zones while our experts reach your doorstep to deliver the service you need.</p>
 
-					<p> <b>Disclaimer - @Anish please review <br>
-						Through this website we only promote service providers and hold no liability or responsibility over the services provided by them. 
-						For more information refer to our Terms and Conditions. (Link to terms and conditions landing page)</b></p>																	
 				</div>
 			</div>
 		</div>
