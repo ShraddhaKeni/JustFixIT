@@ -284,14 +284,14 @@
 									</li>
 									<?php } } else { ?>
 									<li class="notification-message">
-										<p class="text-center text-danger mt-3">Notification Empty</p>
+										<p class="text-center text-danger mt-3">Empty</p>
 									</li>
 									<?php } ?>
 
 								</ul>
 							</div>
 							<div class="topnav-dropdown-footer">
-								<a href="<?=base_url();?>notification-list">View all Notifications</a>
+								<a href="<?=base_url();?>notification-list">View all notifications</a>
 							</div>
 						</div>
 					</li>
@@ -377,14 +377,14 @@
 									?>
 
 									<li class="notification-message">
-										<p class="text-center text-danger mt-3">Chat Empty</p>
+										<p class="text-center text-danger mt-3">Empty</p>
 									</li>
 								<?php }?>
 
 								</ul>
 							</div>
 							<div class="topnav-dropdown-footer">
-								<a href="<?=base_url();?>user-chat">View all Chat</a>
+								<a href="<?=base_url();?>user-chat">View all Chats</a>
 							</div>
 						</div>
 					</li>
@@ -526,13 +526,13 @@
 									</li>
 									<?php } }else{ ?>
 									<li class="notification-message">
-										<p class="text-center text-danger mt-3">Notification Empty</p>
+										<p class="text-center text-danger mt-3">Empty</p>
 									</li>
 									<?php } ?>
 								</ul>
 							</div>
 							<div class="topnav-dropdown-footer">
-								<a href="<?=base_url();?>notification-list">View all Notifications</a>
+								<a href="<?=base_url();?>notification-list">View all notifications</a>
 							</div>
 						</div>
 					</li>
@@ -619,14 +619,14 @@
 									?>
 
 									<li class="notification-message">
-										<p class="text-center text-danger mt-3">Chat Empty</p>
+										<p class="text-center text-danger mt-3">Empty</p>
 									</li>
 								<?php }?>
 
 								</ul>
 							</div>
 							<div class="topnav-dropdown-footer">
-								<a href="<?=base_url();?>user-chat">View all Chat</a>
+								<a href="<?=base_url();?>user-chat">View all Chats</a>
 							</div>
 						</div>
 					</li>

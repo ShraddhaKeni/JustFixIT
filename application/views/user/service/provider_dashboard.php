@@ -80,7 +80,7 @@ if(!empty($my_subscribe)){
 						<a href="notification-list" class="dash-widget dash-bg-3">
 							<span class="dash-widget-icon"><?=$n_count;?></span>
 							<div class="dash-widget-info">
-								<span>Notification</span>
+								<span>Notifications</span>
 							</div>
 						</a>
 					</div>
@@ -113,7 +113,7 @@ if(!empty($my_subscribe)){
 								<h6 class="title">Last Payment</h6>
 								<ul class="row">
 									<li class="col-sm-6">
-										<p>Paid at <?php if(!empty($my_subscribe['subscription_date'])){echo date('d M Y',strtotime($my_subscribe['subscription_date'])); }?></p>
+										<p>Paid at <?php if(!empty($my_subscribe['subscription_date'])){echo date('d M, Y',strtotime($my_subscribe['subscription_date'])); }?></p>
 									</li>
 									<li class="col-sm-6">
 										<p><span class="text-success">Paid</span> <span class="amount">₹<?php if(!empty($subscription_name['fee'])){ echo $subscription_name['fee'];}?></span></p>

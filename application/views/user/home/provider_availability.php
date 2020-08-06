@@ -181,13 +181,13 @@
             <input type="checkbox" class="err_check days_check mr-1 validate_time" data-id="0" name="availability[0][day]" value="1" <?php echo $checked; ?>>All Days
             </td>
             <td class="w-180">
-            From time <span class="time-select mb-1">
+            From <span class="time-select mb-1">
             <select class="form-control daysfromtime_check"  name="availability[0][from_time]">
             <?php echo from_time(1, $All_from_time); ?>
             </select></span>
             </td>
             <td class="w-155">
-            To time <span class="time-select">
+            To <span class="time-select">
             <select class="form-control daystotime_check" name="availability[0][to_time]">
             <?php echo to_time(1, $All_to_time); ?>s
             </select></span>
@@ -259,7 +259,7 @@
             <input type="checkbox" data-id="1" class="eachdays err_check eachdays1 validate_time"  name="availability[1][day]" value="1" <?=$monday_check;?> <?php echo $day_name_checked[1]; ?> <?php echo $day_name[1]; ?>> <?php echo $day_name[1]; ?>
             </td>
             <td class="w-180">
-            From time <span class="time-select mb-1">
+            From <span class="time-select mb-1">
             <select class="form-control eachdayfromtime eachdayfromtime1 select_from_time" data-id="1"  name="availability[1][from_time]" <?php echo $day_name[1]; ?>>
               <?php
               if(!empty($mon_from_time)){ ?>
@@ -270,8 +270,8 @@
             <?php echo from_time(1, $var_from_time[1]); ?>
             </select></span>
             </td>
-            <td class="w-155">
-            To time <span class="time-select" >
+            <td class="w-180">
+            To <span class="time-select mb-1" >
             <select class="form-control eachdaytotime eachdaytotime1" name="availability[1][to_time]" <?php echo $day_name[1]; ?>>
                              <?php
               if(!empty($mon_to_time)){ ?>
@@ -313,7 +313,7 @@
             <input type="checkbox"  data-id="2" class="eachdays err_check eachdays2 validate_time"   name="availability[2][day]" value="2" <?=$tues_check;?> <?php echo $day_name_checked[2]; ?> <?php echo $day_name[2]; ?>> <?php echo $day_name[2]; ?>
             </td>
             <td class="w-180">
-            From time <span class="time-select mb-1">
+            From <span class="time-select mb-1">
             <select class="form-control eachdayfromtime eachdayfromtime2 select_from_time" data-id="2" name="availability[2][from_time]" <?php echo $day_name[2]; ?>>
                                            <?php
               if(!empty($tue_from_time)){ ?>
@@ -324,8 +324,8 @@
             <?php echo from_time(1, $var_from_time[2]); ?>
             </select></span>
             </td>
-            <td class="w-155">
-            To time <span class="time-select" >
+            <td class="w-180">
+            To <span class="time-select" >
             <select class="form-control eachdaytotime eachdaytotime2" name="availability[2][to_time]" <?php echo $day_name[2]; ?>>
                
         <?php
@@ -372,7 +372,7 @@
             <input type="checkbox"  data-id="3" class="eachdays err_check eachdays3 validate_time"  name="availability[3][day]" value="3" <?=$wed_check;?> <?php echo $day_name_checked[3]; ?> <?php echo $day_name[3]; ?>> <?php echo $day_name[3]; ?>
             </td>
             <td class="w-180">
-            From time <span class="time-select mb-1">
+            From <span class="time-select mb-1">
             <select class="form-control eachdayfromtime eachdayfromtime3 select_from_time" data-id="3"  name="availability[3][from_time]" <?php echo $day_name[3]; ?>>
                       <?php
               if(!empty($wed_from_time)){ ?>
@@ -382,8 +382,8 @@
             <?php echo from_time(1, $var_from_time[3]); ?>
             </select></span>
             </td>
-            <td class="w-155">
-            To time <span class="time-select" >
+            <td class="w-180">
+            To <span class="time-select" >
             <select class="form-control eachdaytotime eachdaytotime3" name="availability[3][to_time]" <?php echo $day_name[3]; ?>>
                       <?php
               if(!empty($wed_to_time)){ ?>
@@ -438,7 +438,7 @@
             <input type="checkbox"  data-id="4" class="eachdays err_check eachdays4 validate_time"  name="availability[4][day]" value="4" <?=$thur_check;?> <?php echo $day_name_checked[4]; ?> <?php echo $day_name[4]; ?>> <?php echo $day_name[4]; ?>
             </td>
             <td class="w-180">
-            From time <span class="time-select mb-1">
+            From <span class="time-select mb-1">
             <select class="form-control eachdayfromtime eachdayfromtime4 select_from_time" data-id="4" name="availability[4][from_time]" <?php echo $day_name[4]; ?>>
                                     <?php
               if(!empty($thur_from_time)){ ?>
@@ -448,8 +448,8 @@
             <?php echo from_time(1, $var_from_time[4]); ?>
             </select></span>
             </td>
-            <td class="w-155">
-            To time <span class="time-select" >
+            <td class="w-180">
+            To <span class="time-select" >
             <select class="form-control eachdaytotime eachdaytotime4" name="availability[4][to_time]" <?php echo $day_name[4]; ?>>
                                      <?php
               if(!empty($thur_to_time)){ ?>
@@ -502,7 +502,7 @@
             <input type="checkbox"  data-id="5" class="eachdays err_check eachdays5 validate_time"  name="availability[5][day]" value="5" <?=$fri_check;?> <?php echo $day_name_checked[5]; ?> <?php echo $day_name[5]; ?>> <?php echo $day_name[5]; ?>
             </td>
             <td class="w-180">
-            From time <span class="time-select mb-1">
+            From <span class="time-select mb-1">
             <select class="form-control eachdayfromtime eachdayfromtime5 select_from_time" data-id="5" name="availability[5][from_time]" <?php echo $day_name[5]; ?>>
                                                  <?php
               if(!empty($fri_from_time)){ ?>
@@ -512,8 +512,8 @@
             <?php echo from_time(1, $var_from_time[5]); ?>
             </select></span>
             </td>
-            <td class="w-155">
-            To time <span class="time-select" >
+            <td class="w-180">
+            To <span class="time-select" >
             <select class="form-control  custom-height eachdaytotime eachdaytotime5" name="availability[5][to_time]" <?php echo $day_name[5]; ?>>
                                                   <?php
               if(!empty($fri_to_time)){ ?>
@@ -569,7 +569,7 @@
             <input type="checkbox"  data-id="6" class="eachdays err_check eachdays6 validate_time"  name="availability[6][day]" value="6" <?=$sat_check;?> <?php echo $day_name_checked[6]; ?> <?php echo $day_name[6]; ?>> <?php echo $day_name[6]; ?>
             </td>
             <td class="w-180">
-            From time <span class="time-select mb-1">
+            From <span class="time-select mb-1">
             <select class="form-control eachdayfromtime eachdayfromtime6 select_from_time" data-id="6" name="availability[6][from_time]" <?php echo $day_name[6]; ?>>
                   <?php
               if(!empty($sat_from_time)){ ?>
@@ -579,8 +579,8 @@
             <?php echo from_time(1, $var_from_time[6]); ?>
             </select></span>
             </td>
-            <td class="w-155">
-            To time <span class="time-select" >
+            <td class="w-180">
+            To <span class="time-select" >
             <select class="form-control eachdaytotime eachdaytotime6" name="availability[6][to_time]" <?php echo $day_name[6]; ?>>
                                  <?php
               if(!empty($sat_to_time)){ ?>
@@ -639,7 +639,7 @@
             <input type="checkbox"  data-id="7" class="eachdays err_check eachdays7 validate_time"  name="availability[7][day]" value="7" <?=$sun_check;?> <?php echo $day_name_checked[7]; ?> <?php echo $day_name[7]; ?>> <?php echo $day_name[7]; ?>
             </td>
             <td class="w-180">
-            From time <span class="time-select mb-1">
+            From <span class="time-select mb-1">
             <select class="form-control eachdayfromtime eachdayfromtime7 select_from_time" data-id="7" name="availability[7][from_time]" <?php echo $day_name[7]; ?>>
                                                <?php
               if(!empty($sun_from_time)){ ?>
@@ -649,8 +649,8 @@
             <?php echo from_time(1, $var_from_time[7]); ?>
             </select></span>
             </td>
-            <td class="w-155">
-            To time <span class="time-select" >
+            <td class="w-180">
+            To <span class="time-select" >
             <select class="form-control eachdaytotime eachdaytotime7" name="availability[7][to_time]" <?php echo $day_name[7]; ?>>
                                                 <?php
               if(!empty($sun_to_time)){ ?>

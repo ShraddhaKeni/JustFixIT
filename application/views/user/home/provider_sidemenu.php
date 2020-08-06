@@ -13,7 +13,7 @@ if(!empty($user->profile_img)){
 								<img alt="profile image" src="<?php echo base_url().$profile_img; ?>" class="avatar-lg rounded-circle">
 								<div class="ml-sm-3 ml-md-0 ml-lg-3 mt-2 mt-sm-0 mt-md-2 mt-lg-0">
 									<h6 class="mb-0"><?php echo $this->session->userdata('name');?></h6>
-									<p class="text-muted mb-0">Member Since <?php echo date('M Y',strtotime($user->created_at));?></p>
+									<p class="text-muted mb-0">Member since <?php echo date('M, Y',strtotime($user->created_at));?></p>
 								</div>
 							</div>
 						</div>
@@ -28,7 +28,7 @@ if(!empty($user->profile_img)){
 									</a>
 								</li>
 								<li class="nav-item">
-									<a href="<?php echo base_url()?>my-services" class="nav-link <?= ($this->uri->segment(1)=="my-services")?'active':'';?>">
+									<a href="<?php echo base_url()?>my-services" class="nav-link <?= ($this->uri->segment(1)=="my-services" || $this->uri->segment(1)=="my-services-inactive")?'active':'';?>">
 										<i class="far fa-address-book"></i>
 										<span>My Services</span>
 									</a>

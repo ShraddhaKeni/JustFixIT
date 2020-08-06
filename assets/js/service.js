@@ -68,7 +68,7 @@
         success: function (data) {   
           $('#subcategory').selectpicker('refresh'); 
           $("#subcategory").selectpicker();      
-          $('#subcategory').find("option:eq(0)").html("Select SubCategory");
+          $('#subcategory').find("option:eq(0)").html("Select Your SubCategory");
           $('#subcategory').selectpicker('refresh');
           var obj=jQuery.parseJSON(data);       
           $('#subcategory').selectpicker('refresh');

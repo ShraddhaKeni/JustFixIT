@@ -618,5 +618,9 @@ class Home_model extends CI_Model
         }
 
     }
+
+    public function save_contact($data){
+      $this->db->insert('contact_detail',$data);
+    }
 }
 ?>
