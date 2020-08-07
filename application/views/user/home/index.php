@@ -236,7 +236,7 @@
 				<div class="col-lg-12">
 					<div class="heading howitworks">
 						<h2>How It Works</h2>
-						<span>Aliquam lorem ante, dapibus in, viverra quis</span>
+						<span>Easy as 1-2-3!</span>
 					</div>
 					<div class="howworksec">
 						<div class="row">
@@ -246,8 +246,11 @@
 										<div class="steps">01</div>
 										<img src="<?php echo base_url();?>assets/img/icon-1.png">
 									</div>
-									<h3>Choose What To Do</h3>
-									<p>Aliquam lorem ante, dapibus in, viverra quis, feugiat Phasellus viverra nulla ut metus varius laoreet.</p>
+									<h3>FIND</h3>
+									<p>Open the Axzora app
+									Browse through our location and category wise lists
+									Pick a service provider of your choice
+									.</p>
 								</div>
 							</div>
 							<div class="col-lg-4">
@@ -256,8 +259,11 @@
 										<div class="steps">02</div>
 										<img src="<?php echo base_url();?>assets/img/icon-2.png">
 									</div>
-									<h3>Find What You Want</h3>
-									<p>Aliquam lorem ante, dapibus in, viverra quis, feugiat Phasellus viverra nulla ut metus varius laoreet.</p>
+									<h3>BOOK</h3>
+									<p>Mention your requirements
+									Schedule the visit
+									Receive a confirmation
+									.</p>
 								</div>
 							</div>
 							<div class="col-lg-4">
@@ -266,8 +272,11 @@
 										<div class="steps">03</div>
 										<img src="<?php echo base_url();?>assets/img/icon-3.png">
 									</div>
-									<h3>Amazing Places</h3>
-									<p>Aliquam lorem ante, dapibus in, viverra quis, feugiat Phasellus viverra nulla ut metus varius laoreet.</p>
+									<h3>ENJOY</h3>
+									<p>Relax while your job gets done by our experts
+										Pay from a wide range of options 
+										Leave your valuable feedback
+										.</p>
 								</div>
 							</div>
 						</div>

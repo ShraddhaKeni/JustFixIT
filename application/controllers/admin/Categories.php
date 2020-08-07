@@ -84,8 +84,9 @@ public function add_categories()
 }
 
 
-
-$table_data['category_name'] = strip_tags($this->input->post('category_name'));
+$string = str_replace(' ', ' ', $this->input->post('category_name'));
+$category_name = preg_replace('/[^A-Za-z0-9\-]/', ' ', $string);
+$table_data['category_name'] = strip_tags($category_name);
 $table_data['status'] = 1;  
 $table_data['created_at'] = date('Y-m-d H:i:s');  
 $this->db->insert('categories', $table_data);
@@ -153,9 +154,10 @@ public function edit_categories($id)
    } 
  }
 
- 
+$string = str_replace(' ', ' ', $this->input->post('category_name'));
+ $category_name = preg_replace('/[^A-Za-z0-9\-]/', ' ', $string); 
  $id=$this->input->post('category_id');
- $table_data['category_name'] = $this->input->post('category_name');
+ $table_data['category_name'] = $category_name;
  $table_data['status'] = 1;
  $this->db->where('id',$id);                
  if($this->db->update('categories', $table_data))
@@ -354,7 +356,11 @@ public function add_subcategories()
      }
    }
  }
- $table_data['subcategory_name'] = $this->input->post('subcategory_name');
+
+
+ $string = str_replace(' ', ' ', $this->input->post('subcategory_name'));
+ $subcategory_name = preg_replace('/[^A-Za-z0-9\-]/', ' ', $string);
+ $table_data['subcategory_name'] = $subcategory_name;
  $table_data['category'] = $this->input->post('category');
  $table_data['created_at'] = date('Y-m-d H:i:s');
  $table_data['status'] = 1;                
@@ -408,8 +414,12 @@ public function edit_subcategories($id)
        }
      }
    }
+
+$string = str_replace(' ', ' ', $this->input->post('subcategory_name'));
+ $subcategory_name = preg_replace('/[^A-Za-z0-9\-]/', ' ', $string);
+
    $id=$this->input->post('subcategory_id');
-   $table_data['subcategory_name'] = $this->input->post('subcategory_name');
+   $table_data['subcategory_name'] = $subcategory_name;
    $table_data['subcategory_image'] = $image_url;
    $table_data['category'] = $this->input->post('category');
    $table_data['status'] = 1;
