@@ -54,6 +54,17 @@
             <meta name="twitter:creator" content="@axzora" />
             <meta name="twitter:site" content="@axzora" />
 
+<!-- Google Analytics -->
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-174907248-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-174907248-1');
+</script>
+
 
     <link rel="shortcut icon" type="image/x-icon" href="<?php echo $fav;?>">
 	
