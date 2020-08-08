@@ -267,7 +267,9 @@ public function all_services_post(){
   $data =array();
   $user_data=$this->post();
   $inputs['page']  = (!empty($inputs['page']))?$inputs['page']:1;
-
+  //$user_data['type'] = 'Popular';
+  $user_data['latitude'] = '26.9124336';
+  $user_data['longitude'] = '75.7872709';
   if(!empty($user_data['type']) && !empty($user_data['latitude']) && !empty($user_data['longitude']))
   {
     $response = $this->api->all_services($user_data);
@@ -330,10 +332,8 @@ public function provider_signin_post(){
     $data=array();
     $user_data = array();
     $user_data = $this->post();
-
-
     if(!empty($user_data['mobileno']) && !empty($user_data['otp']) && !empty($user_data['country_code']))
-    { 
+    {
       $is_available_mobile = $this->api->check_mobile_no($user_data);
       $is_available_user= $this->api->check_user_mobileno($user_data);
 
@@ -342,29 +342,25 @@ public function provider_signin_post(){
         if($is_available_mobile == 1)         
         {
 
-
           $check_data['mobile_number'] = $user_data['mobileno'];
           $check_data['otp'] = $user_data['otp'];
           $check_data['country_code'] = $user_data['country_code'];
 
           $check = $this->api->check_otp($check_data);
-
           if(is_array($check) && !empty($check))
           {
-
 
             $mobile_number = $user_data['mobileno'];
             $user_details = $this->api->get_provider_details($mobile_number,$user_data);
           }
-          if(!empty($user_details)){                
+          if(!empty($user_details)){
             $response_code = '200';
             $response_message = 'LoggedIn Successfully';
             $data['provider_details']  = $user_details; 
 
           }
           else
-          {
-            $response_code = '202';
+          { $response_code = '202';
             $response_message = 'Login failed, Invalid OTP or mobile number';
 
           }
@@ -1440,11 +1436,18 @@ public function logout_provider_post(){
   $this->response($result, REST_Controller::HTTP_OK);
 }
 
-public function user_signin_post(){  
+public function user_signin_post(){
+  // $this->users_id = 14;
+  // $this->default_token = '14CH2LYa2Vt44P7I';
+  // $this->api_token = '14CH2LYa2Vt44P7I';
+
   if($this->users_id !=0  || ($this->default_token ==$this->api_token)) {
     $data=array();
     $user_data = array();
     $user_data = $this->post();
+    // $user_data['mobileno'] = '7340089066';
+    // $user_data['otp'] = '1234';
+    // $user_data['country_code'] = '91';
     if(!empty($user_data['mobileno']) && !empty($user_data['otp']) && !empty($user_data['country_code'])){
       $is_available_mobile = $this->api->check_user_mobileno($user_data);
       $is_available_provider=$this->api->check_mobile_no($user_data);
@@ -1456,6 +1459,10 @@ public function user_signin_post(){
           $check = $this->api->check_otp($check_data);
           if(is_array($check) && !empty($check)){
             $mobile_number = $user_data['mobileno'];
+            $device_detail = $this->api->get_device_detail($this->users_id);
+            $user_data['device_type'] =$device_detail[0]->device_type;
+            $user_data['device_id'] = $device_detail[0]->device_id;
+            $user_data['user_id'] = $device_detail[0]->user_id;
             $user_details = $this->api->get_user_details($mobile_number,$user_data);
           } if(!empty($user_details)){                
             $response_code = '200';
@@ -3727,11 +3734,18 @@ public function get_provider_dashboard_infos_get(){
   }
 
 }
-public function generate_otp_provider_post(){ 
+public function generate_otp_provider_post(){
+    // $this->user_id = 46;
+    // $this->default_token = '46YH1iGmNjFIKHMR';
+    // $this->api_token = '46YH1iGmNjFIKHMR';
   if($this->user_id !=0  || ($this->default_token==$this->api_token)){
     $data = new stdClass();
     $user_data = array();
     $user_data = $this->post();
+    // $user_data['mobileno'] = '7737453867';
+    // $user_data['country_code'] = '91';
+    // $user_data['device_type'] = 'mobile';
+    // $user_data['device_id'] = '121';
     if(!empty($user_data['mobileno'])  && !empty($user_data['country_code']) && !empty($user_data['device_id']) && !empty($user_data['device_type'])){
       $is_available_mobile = $this->api->check_mobile_no($user_data);
       $is_available_mobileno = $this->api->check_user_mobileno($user_data);

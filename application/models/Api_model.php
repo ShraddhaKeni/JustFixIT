@@ -1504,6 +1504,15 @@ class Api_model extends CI_Model{
       return $records;
     }
 
+    public function get_device_detail($user_id){
+      $this->db->select('*');
+      $this->db->from('device_details');
+      $this->db->where('user_id',$user_id);
+      $this->db->where('type',2);
+      $query = $this->db->get();
+      return $query->result(); 
+    }
+
   
     public function logout_provider($token='',$device_type,$device_id)
 
