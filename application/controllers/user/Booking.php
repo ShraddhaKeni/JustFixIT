@@ -239,6 +239,7 @@ echo "<pre>"; print_r($this->input->post());
 redirect(base_url().'user-bookings');
 }
 }else{
+
    $latitude= $this->input->get('service_latitude');
       $longitude=$this->input->get('service_longitude');
   $service_id = $this->input->get('service_id');
@@ -265,7 +266,6 @@ redirect(base_url().'user-bookings');
   if($result){
       $secretKey = $this->input->get('secretKey');
       $data = [
-      //"token" => $this->input->post('tokenId'),
       "appId" => $this->input->get('appId'),
       "orderId" => $this->input->get('orderid'),
       "orderAmount" => $this->input->get('final_gig_amount'),
@@ -277,7 +277,7 @@ redirect(base_url().'user-bookings');
       "customerEmail" => $this->input->get('customerEmail'),
       "notifyUrl" => $this->input->get('notifyUrl'),
       ];
-      //echo json_encode($data); exit;
+      //echo json_encode(['data'=>$data,'secretKey'=>$secretKey]); exit;
       // get secret key from your config
       ksort($data);
       $signatureData = "";

@@ -186,7 +186,7 @@ var secretKey = '';
               provider_id:provider_id,from_time:from_time,
               service_location:service_location,service_latitude:service_latitude,
               service_longitude:service_longitude,notes:notes,booking_date:booking_date,
-              orderid:orderid,tokenId:tokenId,returnUrl:returnUrl
+              orderid:orderid,returnUrl:returnUrl
               ,currency:currency,appId:appId,notifyUrl:notifyUrl,
               customerName:customerName,customerEmail:customerEmail,customerPhone:customerPhone,
               secretKey:secretKey
@@ -198,6 +198,7 @@ var secretKey = '';
              //  },
               success: function(response){
                 var jsonData = JSON.parse(response);
+                console.log(jsonData);
                 $("#signature").val(jsonData);
                 $("#book_services").submit();
              },

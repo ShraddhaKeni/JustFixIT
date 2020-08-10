@@ -103,7 +103,7 @@ $stripe_option='1';
 				<?php if($_SERVER['HTTP_HOST']=='localhost') { ?>
 				<form method="post" action="https://test.cashfree.com/billpay/checkout/post/submit" id="book_services" >
 			<?php }else{ ?>
-				<form id="book_services" method="post" action="https://www.cashfree.com/checkout/post/submit">
+				<form id="book_services" method="post" action="https://www.cashfree.com/checkout/post/submit"> 
 			<?php } ?>
 				
           			<div class="row">
@@ -112,7 +112,7 @@ $stripe_option='1';
 								<div class="text-center">
 									<div id="load_div"></div>
 								</div>
-								<label>Service amount</label>
+								<label>Service Amount</label>
 								<input class="form-control" type="text" name="orderAmount" id="service_amount" value="<?php echo $service_details['service_amount'] ?>" readonly="">
 								<label>Notes</label>
 								<textarea class="form-control" name="orderNote" id="notes" rows="5"></textarea>
