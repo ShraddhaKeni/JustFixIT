@@ -230,6 +230,70 @@ $typeVal = 1;
 }else{
 $typeVal = 2;
 }
+
+$lastrecord = $this->booking->getLastRecord();
+$serviceval = $lastrecord[0];
+$booking = [
+      'service_id'=>$serviceval['service_id'],
+      'provider_id'=>$serviceval['provider_id'],
+      'token'=>$serviceval['tokenid'],
+      'user_id' => $serviceval['user_id'],
+      'amount'=>  $serviceval['amount'],
+      'service_date'=>$serviceval['service_date'],
+      'location'=>$serviceval['location'],
+      'latitude'=> $serviceval['latitude'],
+      'longitude'=>$serviceval['longitude'],
+      'from_time'=>$serviceval['from_time'],
+      'to_time'=>$serviceval['to_time'],
+      'notes'=>$serviceval['notes'],
+      'args'=>$serviceval['payment_details'],
+      'payment_status'=>4,
+      'status'=>4
+  ];
+  $this->booking->booking_success($booking);
+  $this->booking->deleteLastRecord($serviceval['id']);
+$getprovider = $this->booking->getProvider($serviceval['provider_id']);
+$getuser = $this->booking->getUser($serviceval['user_id']);  
+$tempprovider = "User Book Service";
+$tempuser = "This is provider name";
+$otp = rand(1000,9999);
+        $api_key = "523977b1-cfcd-11ea-9fa5-0200cd936042";
+$curl = curl_init();
+        curl_setopt_array($curl, array(
+        //CURLOPT_URL => "https://2factor.in/API/V1/".$api_key."/SMS/".$getprovider['mobileno']."/".$otp,
+          CURLOPT_URL => "https://2factor.in/API/V1/".$api_key."/SMS/".$getprovider['mobileno']."/".$otp."/".$tempprovider,
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => "",
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 30,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => "GET",
+        CURLOPT_POSTFIELDS => "",
+        CURLOPT_HTTPHEADER => array(
+          "content-type: application/x-www-form-urlencoded"
+        ),
+      ));
+      $response = curl_exec($curl);
+      $err = curl_error($curl);
+      curl_close($curl);
+
+      $curl1 = curl_init();
+        curl_setopt_array($curl1, array(
+        CURLOPT_URL => "https://2factor.in/API/V1/".$api_key."/SMS/".$getuser['mobileno']."/".$otp."/".$tempuser,
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => "",
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 30,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => "GET",
+        CURLOPT_POSTFIELDS => "",
+        CURLOPT_HTTPHEADER => array(
+          "content-type: application/x-www-form-urlencoded"
+        ),
+      ));
+      $response = curl_exec($curl1);
+      $err = curl_error($curl1);
+      curl_close($curl1);
 $this->session->set_flashdata('success_message','Payment has been successfully done');
 redirect(base_url().'user-bookings');
 }
@@ -262,8 +326,8 @@ redirect(base_url().'user-bookings');
       'args'=>'no response that field ld flow',
       'payment_status'=>1,
   ];
-  $result = $this->booking->booking_success($booking);
-  if($result){
+  $this->booking->booking_success_temp($booking);
+  
       $secretKey = $this->input->get('secretKey');
       $data = [
       "appId" => $this->input->get('appId'),
@@ -288,9 +352,7 @@ redirect(base_url().'user-bookings');
       $signature = base64_encode($signature);
       $data['signature'] = $signature;
       echo json_encode($signature);
-  }else{
-
-  }
+  
 }
   }
 
