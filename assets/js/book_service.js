@@ -15,6 +15,7 @@ var service_location ='';
 var service_latitude ='';
 var service_longitude ='';
 var notes='';
+var notesData='';
 var orderid='';
 var tokenId='';
 var returnUrl = '';
@@ -162,9 +163,15 @@ var secretKey = '';
             service_location = $("#service_location").val();
             service_latitude = $("#service_latitude").val();
             service_longitude = $("#service_longitude").val();
+            notesData = $("#notes").val();
+            if(notesData==''){
+              notesData='Please Enter Somthing Here';
+            }else{
+              notesData = notesData;
+            }
+            $("#notes").val(notesData);
             notes = $("#notes").val();
             orderid = $("#order_id_ser").val();
-            //tokenId = $("#token_Id").val();
             returnUrl = $("#id_returnUrl_ser").val();
             notifyUrl = $("#id_notifyUrl_ser").val();
             currency = $("#id_orderCurrency_ser").val();
@@ -191,21 +198,8 @@ var secretKey = '';
              //  },
               success: function(response){
                 var jsonData = JSON.parse(response);
-                console.log(jsonData);
                 $("#signature").val(jsonData);
                 $("#book_services").submit();
-               //window.location.reload();
-              //   swal({
-              //    title: "Booking Confirmation...",
-              //    text: "Your booking was booked Successfully ...!",
-              //    icon: "success",
-              //    button: "okay",
-              //    closeOnEsc: false,
-              //    closeOnClickOutside: false
-              //  }).then(function(){
-              //    window.location.href = base_url+'user-bookings';
-
-              //  });
              },
              error: function(error){
               console.log(error);
