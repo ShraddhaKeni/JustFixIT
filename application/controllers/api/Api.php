@@ -3743,18 +3743,12 @@ public function get_provider_dashboard_infos_get(){
 
 }
 public function generate_otp_provider_post(){
-    // $this->user_id = 46;
-    // $this->default_token = '46YH1iGmNjFIKHMR';
-    // $this->api_token = '46YH1iGmNjFIKHMR';
   if($this->user_id !=0  || ($this->default_token==$this->api_token)){
     $data = new stdClass();
     $user_data = array();
     $user_data = $this->post();
-    // $user_data['mobileno'] = '7737453867';
-    // $user_data['country_code'] = '91';
-    // $user_data['device_type'] = 'mobile';
-    // $user_data['device_id'] = '121';
     if(!empty($user_data['mobileno'])  && !empty($user_data['country_code']) && !empty($user_data['device_id']) && !empty($user_data['device_type'])){
+
       $is_available_mobile = $this->api->check_mobile_no($user_data);
       $is_available_mobileno = $this->api->check_user_mobileno($user_data);
       $is_available_user= $this->api->check_user_mobileno($user_data);
@@ -3913,7 +3907,6 @@ public function generate_otp_user_post(){
     $data=array();
     $user_data = array();
     $user_data = $this->post();
-    $response_message = null;
     if(!empty($user_data['mobileno'])  && !empty($user_data['country_code']) && !empty($user_data['device_type']) && !empty($user_data['device_id'])){
       $is_available_mobile = $this->api->check_mobile_no($user_data);
       $is_available_mobileno = $this->api->check_user_mobileno($user_data);
@@ -3975,8 +3968,8 @@ public function generate_otp_user_post(){
             count_all_results();      
             if($ret > 0){
               /*update otp*/
-              $this->db->where('country_code', $country_code);
-              $this->db->where('mobile_number', $mobile_no);
+              $this->db->where('country_code', $user_data['country_code']);
+              $this->db->where('mobile_number', $user_data['mobileno']);
               $this->db->where('status', 1);
               $save_otp=$this->db->update('mobile_otp', array('endtime'=>$otp_data['endtime'],'otp'=>$otp_data['otp'],'updated_on'=> utc_date_conversion(date('Y-m-d H:i:s'))));
             }else{
@@ -4047,8 +4040,8 @@ public function generate_otp_user_post(){
         count_all_results();     
         if($ret > 0){
           /*update otp*/
-          $this->db->where('country_code', $country_code);
-          $this->db->where('mobile_number', $mobile_no);
+          $this->db->where('country_code', $user_data['country_code']);
+          $this->db->where('mobile_number', $user_data['mobileno']);
           $this->db->where('status', 1);
           $save_otp=$this->db->update('mobile_otp', array('endtime'=>$otp_data['endtime'],'otp'=>$otp_data['otp'],'updated_on'=> utc_date_conversion(date('Y-m-d H:i:s'))));
         }else{
