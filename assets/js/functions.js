@@ -1812,18 +1812,20 @@ function getData(page){
   var csrf_token=$('#csrf_token').val();
   
   //if(cpage=='http://localhost/axzora/search/'+last_part){
-    //if(cpage=='http://axzora.com/search/'+last_part){
-  //   $.ajax({
-  //   method: "POST",
-  //   url: base_url+'home/ajaxPaginationData2',
-  //   data: { page: page,csrf_token_name:csrf_token,status:status,'pageName':last_part },
-  //   success: function(data){
-  //     $(target).html(data);
-  //     $('.pagination ul li').removeClass('active');
-  //     $('.page_nos_'+page).parent('li').addClass('active');
-  //   }
-  // });
-  //}else{
+    if(cpage=='http://axzora.com/search/'+last_part){
+    $.ajax({
+    method: "POST",
+    url: base_url+'home/ajaxPaginationData2',
+    data: { page: page,csrf_token_name:csrf_token,status:status,'pageName':last_part },
+    success: function(data){
+       console.log(data);
+      $(target).html(data);
+      $('.pagination ul li').removeClass('active');
+      $('.page_nos_'+page).parent('li').addClass('active');
+    }
+  });
+
+  }else{
     $.ajax({
     method: "POST",
     url: pagination_page+page,
@@ -1835,7 +1837,7 @@ function getData(page){
       $('.page_nos_'+page).parent('li').addClass('active');
     }
   });
-  //}
+  }
 }
 
 function getService(page){  

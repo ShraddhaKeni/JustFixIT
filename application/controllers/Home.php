@@ -288,7 +288,7 @@ class Home extends CI_Controller {
         $config['link_func']      = 'getData';
         $config['loading']='<img src="'.base_url().'assets/img/loader.gif" alt="" />';
         $config['base_url']    = base_url('home/ajaxPaginationData'); 
-        $config['total_rows']  = 21; 
+        $config['total_rows']  = count($totalRec); 
         $config['per_page']    = $this->perPage; 
          
         // Initialize pagination library 
@@ -304,6 +304,7 @@ class Home extends CI_Controller {
          $this->data['module']    = 'services';
          $this->data['page'] = 'ajax_service';
 	     $this->data['service']=$vals;
+	     //echo "<pre>"; print_r($vals); exit;
 	     //$result['count']=$totalRec;
 	      $this->load->vars($this->data);
 	     $this->load->view($this->data['theme'].'/'.$this->data['module'].'/'.$this->data['page']);
