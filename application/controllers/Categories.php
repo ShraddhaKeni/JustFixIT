@@ -22,7 +22,7 @@ class Categories extends CI_Controller {
 	
 	public function index()
 	{
-		$conditions['returnType'] = 'count'; 
+        $conditions['returnType'] = 'count'; 
         $totalRec = $this->categories->get_category($conditions); 
          
         // Pagination configuration 

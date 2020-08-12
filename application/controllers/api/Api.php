@@ -263,13 +263,17 @@ $this->response($result, REST_Controller::HTTP_OK);
 }
 
 public function all_services_post(){
+
   $user_data=array();
+  
   $data =array();
   $user_data=$this->post();
+  echo $user_data['type']; exit;
   $inputs['page']  = (!empty($inputs['page']))?$inputs['page']:1;
-  //$user_data['type'] = 'Popular';
-  $user_data['latitude'] = '26.9124336';
-  $user_data['longitude'] = '75.7872709';
+  // $user_data['type'] = 'Popular';
+  // $user_data['latitude'] = '26.9124336';
+  // $user_data['longitude'] = '75.7872709';
+
   if(!empty($user_data['type']) && !empty($user_data['latitude']) && !empty($user_data['longitude']))
   {
     $response = $this->api->all_services($user_data);
@@ -328,6 +332,13 @@ $result = $this->data_format($response_code,$response_message,$data);
 $this->response($result, REST_Controller::HTTP_OK);
 }
 public function provider_signin_post(){
+  $this->user_id = 46;
+    $this->default_token = '46YH1iGmNjFIKHMR';
+    $this->api_token = '46YH1iGmNjFIKHMR';
+    // $user_data['mobileno'] = '7737453867';
+    // $user_data['country_code'] = '91';
+    // $user_data['device_type'] = 'mobile';
+    // $user_data['device_id'] = '121';
   if($this->user_id !=0  || ($this->default_token ==$this->api_token)) {
     $data=array();
     $user_data = array();
@@ -336,7 +347,6 @@ public function provider_signin_post(){
     {
       $is_available_mobile = $this->api->check_mobile_no($user_data);
       $is_available_user= $this->api->check_user_mobileno($user_data);
-
       if($is_available_user==0){
 
         if($is_available_mobile == 1)         
@@ -1445,9 +1455,6 @@ public function user_signin_post(){
     $data=array();
     $user_data = array();
     $user_data = $this->post();
-    // $user_data['mobileno'] = '7340089066';
-    // $user_data['otp'] = '1234';
-    // $user_data['country_code'] = '91';
     if(!empty($user_data['mobileno']) && !empty($user_data['otp']) && !empty($user_data['country_code'])){
       $is_available_mobile = $this->api->check_user_mobileno($user_data);
       $is_available_provider=$this->api->check_mobile_no($user_data);
@@ -3809,12 +3816,12 @@ public function generate_otp_provider_post(){
               count_all_results();        
               if($ret > 0){
                 /*update otp*/
-                $this->db->where('country_code', $country_code);
-                $this->db->where('mobile_number', $mobile_no);
+                $this->db->where('country_code', $user_data['country_code']);
+                $this->db->where('mobile_number', $user_data['mobileno']);
                 $this->db->where('status', 1);
                 $save_otp=$this->db->update('mobile_otp', array('endtime'=>$otp_data['endtime'],'otp'=>$otp_data['otp'],'updated_on'=> utc_date_conversion(date('Y-m-d H:i:s'))));
               }else{
-                $save_otp = $this->api->save_otp($otp_data);
+              $save_otp = $this->api->save_otp($otp_data);
               }$response_code = '200';
               $response_message = 'OTP send successfully';
             }else{
@@ -3875,13 +3882,14 @@ public function generate_otp_provider_post(){
             count_all_results();      
             if($ret > 0){
               /*update otp*/
-              $this->db->where('country_code', $country_code);
-              $this->db->where('mobile_number', $mobile_no);
+              $this->db->where('country_code', $user_data['country_code']);
+              $this->db->where('mobile_number', $user_data['mobileno']);
               $this->db->where('status', 1);
               $save_otp=$this->db->update('mobile_otp', array('endtime'=>$otp_data['endtime'],'otp'=>$otp_data['otp'],'updated_on'=> utc_date_conversion(date('Y-m-d H:i:s'))));
             }else{
               $save_otp = $this->api->save_otp($otp_data);
             }
+              
             $update_check = $this->api->update_device_details($user_data);
             $response_code = '200';
             $response_message = 'OTP send successfully';

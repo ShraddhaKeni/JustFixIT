@@ -89,12 +89,15 @@
 			$this->db->where('id', $id);
 			$this->db->delete('book_temp');
 		}
-
-		public function getProvider($id){
-			return $this->db->select("mobileno")->get_where('providers',array('status'=>1,'id'=>$id))->row_array();
+		public function get_book_service($id){
+			return $this->db->select('*')->get_where('book_service',array('status'=>1,'id'=>$id))->row_array();
 		}
-		public function getUser($id){
-			return $this->db->select("mobileno")->get_where('users',array('status'=>1,'id'=>$id))->row_array();
+
+		public function get_provider($id){
+			return $this->db->select(["mobileno","name"])->get_where('providers',array('status'=>1,'id'=>$id))->row_array();
+		}
+		public function get_user($id){
+			return $this->db->select(["mobileno","name"])->get_where('users',array('status'=>1,'id'=>$id))->row_array();
 		}
 
 }

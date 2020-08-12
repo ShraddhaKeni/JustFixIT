@@ -1800,22 +1800,41 @@ function button_unloading(){
  $this.html($this.data('original-text')).prop('disabled','false');
 }
 function getData(page){
+
+  var url = $(location).attr('href'),
+    parts = url.split("/"),
+    last_part = parts[parts.length-1];
+
+  var cpage = $(location).attr("href");
   var status=$('#status').val();
   var pagination_page=$('#pagination_current_page').val();
   var target=$('#target').val();
   var csrf_token=$('#csrf_token').val();
-  $.ajax({
+  if(cpage=='http://localhost/axzora/search/'+last_part){
+    $.ajax({
     method: "POST",
-    url: pagination_page+page,
-    data: { page: page,csrf_token_name:csrf_token,status:status },
-
+    url: base_url+'home/ajaxPaginationData2',
+    data: { page: page,csrf_token_name:csrf_token,status:status,'pageName':last_part },
     success: function(data){
       $(target).html(data);
       $('.pagination ul li').removeClass('active');
       $('.page_nos_'+page).parent('li').addClass('active');
-
     }
   });
+
+  }else{
+    $.ajax({
+    method: "POST",
+    url: pagination_page+page,
+    data: { page: page,csrf_token_name:csrf_token,status:status },
+    success: function(data){
+      //console.log(data);
+      $(target).html(data);
+      $('.pagination ul li').removeClass('active');
+      $('.page_nos_'+page).parent('li').addClass('active');
+    }
+  });
+  }
 }
 
 function getService(page){  

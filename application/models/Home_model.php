@@ -194,6 +194,21 @@ class Home_model extends CI_Model
         return $result; 
     } 
 
+    public function getcategoryByName($name){
+      $this->db->select("id");
+      $this->db->from('categories');
+      $this->db->where('category_name',$name);
+      $result = $this->db->get()->result_array();
+        return $result;
+    }
+    public function getcategoryServices($id){
+       $this->db->select("*");
+      $this->db->from('services');
+      $this->db->where('category',$id);
+      $result = $this->db->get()->result_array();
+        return $result;
+    }
+
 
 
        public function get_pending_bookinglist($provider_id)

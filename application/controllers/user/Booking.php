@@ -250,18 +250,17 @@ $booking = [
       'payment_status'=>4,
       'status'=>4
   ];
+  
   $this->booking->booking_success($booking);
-  $this->booking->deleteLastRecord($serviceval['id']);
-$getprovider = $this->booking->getProvider($serviceval['provider_id']);
-$getuser = $this->booking->getUser($serviceval['user_id']);  
-$tempprovider = "User Book Service";
-$tempuser = "This is provider name";
-$otp = rand(1000,9999);
+  $bookId =  $this->db->insert_id();
+  $get_book_service = $this->booking->get_book_service($bookId);
+  $getservice = $this->booking->get_service($get_book_service['service_id']);
+  $getprovider = $this->booking->get_provider($get_book_service['provider_id']);
+  $getuser = $this->booking->get_user($get_book_service['user_id']);
         $api_key = "523977b1-cfcd-11ea-9fa5-0200cd936042";
 $curl = curl_init();
         curl_setopt_array($curl, array(
-        //CURLOPT_URL => "https://2factor.in/API/V1/".$api_key."/SMS/".$getprovider['mobileno']."/".$otp,
-          CURLOPT_URL => "https://2factor.in/API/V1/".$api_key."/SMS/".$getprovider['mobileno']."/".$otp."/".$tempprovider,
+        CURLOPT_URL => "https://2factor.in/API/R1/?module=TRANS_SMS&apikey=".$api_key."&to=".$getprovider['mobileno']."&from=AXZORA&templatename=bookedServiceProvider&var1="."(".$getuser['name'].")".$getuser['mobileno']."&var2=".$get_book_service['to_time'],       
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_ENCODING => "",
         CURLOPT_MAXREDIRS => 10,
@@ -276,10 +275,13 @@ $curl = curl_init();
       $response = curl_exec($curl);
       $err = curl_error($curl);
       curl_close($curl);
-
+$usersDetail = $getservice['service_title'].'%'.$getservice['service_amount'].'%'.$get_book_service['to_time'];
+/* 
+https://2factor.in/API/R1/?module=TRANS_SMS&apikey=523977b1-cfcd-11ea-9fa5-0200cd936042&to=8143222351&from=AXZORA&templatename=bookserviceUser&var1=Gouse&var2=Car%20Services%20In%20Goa
+*/
       $curl1 = curl_init();
         curl_setopt_array($curl1, array(
-        CURLOPT_URL => "https://2factor.in/API/V1/".$api_key."/SMS/".$getuser['mobileno']."/".$otp."/".$tempuser,
+CURLOPT_URL => "https://2factor.in/API/R1/?module=TRANS_SMS&apikey=".$api_key."&to=".$getuser['mobileno']."&from=AXZORA&templatename=bookserviceUser&var1=".$getuser['name']."&var2=".$usersDetail,
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_ENCODING => "",
         CURLOPT_MAXREDIRS => 10,
@@ -294,6 +296,8 @@ $curl = curl_init();
       $response = curl_exec($curl1);
       $err = curl_error($curl1);
       curl_close($curl1);
+
+      $this->booking->deleteLastRecord($serviceval['id']);
 $this->session->set_flashdata('success_message','Payment has been successfully done');
 redirect(base_url().'user-bookings');
 }
@@ -303,7 +307,6 @@ echo "<pre>"; print_r($this->input->post());
 redirect(base_url().'user-bookings');
 }
 }else{
-
    $latitude= $this->input->get('service_latitude');
       $longitude=$this->input->get('service_longitude');
   $service_id = $this->input->get('service_id');

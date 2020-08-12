@@ -174,11 +174,11 @@ class Ajax_pagination{
 		}
 
 		// Render the "next" link
-		if ($this->cur_page < $num_pages){
-			$output .= $this->next_tag_open 
-				. $this->getAJAXlink( $this->cur_page * $this->per_page , $this->next_link )
-				. $this->next_tag_close;
-		}
+		// if ($this->cur_page < $num_pages){
+		// 	$output .= $this->next_tag_open 
+		// 		. $this->getAJAXlink( $this->cur_page * $this->per_page , $this->next_link )
+		// 		. $this->next_tag_close;
+		// }
 
 		// Render the "Last" link
 		if (($this->cur_page + $this->num_links) < $num_pages){

@@ -23,7 +23,6 @@
 			$service_amount = $srows['service_amount'];
 			$serviceimages=$this->db->where('service_id',$srows['id'])->get('services_image')->row_array();
 			
-			
 		?>
 		
 <div class="col-lg-4 col-md-6">
