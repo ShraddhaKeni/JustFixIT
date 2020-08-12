@@ -1466,10 +1466,10 @@ public function user_signin_post(){
           $check = $this->api->check_otp($check_data);
           if(is_array($check) && !empty($check)){
             $mobile_number = $user_data['mobileno'];
-            $device_detail = $this->api->get_device_detail($this->users_id);
-            $user_data['device_type'] =$device_detail[0]->device_type;
-            $user_data['device_id'] = $device_detail[0]->device_id;
-            $user_data['user_id'] = $device_detail[0]->user_id;
+            //$device_detail = $this->api->get_device_detail();
+            // $user_data['device_type'] =$device_detail[0]->device_type;
+            // $user_data['device_id'] = $device_detail[0]->device_id;
+            // $user_data['user_id'] = $device_detail[0]->user_id;
             $user_details = $this->api->get_user_details($mobile_number,$user_data);
           } if(!empty($user_details)){                
             $response_code = '200';
@@ -1492,7 +1492,8 @@ public function user_signin_post(){
     $this->response($result, REST_Controller::HTTP_OK);
   }else{ 
     $this->token_error();
-  } }
+  }
+   }
 
 
 public function generate_userotp_post(){ 

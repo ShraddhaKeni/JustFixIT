@@ -1810,7 +1810,9 @@ function getData(page){
   var pagination_page=$('#pagination_current_page').val();
   var target=$('#target').val();
   var csrf_token=$('#csrf_token').val();
-  if(cpage=='http://localhost/axzora/search/'+last_part){
+  
+  //if(cpage=='http://localhost/axzora/search/'+last_part){
+    if(cpage=='http://axzora.com/search/'+last_part){
     $.ajax({
     method: "POST",
     url: base_url+'home/ajaxPaginationData2',

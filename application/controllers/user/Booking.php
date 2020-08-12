@@ -168,11 +168,7 @@ class Booking extends CI_Controller {
       if($result !=''){
           $userData=$this->session->userdata();
           $serviceData['service']=$this->db->where('id',$service_id)->from('services')->get()->row_array();
-          //print_r($result);
-          //print_r($userData);
-          //echo base_url();
-          //print_r($serviceData['service']['service_amount']); 
-          $api_url = $this->endpoint."/api/v1/order/create";
+           $api_url = $this->endpoint."/api/v1/order/create";
           $cf_request = array();
           $cf_request["appId"] = $this->app_id;
           $cf_request["secretKey"] = $this->secretKey;
@@ -201,12 +197,9 @@ class Booking extends CI_Controller {
           curl_close ($ch);
 
           $jsonResponse = json_decode($curl_result);
-          //print_r($jsonResponse);
           if ($jsonResponse->{'status'} == "OK") {
             $paymentLink = $jsonResponse->{"paymentLink"};
-            //print_r($paymentLink);
-            //Send this payment link to customer over email/SMS OR redirect to this link on browser
-          } else {
+              } else {
             $message = 'Payment Method Not Working';
           } 
           
@@ -260,7 +253,7 @@ $booking = [
         $api_key = "523977b1-cfcd-11ea-9fa5-0200cd936042";
 $curl = curl_init();
         curl_setopt_array($curl, array(
-        CURLOPT_URL => "https://2factor.in/API/R1/?module=TRANS_SMS&apikey=".$api_key."&to=".$getprovider['mobileno']."&from=AXZORA&templatename=bookedServiceProvider&var1="."(".$getuser['name'].")".$getuser['mobileno']."&var2=".$get_book_service['to_time'],       
+        CURLOPT_URL => "https://2factor.in/API/R1/?module=TRANS_SMS&apikey=".$api_key."&to=".$getprovider['mobileno']."&from=AXZORA&templatename=bookedServiceProvider&var1=".$getuser['mobileno']."&var2=".$get_book_service['to_time'],       
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_ENCODING => "",
         CURLOPT_MAXREDIRS => 10,
@@ -275,13 +268,13 @@ $curl = curl_init();
       $response = curl_exec($curl);
       $err = curl_error($curl);
       curl_close($curl);
-$usersDetail = $getservice['service_title'].'%'.$getservice['service_amount'].'%'.$get_book_service['to_time'];
+$usersDetail = $getservice['service_title'].'%20'.$getservice['service_amount'].'%20'.$get_book_service['to_time'];
 /* 
 https://2factor.in/API/R1/?module=TRANS_SMS&apikey=523977b1-cfcd-11ea-9fa5-0200cd936042&to=8143222351&from=AXZORA&templatename=bookserviceUser&var1=Gouse&var2=Car%20Services%20In%20Goa
 */
       $curl1 = curl_init();
         curl_setopt_array($curl1, array(
-CURLOPT_URL => "https://2factor.in/API/R1/?module=TRANS_SMS&apikey=".$api_key."&to=".$getuser['mobileno']."&from=AXZORA&templatename=bookserviceUser&var1=".$getuser['name']."&var2=".$usersDetail,
+CURLOPT_URL => "https://2factor.in/API/R1/?module=TRANS_SMS&apikey=".$api_key."&to=".$getuser['mobileno']."&from=AXZORA&templatename=bookserviceUser&var1=".$getuser['mobileno']."&var2=".$usersDetail,
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_ENCODING => "",
         CURLOPT_MAXREDIRS => 10,
