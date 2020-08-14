@@ -283,7 +283,6 @@ class Home extends CI_Controller {
         for($start; $start<$end; $start++){
         	$vals[] = $totalRec[$start];
         }
-        //echo json_encode($vals); exit;
          $config['target']      = '#dataList'; 
         $config['link_func']      = 'getData';
         $config['loading']='<img src="'.base_url().'assets/img/loader.gif" alt="" />';

@@ -33,6 +33,32 @@ class Api_model extends CI_Model{
     return 0;
   }
 
+  public function getwalletamt($token){
+    $this->db->select("*");
+    $this->db->from('wallet_table');
+    $this->db->where('token',$token);
+      $records = $this->db->get();
+      return $records->result();
+  }
+  public function updateWallet($token,$data){
+    $this->db->where('token',$token)->update('wallet_table',$data);
+  }
+
+  public function getTempOrder($orderid){
+    $this->db->select("*");
+    $this->db->from('temproryorder');
+    $this->db->where('orderid',$orderid);
+    $this->db->where('status',1);
+      $records = $this->db->get();
+      return $records->result();
+  }  
+  public function insertTempOrder($data){
+    $this->db->insert('temproryorder',$data);
+  }
+  public function updatetempOrder($data){
+    $this->db->where('orderid',$data['orderid'])->update('temproryorder',$data);
+  }
+
   public function save_provider($data){
     $result = $this->db->insert('providers',$data);
     $user_id = $this->db->insert_id();

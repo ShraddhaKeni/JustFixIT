@@ -2285,6 +2285,122 @@ $result = $this->data_format($response_code,$response_message,$data);
 $this->response($result, REST_Controller::HTTP_OK);
 }
 
+  public function book_service_wallet_post(){       
+      $apiEndpoint = "https://test.cashfree.com";
+      $opUrl = $apiEndpoint."/api/v1/order/create";
+
+       $cf_request = array();
+       $cf_request["appId"] = "1459459be8b3a186d7149dd8f49541";
+       $cf_request["secretKey"] = "65e2043ddc2a9274637cc9e9c8889ba067f4d8e0";
+       $cf_request["orderId"] =   rand(100000,999999); 
+       $cf_request["orderAmount"] = $this->input->post('orderAmount');
+       $cf_request["orderNote"] = "Hello Cashfree";
+       $cf_request["customerPhone"] = $this->input->post('customerPhone');
+       $cf_request["customerName"] = $this->input->post('customerName');
+       $cf_request["customerEmail"] = $this->input->post('customerEmail');
+       $cf_request["returnUrl"] = base_url().'api/book_service_response';
+       $cf_request["notifyUrl"] = base_url().'api/book_service_response';
+
+       $timeout = 10;
+        // echo json_encode($cf_request);exit;
+       $request_string = "";
+       foreach($cf_request as $key=>$value) {
+         $request_string .= $key.'='.rawurlencode($value).'&';
+       }
+       
+       $ch = curl_init();
+       curl_setopt($ch, CURLOPT_URL,"$opUrl?");
+       curl_setopt($ch,CURLOPT_POST, count($cf_request));
+       curl_setopt($ch,CURLOPT_POSTFIELDS, $request_string);
+       curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+       curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
+       $curl_result=curl_exec ($ch);
+       curl_close ($ch);
+
+         $jsonResponse = json_decode($curl_result); 
+        if ($jsonResponse->{'status'} == "OK") {
+         echo $paymentLink = $jsonResponse->{"paymentLink"}; 
+
+         $opUrl1 = $apiEndpoint."/api/v1/order/info/status";
+       $ch1 = curl_init();
+       curl_setopt($ch1, CURLOPT_URL,"$opUrl1?");
+       curl_setopt($ch1,CURLOPT_POST, count($cf_request));
+       curl_setopt($ch1,CURLOPT_POSTFIELDS, $request_string);
+       curl_setopt($ch1, CURLOPT_RETURNTRANSFER, 1);
+       curl_setopt($ch1, CURLOPT_TIMEOUT, $timeout);
+       $curl_result1=curl_exec ($ch1);
+       curl_close ($ch1);
+
+
+        $jsonResponse1 = json_decode($curl_result1);
+        if($jsonResponse1->status="OK"){
+          $status = 1;
+        }else{
+          $status = 0;
+        }
+        if($this->input->post('type')==''){
+          $type='direct';
+        }else{
+          $type = $this->input->post('type');
+        }
+        $input = array();
+        $input['orderid'] =  $cf_request["orderId"];
+        $input['amount'] =  $cf_request["orderAmount"];
+        $input['status'] =  $status;
+        $input['type'] =  $type;
+        $input['token'] =  $this->input->post('token');
+        $input['created_at'] =  date('Y-m-d H:i:s');
+        $this->api->insertTempOrder($input);
+
+         exit;
+         //Send this payment link to customer over email/SMS OR redirect to this link on browser
+       }else {
+        return json_encode(['status'=>'201','message'=>'Payment Cancle']);
+        //Log request, $jsonResponse["reason"]
+       }
+  }
+
+  public function book_service_response_post(){
+    if($this->input->post('txStatus')=='SUCCESS'){
+        $getTempOrder = $this->api->getTempOrder($this->input->post('orderId'));
+        if($getTempOrder[0]->type=='wallet'){
+          $walletAmt = $this->api->getwalletamt($getTempOrder[0]->token);
+          $actualAmount = $walletAmt[0]->wallet_amt - $this->input->post('orderAmount');
+
+          // echo json_encode(['walletamt'=>$walletAmt[0]->wallet_amt,'orderAmount'=>$this->input->post('orderAmount'),'actualamount'=>$actualAmount,'token'=>$getTempOrder[0]->token]); exit;
+          $waltdata = array();
+          $waltdata['wallet_amt'] = $actualAmount;
+            $this->api->updateWallet($getTempOrder[0]->token,$waltdata);
+          $status = 0;
+          $input['orderid'] =  $this->input->post('orderId');
+          $input['amount'] =  $this->input->post('orderAmount');
+          $input['status'] =  $status;
+          $input['created_at'] =  date('Y-m-d H:i:s');
+          $this->api->updateTempOrder($input);
+
+            echo json_encode(['response'=>'200','message'=>'Payment Successfull from wallet']); exit;
+
+        }else{
+          $status = 0;
+        $input['orderid'] =  $this->input->post('orderId');
+        $input['amount'] =  $this->input->post('orderAmount');
+        $input['status'] =  $status;
+        $input['created_at'] =  date('Y-m-d H:i:s');
+        $this->api->updateTempOrder($input);
+            echo json_encode(['response'=>'200','message'=>'Payment Successfull']); exit;
+
+        }
+      }else{
+         $input['orderid'] =  $this->input->post('orderId');
+          $input['amount'] =  $this->input->post('orderAmount');
+          $input['status'] =  2;
+          $input['created_at'] =  date('Y-m-d H:i:s');
+          $this->api->updateTempOrder($input);
+        echo json_encode(['response'=>'202','message'=>'Payment failed']); exit;
+      }
+  }
+
+
 public function search_services_post(){
   if($this->users_id !=0  || ($this->default_token ==$this->api_token)) {
     $data = array();
