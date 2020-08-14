@@ -64,7 +64,29 @@
 
   gtag('config', 'UA-174907248-1');
 </script>
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/7.18.0/firebase-app.js"></script>
 
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+<script src="https://www.gstatic.com/firebasejs/7.18.0/firebase-analytics.js"></script>
+
+<script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyC5GBtEXU1Ryaq1tgegPA1IXPWaMLnaTPw",
+    authDomain: "axzora-649a8.firebaseapp.com",
+    databaseURL: "https://axzora-649a8.firebaseio.com",
+    projectId: "axzora-649a8",
+    storageBucket: "axzora-649a8.appspot.com",
+    messagingSenderId: "69364780586",
+    appId: "1:69364780586:web:eb9ef59de8c135e3f9bd53",
+    measurementId: "G-QVPRZC1ED4"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  firebase.analytics();
+</script>
 
     <link rel="shortcut icon" type="image/x-icon" href="<?php echo $fav;?>">
 	
