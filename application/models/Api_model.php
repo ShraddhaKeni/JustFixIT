@@ -33,10 +33,10 @@ class Api_model extends CI_Model{
     return 0;
   }
 
-  public function getwalletamt($token){
+  public function getwalletamt($tokenval){
     $this->db->select("*");
     $this->db->from('wallet_table');
-    $this->db->where('token',$token);
+    $this->db->where('token',$tokenval);
       $records = $this->db->get();
       return $records->result();
   }

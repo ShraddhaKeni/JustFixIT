@@ -2294,7 +2294,7 @@ $this->response($result, REST_Controller::HTTP_OK);
        $cf_request["secretKey"] = "65e2043ddc2a9274637cc9e9c8889ba067f4d8e0";
        $cf_request["orderId"] =   rand(100000,999999); 
        $cf_request["orderAmount"] = $this->input->post('orderAmount');
-       $cf_request["orderNote"] = "Hello Cashfree";
+       $cf_request["orderNote"] = "Hello This is Cashfree payment gateway";
        $cf_request["customerPhone"] = $this->input->post('customerPhone');
        $cf_request["customerName"] = $this->input->post('customerName');
        $cf_request["customerEmail"] = $this->input->post('customerEmail');
