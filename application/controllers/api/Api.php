@@ -2285,137 +2285,116 @@ $result = $this->data_format($response_code,$response_message,$data);
 $this->response($result, REST_Controller::HTTP_OK);
 }
 
-  public function book_service_wallet_post(){       
-      $apiEndpoint = "https://test.cashfree.com";
-      $opUrl = $apiEndpoint."/api/v1/order/create";
+  // public function book_service_wallet_post(){
+  //     $apiEndpoint = "https://test.cashfree.com";
+  //     $opUrl = $apiEndpoint."/api/v1/order/create";
 
-       $cf_request = array();
-       $cf_request["appId"] = "1459459be8b3a186d7149dd8f49541";
-       $cf_request["secretKey"] = "65e2043ddc2a9274637cc9e9c8889ba067f4d8e0";
-       $cf_request["orderId"] =   rand(100000,999999); 
-       $cf_request["orderAmount"] = $this->input->post('orderAmount');
-       $cf_request["orderNote"] = "Hello Cashfree";
-       $cf_request["customerPhone"] = $this->input->post('customerPhone');
-       $cf_request["customerName"] = $this->input->post('customerName');
-       $cf_request["customerEmail"] = $this->input->post('customerEmail');
-       $cf_request["returnUrl"] = base_url().'api/book_service_response';
-       $cf_request["notifyUrl"] = base_url().'api/book_service_response';
+  //      $cf_request = array();
+  //      $cf_request["appId"] = "1459459be8b3a186d7149dd8f49541";
+  //      $cf_request["secretKey"] = "65e2043ddc2a9274637cc9e9c8889ba067f4d8e0";
+  //      $cf_request["orderId"] =   rand(100000,999999);
+  //      $cf_request["orderAmount"] = $this->input->post('orderAmount');
+  //      $cf_request["orderNote"] = "Hello Cashfree";
+  //      $cf_request["customerPhone"] = $this->input->post('customerPhone');
+  //      $cf_request["customerName"] = $this->input->post('customerName');
+  //      $cf_request["customerEmail"] = $this->input->post('customerEmail');
+  //      $cf_request["returnUrl"] = base_url().'api/book_service_response';
+  //      $cf_request["notifyUrl"] = base_url().'api/book_service_response';
 
-       $timeout = 10;
-        // echo json_encode($cf_request);exit;
-       $request_string = "";
-       foreach($cf_request as $key=>$value) {
-         $request_string .= $key.'='.rawurlencode($value).'&';
-       }
-       
-       $ch = curl_init();
-       curl_setopt($ch, CURLOPT_URL,"$opUrl?");
-       curl_setopt($ch,CURLOPT_POST, count($cf_request));
-       curl_setopt($ch,CURLOPT_POSTFIELDS, $request_string);
-       curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-       curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
-       $curl_result=curl_exec ($ch);
-       curl_close ($ch);
+  //      $timeout = 10;
+  //       // echo json_encode($cf_request);exit;
+  //      $request_string = "";
+  //      foreach($cf_request as $key=>$value) {
+  //        $request_string .= $key.'='.rawurlencode($value).'&';
+  //      }
 
-         $jsonResponse = json_decode($curl_result); 
-        if ($jsonResponse->{'status'} == "OK") {
-         echo $paymentLink = $jsonResponse->{"paymentLink"}; 
+  //      $ch = curl_init();
+  //      curl_setopt($ch, CURLOPT_URL,"$opUrl?");
+  //      curl_setopt($ch,CURLOPT_POST, count($cf_request));
+  //      curl_setopt($ch,CURLOPT_POSTFIELDS, $request_string);
+  //      curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+  //      curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
+  //      $curl_result=curl_exec ($ch);
+  //      curl_close ($ch);
 
-         $opUrl1 = $apiEndpoint."/api/v1/order/info/status";
-       $ch1 = curl_init();
-       curl_setopt($ch1, CURLOPT_URL,"$opUrl1?");
-       curl_setopt($ch1,CURLOPT_POST, count($cf_request));
-       curl_setopt($ch1,CURLOPT_POSTFIELDS, $request_string);
-       curl_setopt($ch1, CURLOPT_RETURNTRANSFER, 1);
-       curl_setopt($ch1, CURLOPT_TIMEOUT, $timeout);
-       $curl_result1=curl_exec ($ch1);
-       curl_close ($ch1);
+  //        $jsonResponse = json_decode($curl_result);
+  //       if ($jsonResponse->{'status'} == "OK") {
+  //        echo $paymentLink = $jsonResponse->{"paymentLink"};
+
+  //        $opUrl1 = $apiEndpoint."/api/v1/order/info/status";
+  //      $ch1 = curl_init();
+  //      curl_setopt($ch1, CURLOPT_URL,"$opUrl1?");
+  //      curl_setopt($ch1,CURLOPT_POST, count($cf_request));
+  //      curl_setopt($ch1,CURLOPT_POSTFIELDS, $request_string);
+  //      curl_setopt($ch1, CURLOPT_RETURNTRANSFER, 1);
+  //      curl_setopt($ch1, CURLOPT_TIMEOUT, $timeout);
+  //      $curl_result1=curl_exec ($ch1);
+  //      curl_close ($ch1);
 
 
-        $jsonResponse1 = json_decode($curl_result1);
-        if($jsonResponse1->status="OK"){
-          $status = 1;
-        }else{
-          $status = 0;
-        }
-        if($this->input->post('type')==''){
-          $type='direct';
-        }else{
-          $type = $this->input->post('type');
-        }
-        $input = array();
-        $input['orderid'] =  $cf_request["orderId"];
-        $input['amount'] =  $cf_request["orderAmount"];
-        $input['status'] =  $status;
-        $input['type'] =  $type;
-        $input['token'] =  $this->input->post('token');
-        $input['created_at'] =  date('Y-m-d H:i:s');
-        $this->api->insertTempOrder($input);
-         exit;
-         //Send this payment link to customer over email/SMS OR redirect to this link on browser
-       }else {
-        return json_encode(['status'=>'201','message'=>'Payment Cancle']);
-        //Log request, $jsonResponse["reason"]
-       }
-  }
+  //       $jsonResponse1 = json_decode($curl_result1);
+  //       if($jsonResponse1->status="OK"){
+  //         $status = 1;
+  //       }else{
+  //         $status = 0;
+  //       }
+  //       if($this->input->post('type')==''){
+  //         $type='direct';
+  //       }else{
+  //         $type = $this->input->post('type');
+  //       }
+  //       $input = array();
+  //       $input['orderid'] =  $cf_request["orderId"];
+  //       $input['amount'] =  $cf_request["orderAmount"];
+  //       $input['status'] =  $status;
+  //       $input['type'] =  $type;
+  //       $input['token'] =  $this->input->post('token');
+  //       $input['created_at'] =  date('Y-m-d H:i:s');
+  //       $this->api->insertTempOrder($input);
+  //        exit;
+  //        //Send this payment link to customer over email/SMS OR redirect to this link on browser
+  //      }else {
+  //       return json_encode(['status'=>'201','message'=>'Payment Cancle']);
+  //       //Log request, $jsonResponse["reason"]
+  //      }
+  // }
 
-  public function book_service_response_post(){
-    if($this->input->post('txStatus')=='SUCCESS'){
-        $getTempOrder = $this->api->getTempOrder($this->input->post('orderId'));
-        if($getTempOrder[0]->type=='wallet'){
-          $walletAmt = $this->api->getwalletamt($getTempOrder[0]->token);
-          $actualAmount = $walletAmt[0]->wallet_amt - $this->input->post('orderAmount');
-          $waltdata = array();
-          $waltdata['wallet_amt'] = $actualAmount;
-            $this->api->updateWallet($getTempOrder[0]->token,$waltdata);
-          $status = 0;
-          $input['orderid'] =  $this->input->post('orderId');
-          $input['amount'] =  $this->input->post('orderAmount');
-          $input['status'] =  $status;
-          $input['created_at'] =  date('Y-m-d H:i:s');
-          $this->api->updateTempOrder($input);
-            echo json_encode(['response'=>'200','message'=>'Payment Successfull from wallet']); exit;
-          }else{
-            $status = 0;
-          $input['orderid'] =  $this->input->post('orderId');
-          $input['amount'] =  $this->input->post('orderAmount');
-          $input['status'] =  $status;
-          $input['created_at'] =  date('Y-m-d H:i:s');
-          $this->api->updateTempOrder($input);
-            echo json_encode(['response'=>'200','message'=>'Payment Successfull']); exit;
-          }
-      }else{
-         $input['orderid'] =  $this->input->post('orderId');
-          $input['amount'] =  $this->input->post('orderAmount');
-          $input['status'] =  2;
-          $input['created_at'] =  date('Y-m-d H:i:s');
-          $this->api->updateTempOrder($input);
-        echo json_encode(['response'=>'202','message'=>'Payment failed']); exit;
-      }
-  }
+  // public function book_service_response_post(){
+  //   if($this->input->post('txStatus')=='SUCCESS'){
+  //       $getTempOrder = $this->api->getTempOrder($this->input->post('orderId'));
+  //       if($getTempOrder[0]->type=='wallet'){
+  //         $walletAmt = $this->api->getwalletamt($getTempOrder[0]->token);
+  //         $actualAmount = $walletAmt[0]->wallet_amt - $this->input->post('orderAmount');
+  //         $waltdata = array();
+  //         $waltdata['wallet_amt'] = $actualAmount;
+  //           $this->api->updateWallet($getTempOrder[0]->token,$waltdata);
+  //         $status = 0;
+  //         $input['orderid'] =  $this->input->post('orderId');
+  //         $input['amount'] =  $this->input->post('orderAmount');
+  //         $input['status'] =  $status;
+  //         $input['created_at'] =  date('Y-m-d H:i:s');
+  //         $this->api->updateTempOrder($input);
+  //           echo json_encode(['response'=>'200','message'=>'Payment Successfull from wallet']); exit;
+  //         }else{
+  //           $status = 0;
+  //         $input['orderid'] =  $this->input->post('orderId');
+  //         $input['amount'] =  $this->input->post('orderAmount');
+  //         $input['status'] =  $status;
+  //         $input['created_at'] =  date('Y-m-d H:i:s');
+  //         $this->api->updateTempOrder($input);
+  //           echo json_encode(['response'=>'200','message'=>'Payment Successfull']); exit;
+  //         }
+  //     }else{
+  //        $input['orderid'] =  $this->input->post('orderId');
+  //         $input['amount'] =  $this->input->post('orderAmount');
+  //         $input['status'] =  2;
+  //         $input['created_at'] =  date('Y-m-d H:i:s');
+  //         $this->api->updateTempOrder($input);
+  //       echo json_encode(['response'=>'202','message'=>'Payment failed']); exit;
+  //     }
+  // }
 
     public function service_book_post(){
-      if($this->input->post('txStatus')=='SUCCESS'){
-            $getTempOrder = $this->api->getTempOrder($this->input->post('orderId'));
-            $service = $this->api->getService($getTempOrder[0]->service_id);
-            $user = $this->api->getUserByToken($getTempOrder[0]->token);
-            
-            $bookServices=array();
-            $bookServices['service_id'] = $service[0]->id;
-            $bookServices['provider_id'] = $service[0]->user_id;
-            $bookServices['user_id'] = $user[0]->id;
-            $bookServices['amount'] = $this->input->post('orderAmount');
-            $bookServices['currency_code'] = 'INR';
-            $bookServices['tokenid'] = 'Old Type';
-
-            $input = array();
-                  $input['orderid'] =  $this->input->post('orderId');
-                  $input['status'] =  0;
-
-            $this->api->serviceBook($bookServices);
-            $this->api->updateTempOrder($input);
-            echo json_encode(['status'=>'200','message'=>'Your Payment has been successfully done']);
-         }else{
           $service = $this->api->getService($this->input->post('service_id'));
           $user = $this->api->getUserByToken($this->input->post('token'));
       if($this->input->post('type')=='wallet'){
@@ -2432,7 +2411,7 @@ $this->response($result, REST_Controller::HTTP_OK);
               $this->api->serviceBook($bookServices);
               $walletAmt = $this->api->getwalletamt($this->input->post('token'));
               if($walletAmt[0]->wallet_amt < $this->input->post('orderAmount')){
-                  echo json_encode(['status'=>'203','message'=>'Amount Is not Enaugh for payment']);                
+                  echo json_encode(['status'=>'203','message'=>'Amount Is not Enaugh for payment']);
               }else{
                 $actualAmount = $walletAmt[0]->wallet_amt - $this->input->post('orderAmount');
                 $waltdata = array();
@@ -2448,21 +2427,21 @@ $this->response($result, REST_Controller::HTTP_OK);
                $cf_request = array();
                $cf_request["appId"] = "1459459be8b3a186d7149dd8f49541";
                $cf_request["secretKey"] = "65e2043ddc2a9274637cc9e9c8889ba067f4d8e0";
-               $cf_request["orderId"] =   rand(1000000,9999999); 
+               $cf_request["orderId"] =   time();
                $cf_request["orderAmount"] = $this->input->post('orderAmount');
                $cf_request["orderNote"] = "Hello Cashfree";
                $cf_request["customerPhone"] = $this->input->post('customerPhone');
                $cf_request["customerName"] = $this->input->post('customerName');
                $cf_request["customerEmail"] = $this->input->post('customerEmail');
-               $cf_request["returnUrl"] = base_url().'api/service_book';
-               $cf_request["notifyUrl"] = base_url().'api/service_book';
+               $cf_request["returnUrl"] = base_url().'api/service_book_response';
+               $cf_request["notifyUrl"] = base_url().'api/service_book_response';
 
                $timeout = 10;
                $request_string = "";
                foreach($cf_request as $key=>$value) {
                  $request_string .= $key.'='.rawurlencode($value).'&';
                }
-                   
+
                $ch = curl_init();
                curl_setopt($ch, CURLOPT_URL,"$opUrl?");
                curl_setopt($ch,CURLOPT_POST, count($cf_request));
@@ -2472,9 +2451,9 @@ $this->response($result, REST_Controller::HTTP_OK);
                $curl_result=curl_exec ($ch);
                curl_close ($ch);
 
-                 $jsonResponse = json_decode($curl_result); 
+                 $jsonResponse = json_decode($curl_result);
                  if ($jsonResponse->{'status'} == "OK") {
-                  echo $paymentLink = $jsonResponse->{"paymentLink"};
+                  //$paymentLink = $jsonResponse->{"paymentLink"};
 
                   $input = array();
                   $input['orderid'] =  $cf_request["orderId"];
@@ -2488,11 +2467,37 @@ $this->response($result, REST_Controller::HTTP_OK);
 
                   echo json_encode(['orderid'=>$input['orderid'],'status'=>'200','message'=>'Payment Successfully done']); exit;
                  }else{
-                    echo json_encode(['status'=>'201','message'=>'Payment Failed']); exit;       
-                 } 
+                    echo json_encode(['status'=>'201','message'=>'Payment Failed']); exit;
+                 }
          }
-      }
+
         //Send this payment link to customer over email/SMS OR redirect to this link on browser
+  }
+
+  public function service_book_response_post(){
+    if($this->input->post('txStatus')=='SUCCESS'){
+            $getTempOrder = $this->api->getTempOrder($this->input->post('orderId'));
+            $service = $this->api->getService($getTempOrder[0]->service_id);
+            $user = $this->api->getUserByToken($getTempOrder[0]->token);
+
+            $bookServices=array();
+            $bookServices['service_id'] = $service[0]->id;
+            $bookServices['provider_id'] = $service[0]->user_id;
+            $bookServices['user_id'] = $user[0]->id;
+            $bookServices['amount'] = $this->input->post('orderAmount');
+            $bookServices['currency_code'] = 'INR';
+            $bookServices['tokenid'] = 'Old Type';
+
+            $input = array();
+                  $input['orderid'] =  $this->input->post('orderId');
+                  $input['status'] =  0;
+
+            $this->api->serviceBook($bookServices);
+            $this->api->updateTempOrder($input);
+            echo json_encode(['status'=>'200','message'=>'Your Payment has been successfully done--']);
+         }else{
+            echo json_encode(['status'=>'201','message'=>'Your Payment failed']);
+         }
   }
 
 public function search_services_post(){
@@ -2535,7 +2540,7 @@ public function search_services_post(){
 
        $data = $response;
        $response_code = '200';
-       $response_message = 'Service search result';    
+       $response_message = 'Service search result';
 
      }
      else
@@ -2562,7 +2567,7 @@ public function search_services_post(){
 public function bookinglist_post(){
   $user_data = array();
       $user_data =  $this->post(); // Get Header Data
-      $user_post_data = getallheaders(); 
+      $user_post_data = getallheaders();
       $token = (!empty($user_post_data['token']))?$user_post_data['token']:'';
       if(empty($token)){
         $token = (!empty($user_post_data['Token']))?$user_post_data['Token']:'';
@@ -2621,7 +2626,7 @@ public function bookinglist_post(){
                 $res['service_amount'] = $details['service_amount'];
                 $res['category_name'] = $details['category_name'];
                 $res['subcategory_name'] = $details['subcategory_name'];
-                
+
 
                 $res['service_image'] = $serv_image[0];
                 $res['rating_count'] = "$rating_count";
@@ -2644,7 +2649,7 @@ public function bookinglist_post(){
             {
               $response_code = '200';
               $response_message = "No Records found";
-              $data = array(); 
+              $data = array();
             }
 
           }
@@ -2743,7 +2748,7 @@ public function bookinglist_post(){
               $response_message = "Booking service list";
             }else{
               $response_code = '200';
-              $response_message = "No Records found"; 
+              $response_message = "No Records found";
               $data = array();
             }
           }
@@ -2757,11 +2762,11 @@ public function bookinglist_post(){
       $result = $this->data_format($response_code,$response_message,$data);
       $this->response($result, REST_Controller::HTTP_OK);
     }
-    
+
     public function bookingdetail_post(){
       $user_data = array();
       $user_data =  $this->post(); // Get Header Data
-      $user_post_data = getallheaders(); 
+      $user_post_data = getallheaders();
       $token = (!empty($user_post_data['token']))?$user_post_data['token']:'';
       if(empty($token)){
         $token = (!empty($user_post_data['Token']))?$user_post_data['Token']:'';
@@ -2886,7 +2891,7 @@ public function bookinglist_post(){
         {
 
 
-          foreach ($details as $result) 
+          foreach ($details as $result)
           {
 
 
@@ -3022,7 +3027,7 @@ public function requestlist_provider_get(){
         $this->db->where(array('service_id'=>$details['service_id'],'status'=>1));
         $this->db->from('rating_review');
         $rating = $this->db->get()->row_array();
-        $avg_rating = round($rating['AVG(rating)'],2);    
+        $avg_rating = round($rating['AVG(rating)'],2);
         $serv_image = array();
         foreach ($image as $key => $i) {
           $serv_image[] = $i['service_image'];
@@ -3133,7 +3138,7 @@ public function bookingdetail_user_post(){
      {
 
 
-      foreach ($details as $result) 
+      foreach ($details as $result)
       {
 
 
@@ -3293,7 +3298,7 @@ public function views_post()
         $response_message = 'Invalid user token';
       }
 
-    }   
+    }
     else
     {
 
@@ -3305,7 +3310,7 @@ public function views_post()
 
     $this->response($result, REST_Controller::HTTP_OK);
 
-    
+
   }
 
 
@@ -3348,7 +3353,7 @@ public function views_post()
         if($result)
         {
           $response_code = '200';
-          $response_message = 'Booking status updated successfully';           
+          $response_message = 'Booking status updated successfully';
         }
 
       }
@@ -3361,7 +3366,7 @@ public function views_post()
         if($result)
         {
           $response_code = '200';
-          $response_message = 'Booking status updated successfully';           
+          $response_message = 'Booking status updated successfully';
         }
 
       }
@@ -3374,7 +3379,7 @@ public function views_post()
         if($result)
         {
           $response_code = '200';
-          $response_message = 'Booking status updated successfully';           
+          $response_message = 'Booking status updated successfully';
         }
 
       }
@@ -3387,7 +3392,7 @@ public function views_post()
         if($result)
         {
           $response_code = '200';
-          $response_message = 'Booking status updated successfully';           
+          $response_message = 'Booking status updated successfully';
         }
 
       }
@@ -3400,7 +3405,7 @@ public function views_post()
         if($result)
         {
           $response_code = '200';
-          $response_message = 'Booking status updated successfully';           
+          $response_message = 'Booking status updated successfully';
         }
 
       }
@@ -3414,10 +3419,10 @@ public function views_post()
       $this->response($result, REST_Controller::HTTP_OK);
     }else{
       $response_code = '200';
-      $response_message = 'Input field missing';            
+      $response_message = 'Input field missing';
       $data = new stdClass();
       $result = $this->data_format($response_code,$response_message,$data);
-      $this->response($result, REST_Controller::HTTP_OK);          
+      $this->response($result, REST_Controller::HTTP_OK);
     }
   }
   public function service_statususer_post(){
@@ -3428,7 +3433,7 @@ public function views_post()
         $result=$this->api->service_statususer($user_data,$WHERE);
         if($result){
           $response_code = '200';
-          $response_message = 'Service status updated successfully';           
+          $response_message = 'Service status updated successfully';
         }else{
           $response_code = '200';
           $response_message = 'Service status updation failed';
@@ -3438,10 +3443,10 @@ public function views_post()
         $this->response($result, REST_Controller::HTTP_OK);
       }else{
         $response_code = '200';
-        $response_message = 'Input field missing';            
+        $response_message = 'Input field missing';
         $data = new stdClass();
         $result = $this->data_format($response_code,$response_message,$data);
-        $this->response($result, REST_Controller::HTTP_OK);          
+        $this->response($result, REST_Controller::HTTP_OK);
       }}else{
       $this->token_error();
     }
@@ -3487,7 +3492,7 @@ public function views_post()
               /* provider accepted*/
               $this->send_push_notification($token,$user_data['id'],2,' Have Accepted The Service');
               $response_code = '200';
-              $response_message = 'Booking status updated successfully';           
+              $response_message = 'Booking status updated successfully';
             } }elseif($booking_status['status'] == '1' && $user_data['status'] == '2'){
             $WHERE =array('id' => $user_data['id']);
             $result=$this->api->update_bookingstatus($book_details,$WHERE);
@@ -3500,7 +3505,7 @@ public function views_post()
               $this->send_push_notification($token,$user_data['id'],2,' Has Rejected The Service');
 
               $response_code = '200';
-              $response_message = 'Booking status updated successfully';           
+              $response_message = 'Booking status updated successfully';
             }
 
           }
@@ -3516,11 +3521,11 @@ public function views_post()
               $this->send_push_notification($token,$user_data['id'],2,' Have Completed Ther Service');
 
               $response_code = '200';
-              $response_message = 'Booking status updated successfully';           
+              $response_message = 'Booking status updated successfully';
             }
 
           }
-          
+
           else
           {
 
@@ -3580,9 +3585,9 @@ public function views_post()
                 /*completed user site*/
                 $this->send_push_notification($token,$user_data['id'],1,' Has Accepted The Completed Service');
                 $response_code = '200';
-                $response_message = 'Booking status updated successfully';           
+                $response_message = 'Booking status updated successfully';
               }
-              
+
             }
 
             else
@@ -3598,7 +3603,7 @@ public function views_post()
           else
           {
             $response_code = '200';
-            $response_message = 'Input field missing';            
+            $response_message = 'Input field missing';
 
           }
 
@@ -3633,9 +3638,9 @@ public function views_post()
                 /*completed user site*/
                 $this->send_push_notification($token,$user_data['id'],1,' Has Cancelled The Service');
                 $response_code = '200';
-                $response_message = 'Booking status updated successfully';           
+                $response_message = 'Booking status updated successfully';
               }
-              
+
             }
 
             else
@@ -3651,7 +3656,7 @@ public function views_post()
           else
           {
             $response_code = '200';
-            $response_message = 'Input field missing';            
+            $response_message = 'Input field missing';
 
           }
 
@@ -3683,9 +3688,9 @@ public function views_post()
 
                 $this->send_push_notification($token,$user_data['id'],1,' Has Rejected The Completed Service');
                 $response_code = '200';
-                $response_message = 'Booking status updated successfully';           
+                $response_message = 'Booking status updated successfully';
               }
-              
+
             }
 
             else
@@ -3702,7 +3707,7 @@ public function views_post()
           else
           {
             $response_code = '200';
-            $response_message = 'Input field missing';            
+            $response_message = 'Input field missing';
 
           }
 
@@ -3717,7 +3722,7 @@ public function views_post()
     }
 
 
-  }   
+  }
   else
   {
 
@@ -3763,7 +3768,7 @@ $this->response($result, REST_Controller::HTTP_OK);
 public function delete_account_post(){
       $user_data = array();
       $user_data =  $this->post();// Get Header Data
-      $user_post_data = getallheaders(); 
+      $user_post_data = getallheaders();
       $token = (!empty($user_post_data['token']))?$user_post_data['token']:'';
       if(empty($token)){
         $token = (!empty($user_post_data['Token']))?$user_post_data['Token']:'';
@@ -3828,7 +3833,7 @@ public function delete_account_post(){
 
       }
 
-    }   
+    }
     else
     {
       $data = new stdClass();
@@ -3840,7 +3845,7 @@ public function delete_account_post(){
 
     $this->response($result, REST_Controller::HTTP_OK);
 
-    
+
   }
 
 
@@ -3891,7 +3896,7 @@ public function delete_account_post(){
           {
             $data[$key]['profile_img']= '';
           }
-          $data[$key]['category_name']=$value['category_name']; 
+          $data[$key]['category_name']=$value['category_name'];
           $data[$key]['subcategory_name']=$value['subcategory_name'];
 
           if(!empty($service_image['service_image']))
@@ -3976,7 +3981,7 @@ public function generate_otp_provider_post(){
             $result = $this->api->provider_signup($user_details,$device_data);
             if($result != ''){
               if(($_SERVER['HTTP_HOST']=='https://') || ($_SERVER['HTTP_HOST']=='http://')){
-                $api_key = "523977b1-cfcd-11ea-9fa5-0200cd936042";  
+                $api_key = "523977b1-cfcd-11ea-9fa5-0200cd936042";
               }else{
                 $api_key = 'default_otp';
               }
@@ -4005,9 +4010,9 @@ public function generate_otp_provider_post(){
               $err = curl_error($curl);
               curl_close($curl);
               }
-              $message='Your OTP is '.$otp.''; 
+              $message='Your OTP is '.$otp.'';
               $user_data['otp']=$otp;
-              
+
             $otp_data=array(
                 'endtime'=>time()+300,
                 'mobile_number'=>$user_data['mobileno'],
@@ -4018,7 +4023,7 @@ public function generate_otp_provider_post(){
               where('country_code',$user_data['country_code'])->
               where('mobile_number',$user_data['mobileno'])->
               where('status',1)->
-              count_all_results();        
+              count_all_results();
               if($ret > 0){
                 /*update otp*/
                 $this->db->where('country_code', $user_data['country_code']);
@@ -4042,7 +4047,7 @@ public function generate_otp_provider_post(){
             $response_message = 'Mobile number already exists as user. Please use another mobile number';
           }else{
             if(($_SERVER['HTTP_HOST']=='https://') || ($_SERVER['HTTP_HOST']=='http://')){
-              $api_key = "523977b1-cfcd-11ea-9fa5-0200cd936042";  
+              $api_key = "523977b1-cfcd-11ea-9fa5-0200cd936042";
             }else{
               $api_key = 'default_otp';
             }
@@ -4071,7 +4076,7 @@ public function generate_otp_provider_post(){
               $err = curl_error($curl);
               curl_close($curl);
             }
-            $message='Your OTP is '.$otp.''; 
+            $message='Your OTP is '.$otp.'';
             $user_data['otp']=$otp;
             $otp_data=array(
               'endtime'=>time()+300,
@@ -4084,7 +4089,7 @@ public function generate_otp_provider_post(){
             where('country_code',$user_data['country_code'])->
             where('mobile_number',$user_data['mobileno'])->
             where('status',1)->
-            count_all_results();      
+            count_all_results();
             if($ret > 0){
               /*update otp*/
               $this->db->where('country_code', $user_data['country_code']);
@@ -4094,7 +4099,7 @@ public function generate_otp_provider_post(){
             }else{
               $save_otp = $this->api->save_otp($otp_data);
             }
-              
+
             $update_check = $this->api->update_device_details($user_data);
             $response_code = '200';
             $response_message = 'OTP send successfully';
@@ -4133,7 +4138,7 @@ public function generate_otp_user_post(){
             $result = $this->api->user_signup($user_details,$device_data);
             if($result != ''){
               if(($_SERVER['HTTP_HOST']=='https') || ($_SERVER['HTTP_HOST']=='http')){
-                  $api_key = "523977b1-cfcd-11ea-9fa5-0200cd936042";  
+                  $api_key = "523977b1-cfcd-11ea-9fa5-0200cd936042";
                 }else{
                   $api_key = 'default_otp';
                 }
@@ -4162,7 +4167,7 @@ public function generate_otp_user_post(){
               $err = curl_error($curl);
               curl_close($curl);
             }
-            $message='Your OTP is '.$otp.''; 
+            $message='Your OTP is '.$otp.'';
             $user_data['otp']=$otp;
             $otp_data=array(
               'endtime'=>time()+300,
@@ -4175,7 +4180,7 @@ public function generate_otp_user_post(){
             where('country_code',$user_data['country_code'])->
             where('mobile_number',$user_data['mobileno'])->
             where('status',1)->
-            count_all_results();      
+            count_all_results();
             if($ret > 0){
               /*update otp*/
               $this->db->where('country_code', $user_data['country_code']);
@@ -4203,7 +4208,7 @@ public function generate_otp_user_post(){
           $response_message = 'Mobile number already exists as provider. Please use another mobile number';
         }else{
         if(($_SERVER['HTTP_HOST']=='https') || ($_SERVER['HTTP_HOST']=='http')){
-            $api_key = "523977b1-cfcd-11ea-9fa5-0200cd936042";  
+            $api_key = "523977b1-cfcd-11ea-9fa5-0200cd936042";
           }else{
             $api_key = 'default_otp';
           }
@@ -4233,7 +4238,7 @@ public function generate_otp_user_post(){
         curl_close($curl);
 
         }
-        $message='Your OTP is '.$otp.''; 
+        $message='Your OTP is '.$otp.'';
         $user_data['otp']=$otp;
         $otp_data=array(
           'endtime'=>time()+300,
@@ -4247,7 +4252,7 @@ public function generate_otp_user_post(){
         where('country_code',$user_data['country_code'])->
         where('mobile_number',$user_data['mobileno'])->
         where('status',1)->
-        count_all_results();     
+        count_all_results();
         if($ret > 0){
           /*update otp*/
           $this->db->where('country_code', $user_data['country_code']);
@@ -4296,7 +4301,7 @@ $this->response($result, REST_Controller::HTTP_OK);
 
 public function details_get(){
  $data = new stdClass();
- $user_post_data = getallheaders(); 
+ $user_post_data = getallheaders();
  $token = (!empty($user_post_data['token']))?$user_post_data['token']:'';
  if(empty($token)){
   $token = (!empty($user_post_data['Token']))?$user_post_data['Token']:'';
@@ -4372,7 +4377,7 @@ else
 
 public function account_details_get(){
  $data = new stdClass();
- $user_post_data = getallheaders(); 
+ $user_post_data = getallheaders();
  $token = (!empty($user_post_data['token']))?$user_post_data['token']:'';
  if(empty($token)){
   $token = (!empty($user_post_data['Token']))?$user_post_data['Token']:'';
@@ -4481,7 +4486,7 @@ public function chat_post()
   $response_message = '';
 
   $params = $this->post();
-  $user_post_data = getallheaders(); 
+  $user_post_data = getallheaders();
   $token = $this->input->post('token');
   // $token = (!empty($user_post_data['token']))?$user_post_data['token']:'';
   // if(empty($token)){
@@ -4491,7 +4496,7 @@ public function chat_post()
     if(!empty($params['to']) && !empty($params['content']))
     {
       $user_data = array();
-      
+
 
       $array = array();
       date_default_timezone_set('UTC');
@@ -4536,7 +4541,7 @@ public function chat_post()
         'time'=> $time,
         'utctime'=> $utctime
       );
-      
+
       $is_provider=$this->api->get_user_id_using_token($params['to']);
       $is_user=$this->api->get_users_id_using_token($params['to']);
       if(!empty($is_user)){
@@ -4564,18 +4569,18 @@ public function chat_post()
                 'action' => 'test222',
                 'action_destination' => 'test222',
               );
-              sendFCMMessage($notify_structure,$device['device_id']);  
+              sendFCMMessage($notify_structure,$device['device_id']);
             }
 
             if(strtolower($device['device_type']=='ios')){
-           
+
               $notify_structure= array(
               'title' => $title,
               'alert' => $message,
               'badge' => 0,
               'sound' => 'default',
             );
-             sendApnsMessage($notify_structure,$device['device_id']);  
+             sendApnsMessage($notify_structure,$device['device_id']);
 
            }
          }
@@ -4634,10 +4639,10 @@ public function conversation_info_get($sender_token,$receiver_token){
 }
 
 public function chat_details_post(){
- $user_post_data = getallheaders(); 
+ $user_post_data = getallheaders();
  $token = (!empty($user_post_data['token']))?$user_post_data['token']:'';
  if(empty($token)){
-  $token = (!empty($user_post_data['Token']))?$user_post_data['Token']:''; 
+  $token = (!empty($user_post_data['Token']))?$user_post_data['Token']:'';
  } if (!empty($token)) {
   $data = array();
   $response_code = '-1';
@@ -4692,7 +4697,7 @@ public function insert_message_post(){
 
 public function get_chat_list_post(){
 
-  $user_post_data = getallheaders(); 
+  $user_post_data = getallheaders();
 
   $token = (!empty($user_post_data['token']))?$user_post_data['token']:'';
   if(empty($token)){
@@ -4740,7 +4745,7 @@ public function get_chat_list_post(){
 
 /*get chat history*/
 public function get_chat_history_post(){
-  $user_post_data = getallheaders(); 
+  $user_post_data = getallheaders();
   $token = (!empty($user_post_data['token']))?$user_post_data['token']:'';
   if(empty($token)){
     $token = (!empty($user_post_data['Token']))?$user_post_data['Token']:'';
@@ -4761,8 +4766,8 @@ public function get_chat_history_post(){
 /*get flash device token*/
 
 public function flash_device_token_post(){
-  $user_post_data = getallheaders(); 
-  
+  $user_post_data = getallheaders();
+
   $token = (!empty($user_post_data['token']))?$user_post_data['token']:'';
   if(empty($token)){
     $token = (!empty($user_post_data['Token']))?$user_post_data['Token']:'';
@@ -4833,7 +4838,7 @@ public function get_notification_list_get(){
     $result = $this->data_format($response_code,$response_message,$data);
     $this->response($result, REST_Controller::HTTP_OK);
   }else{
-   $this->token_error(); 
+   $this->token_error();
  }
 
 
@@ -4844,9 +4849,9 @@ public function send_push_notification($token,$service_id,$type,$msg=''){
   $data=$this->api->get_book_info($service_id);
   if(!empty($data)){
     if($type==1){
-     $device_tokens=$this->api->get_device_info_multiple($data['provider_id'],1); 
+     $device_tokens=$this->api->get_device_info_multiple($data['provider_id'],1);
    }else{
-     $device_tokens=$this->api->get_device_info_multiple($data['user_id'],2); 
+     $device_tokens=$this->api->get_device_info_multiple($data['user_id'],2);
    }
    if($type==2){
     $user_info=$this->api->get_user_info($data['user_id'],$type);
@@ -4878,7 +4883,7 @@ if (!empty($device_tokens)) {
           'action' => 'test222',
           'action_destination' => 'test222',
         );
-        sendFCMMessage($notify_structure,$device['device_id']);  
+        sendFCMMessage($notify_structure,$device['device_id']);
 
       }
 
@@ -4890,7 +4895,7 @@ if (!empty($device_tokens)) {
         );
 
 
-        sendApnsMessage($notify_structure,$device['device_id']);  
+        sendApnsMessage($notify_structure,$device['device_id']);
 
       }
     }
@@ -4920,7 +4925,7 @@ public function get_wallet_amt_post(){
     $result = $this->data_format($response_code,$response_message,$data);
     $this->response($result, REST_Controller::HTTP_OK);
   }else{
-   $this->token_error(); 
+   $this->token_error();
  }
 }
 /*end with Wallet Info*/
@@ -4946,9 +4951,9 @@ public function send_push_notification_wallet($token,$type,$msg=''){
   $data=$this->api->get_token_info($token);
   if(!empty($data)){
     if($type==1){
-     $device_tokens=$this->api->get_device_info_multiple($data['provider_id'],1); 
+     $device_tokens=$this->api->get_device_info_multiple($data['provider_id'],1);
    }else{
-     $device_tokens=$this->api->get_device_info_multiple($data['user_id'],2); 
+     $device_tokens=$this->api->get_device_info_multiple($data['user_id'],2);
    }
    if($type==2){
     $user_info=$this->api->get_user_info($data['user_id'],$type);
@@ -4981,7 +4986,7 @@ if (!empty($device_tokens)) {
           'action_destination' => 'test222',
         );
 
-        sendFCMMessage($notify_structure,$device['device_id']);  
+        sendFCMMessage($notify_structure,$device['device_id']);
 
       }
 
@@ -4993,7 +4998,7 @@ if (!empty($device_tokens)) {
         );
 
 
-        sendApnsMessage($notify_structure,$device['device_id']);  
+        sendApnsMessage($notify_structure,$device['device_id']);
 
       }
     }
@@ -5020,7 +5025,7 @@ public function wallet_history_post(){
   if(empty($token)){
     $token = (!empty($user_post_data['Token']))?$user_post_data['Token']:'';
   }
-  if(!empty($token)) 
+  if(!empty($token))
   {
     $params =  $this->post();
     $history=$this->api->get_wallet_history_info($token);
@@ -5076,7 +5081,7 @@ public function add_user_wallet_post(){
   if(!empty($token)) {
     $params =  $this->post();
     if(!empty($params['amount']) && !empty($params['tokenid']) && $params['amount'] > 0)
-    {   
+    {
 
       $check_card=$this->db->get_where('stripe_customer_table',array('user_token' =>$token))->row();
 
@@ -5134,7 +5139,7 @@ public function add_user_wallet_post(){
              $wallet_data['updated_on']=date('Y-m-d H:i:s');
              $WHERE =array('cust_id'=> $card_info['cust_id'],'card_id'=> $card_info['card_id']);
              $result=$this->api->update_customer_card($wallet_data,$WHERE);
-           } 
+           }
          }
 
          if(empty($pay_info->error)){
@@ -5373,7 +5378,7 @@ public function add_user_wallet_post(){
               if(empty($token)){
                 $token = (!empty($user_post_data['Token']))?$user_post_data['Token']:'';
               }
-              if(!empty($token)) 
+              if(!empty($token))
   { //main loop
     $ret_val=$this->api->get_customer_based_card_list($token);
 
@@ -5386,7 +5391,7 @@ public function add_user_wallet_post(){
       $response_message = 'data was empty...';
       $data['data'] = [];
     }
-    
+
 
     $result = $this->data_format($response_code,$response_message,$data);
     $this->response($result, REST_Controller::HTTP_OK);
@@ -5399,27 +5404,27 @@ public function add_user_wallet_post(){
 
 /*provider withdrawal*/
 
-public function provider_wallet_withdrawal_post(){ 
+public function provider_wallet_withdrawal_post(){
   $params =  $this->post();
   $user_post_data = getallheaders();
   $token = (!empty($user_post_data['token']))?$user_post_data['token']:'';
 
   if(empty($token)){
     $token = (!empty($user_post_data['Token']))?$user_post_data['Token']:'';
-  }     
+  }
 
   if(empty($token)){
     $token = (!empty($params['Token']))?$params['Token']:'';
   }
 
-  if(!empty($token)) 
+  if(!empty($token))
   { //main loop
 
 
 
 
     if(!empty($params['amount']) && !empty($params['tokenid']) && $params['amount'] > 0)
-    {  
+    {
       $provider_info=$this->db->get_where('stripe_provider_table',array('user_token' =>$token))->row_array();
 
       if(!empty($provider_info['user_token']) && $provider_info['user_token']==$token ){
@@ -5432,7 +5437,7 @@ public function provider_wallet_withdrawal_post(){
 
 
         $ext_ac_info=json_decode($ext_card);
-        if(empty($ext_ac_info->error)){ 
+        if(empty($ext_ac_info->error)){
           $card_info['user_token']=$token;
           $card_info['stripe_token']=$params['tokenid'];
           $card_info['account_id']= $provider_info['account_id'];
@@ -5459,9 +5464,9 @@ public function provider_wallet_withdrawal_post(){
              $trans['expand']      =  array('balance_transaction');
              $transfer=$this->stripe->transfer_wallet($trans);
               $trans_info=json_decode($transfer);
-                                              /*remove card*/    
+                                              /*remove card*/
               $this->stripe->delete_provider_ext_card($card_info['account_id'],$card_info['card_id']);
-                                              /*remove card*/  
+                                              /*remove card*/
               if(empty($trans_info->error)){
 
 
@@ -5497,7 +5502,7 @@ public function provider_wallet_withdrawal_post(){
                         $history_pay['avail_wallet']=(($trans_info->balance_transaction->net)/100)+$curren_wallet;
                          $history_pay['reason']=WITHDRAW;
                                                         $history_pay['created_at']=date('Y-m-d H:i:s');
-                                                        
+
                                                         if($this->db->insert('wallet_transaction_history',$history_pay)){
                                                           /*update wallet table*/
                                                           $wallet_data['wallet_amt']=$curren_wallet+$history_pay['debit_wallet'];
@@ -5558,7 +5563,7 @@ public function provider_wallet_withdrawal_post(){
                   $provider_info['email']=$ac_info->email;
                   $provider_info['response']=$acc;
                   $provider_info['created_at']=date('Y-m-d H:i:s');
-                  
+
                   if($this->db->insert('stripe_provider_table',$provider_info)){
 
                     /*create external card*/
@@ -5636,7 +5641,7 @@ public function provider_wallet_withdrawal_post(){
                                                         $history_pay['avail_wallet']=(($trans_info->balance_transaction->net)/100)+$curren_wallet;
                                                         $history_pay['reason']=WITHDRAW;
                                                         $history_pay['created_at']=date('Y-m-d H:i:s');
-                                                        
+
                                                         if($this->db->insert('wallet_transaction_history',$history_pay)){
                                                           /*update wallet table*/
                                                           $wallet_data['wallet_amt']=$curren_wallet+$history_pay['debit_wallet'];
@@ -5714,7 +5719,7 @@ public function provider_card_info_post(){
   if(empty($token)){
     $token = (!empty($user_post_data['Token']))?$user_post_data['Token']:'';
   }
-  if(!empty($token)) 
+  if(!empty($token))
   { //main loop
     $ret_val=$this->api->get_provider_based_card_list($token);
 
@@ -5727,7 +5732,7 @@ public function provider_card_info_post(){
       $response_message = 'data was empty...';
       $data['data'] = [];
     }
-    
+
 
     $result = $this->data_format($response_code,$response_message,$data);
     $this->response($result, REST_Controller::HTTP_OK);
@@ -5796,7 +5801,7 @@ if(!empty($token)){
 
         $stripe_option = $datas['value'];
 
-      } 
+      }
 
     }
   }
@@ -5869,7 +5874,7 @@ public function update_myservice_status_post(){
     $result= $this->api->token_is_valid_provider($token);
     if($result){
 
-      if(!empty($user_data['service_id'])&&!empty($user_data['status'])){  
+      if(!empty($user_data['service_id'])&&!empty($user_data['status'])){
 
        $provider=$this->db->where('token=',$token)->get('providers')->row_array();
 
@@ -5878,7 +5883,7 @@ public function update_myservice_status_post(){
 
         $service_update=$this->db->where('id',$user_data['service_id'])->update('services',['status'=>$user_data['status']]);
 
-        if($service_update==true){   
+        if($service_update==true){
          $response_code ="200";
          $response_message = "Service Status Updated Successfully.";
          $data=[];
@@ -5912,4 +5917,4 @@ $result = $this->data_format($response_code,$response_message,$data);
 $this->response($result, REST_Controller::HTTP_OK);
 }/*END*/
 }
-?>
+?>444

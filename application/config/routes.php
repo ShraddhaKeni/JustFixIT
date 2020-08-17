@@ -263,6 +263,7 @@ $route['api/user_profile'] = 'api/api/user_profile'; // Done
 $route['api/service_availability'] = 'api/api/service_availability'; // Done
 $route['api/book_service_wallet'] = 'api/api/book_service_wallet'; // Done pass user token and all fields
 $route['api/service_book'] = 'api/api/service_book';
+$route['api/service_book_response'] = 'api/api/service_book_response';
 $route['api/book_service_response'] = 'api/api/book_service_response';
 $route['api/book_service_option'] = 'api/api/book_service_option';
 $route['api/search_services'] = 'api/api/search_services'; // Done 
