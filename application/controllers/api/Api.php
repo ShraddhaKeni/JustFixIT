@@ -2411,13 +2411,13 @@ $this->response($result, REST_Controller::HTTP_OK);
               $this->api->serviceBook($bookServices);
               $walletAmt = $this->api->getwalletamt($this->input->post('token'));
               if($walletAmt[0]->wallet_amt < $this->input->post('orderAmount')){
-                  echo json_encode(['status'=>'203','message'=>'Amount Is not Enaugh for payment']);
+                  echo json_encode(['status'=>'203','message'=>'Not Enough Amount in Wallet']);
               }else{
                 $actualAmount = $walletAmt[0]->wallet_amt - $this->input->post('orderAmount');
                 $waltdata = array();
                 $waltdata['wallet_amt'] = $actualAmount;
                 $this->api->updateWallet($this->input->post('token'),$waltdata);
-                echo json_encode(['status'=>'200','message'=>'Payment Successfully done by wallet']);
+                echo json_encode(['status'=>'200','message'=>'Order Placed Successfully']);
                 exit;
               }
          }else{
@@ -2465,9 +2465,9 @@ $this->response($result, REST_Controller::HTTP_OK);
                   $input['created_at'] =  date('Y-m-d H:i:s');
                   $this->api->insertTempOrder($input);
 
-                  echo json_encode(['orderid'=>$input['orderid'],'status'=>'200','message'=>'Payment Successfully done']); exit;
+                  echo json_encode(['orderid'=>$input['orderid'],'status'=>'200','message'=>'Order Created Successfully']); exit;
                  }else{
-                    echo json_encode(['status'=>'201','message'=>'Payment Failed']); exit;
+                    echo json_encode(['status'=>'201','message'=>'Failed For Some Reason']); exit;
                  }
          }
 
@@ -2494,9 +2494,9 @@ $this->response($result, REST_Controller::HTTP_OK);
 
             $this->api->serviceBook($bookServices);
             $this->api->updateTempOrder($input);
-            echo json_encode(['status'=>'200','message'=>'Your Payment has been successfully done--']);
+            echo json_encode(['status'=>'200','message'=>'Order Successfully Placed']);
          }else{
-            echo json_encode(['status'=>'201','message'=>'Your Payment failed']);
+            echo json_encode(['status'=>'201','message'=>'There was a problem Placing your Order']);
          }
   }
 
@@ -5917,4 +5917,4 @@ $result = $this->data_format($response_code,$response_message,$data);
 $this->response($result, REST_Controller::HTTP_OK);
 }/*END*/
 }
-?>444
+?>
