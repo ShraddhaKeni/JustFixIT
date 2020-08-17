@@ -58,6 +58,25 @@ class Api_model extends CI_Model{
   public function updatetempOrder($data){
     $this->db->where('orderid',$data['orderid'])->update('temproryorder',$data);
   }
+  public function getService($id){
+    $this->db->select("id,user_id");
+    $this->db->from("services");
+    $this->db->where("id",$id);
+    $result = $this->db->get();
+    return $result->result();
+  }
+
+  public function getUserByToken($token){
+    $this->db->select("id");
+    $this->db->from("users");
+    $this->db->where("token",$token);
+    $result = $this->db->get();
+    return $result->result();
+  }
+  
+  public function serviceBook($data){
+    $this->db->insert('book_service',$data);
+  }  
 
   public function save_provider($data){
     $result = $this->db->insert('providers',$data);

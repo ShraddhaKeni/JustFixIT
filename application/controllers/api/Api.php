@@ -2294,7 +2294,7 @@ $this->response($result, REST_Controller::HTTP_OK);
        $cf_request["secretKey"] = "65e2043ddc2a9274637cc9e9c8889ba067f4d8e0";
        $cf_request["orderId"] =   rand(100000,999999); 
        $cf_request["orderAmount"] = $this->input->post('orderAmount');
-       $cf_request["orderNote"] = "Hello This is Cashfree payment gateway";
+       $cf_request["orderNote"] = "Hello Cashfree";
        $cf_request["customerPhone"] = $this->input->post('customerPhone');
        $cf_request["customerName"] = $this->input->post('customerName');
        $cf_request["customerEmail"] = $this->input->post('customerEmail');
@@ -2351,7 +2351,6 @@ $this->response($result, REST_Controller::HTTP_OK);
         $input['token'] =  $this->input->post('token');
         $input['created_at'] =  date('Y-m-d H:i:s');
         $this->api->insertTempOrder($input);
-
          exit;
          //Send this payment link to customer over email/SMS OR redirect to this link on browser
        }else {
@@ -2366,8 +2365,6 @@ $this->response($result, REST_Controller::HTTP_OK);
         if($getTempOrder[0]->type=='wallet'){
           $walletAmt = $this->api->getwalletamt($getTempOrder[0]->token);
           $actualAmount = $walletAmt[0]->wallet_amt - $this->input->post('orderAmount');
-
-          // echo json_encode(['walletamt'=>$walletAmt[0]->wallet_amt,'orderAmount'=>$this->input->post('orderAmount'),'actualamount'=>$actualAmount,'token'=>$getTempOrder[0]->token]); exit;
           $waltdata = array();
           $waltdata['wallet_amt'] = $actualAmount;
             $this->api->updateWallet($getTempOrder[0]->token,$waltdata);
@@ -2377,19 +2374,16 @@ $this->response($result, REST_Controller::HTTP_OK);
           $input['status'] =  $status;
           $input['created_at'] =  date('Y-m-d H:i:s');
           $this->api->updateTempOrder($input);
-
             echo json_encode(['response'=>'200','message'=>'Payment Successfull from wallet']); exit;
-
-        }else{
-          $status = 0;
-        $input['orderid'] =  $this->input->post('orderId');
-        $input['amount'] =  $this->input->post('orderAmount');
-        $input['status'] =  $status;
-        $input['created_at'] =  date('Y-m-d H:i:s');
-        $this->api->updateTempOrder($input);
+          }else{
+            $status = 0;
+          $input['orderid'] =  $this->input->post('orderId');
+          $input['amount'] =  $this->input->post('orderAmount');
+          $input['status'] =  $status;
+          $input['created_at'] =  date('Y-m-d H:i:s');
+          $this->api->updateTempOrder($input);
             echo json_encode(['response'=>'200','message'=>'Payment Successfull']); exit;
-
-        }
+          }
       }else{
          $input['orderid'] =  $this->input->post('orderId');
           $input['amount'] =  $this->input->post('orderAmount');
@@ -2400,6 +2394,106 @@ $this->response($result, REST_Controller::HTTP_OK);
       }
   }
 
+    public function service_book_post(){
+      if($this->input->post('txStatus')=='SUCCESS'){
+            $getTempOrder = $this->api->getTempOrder($this->input->post('orderId'));
+            $service = $this->api->getService($getTempOrder[0]->service_id);
+            $user = $this->api->getUserByToken($getTempOrder[0]->token);
+            
+            $bookServices=array();
+            $bookServices['service_id'] = $service[0]->id;
+            $bookServices['provider_id'] = $service[0]->user_id;
+            $bookServices['user_id'] = $user[0]->id;
+            $bookServices['amount'] = $this->input->post('orderAmount');
+            $bookServices['currency_code'] = 'INR';
+            $bookServices['tokenid'] = 'Old Type';
+
+            $input = array();
+                  $input['orderid'] =  $this->input->post('orderId');
+                  $input['status'] =  0;
+
+            $this->api->serviceBook($bookServices);
+            $this->api->updateTempOrder($input);
+            echo json_encode(['status'=>'200','message'=>'Your Payment has been successfully done']);
+         }else{
+          $service = $this->api->getService($this->input->post('service_id'));
+          $user = $this->api->getUserByToken($this->input->post('token'));
+      if($this->input->post('type')=='wallet'){
+            $type = 'wallet';
+            $status = 0;
+
+              $bookServices=array();
+              $bookServices['service_id'] = $service[0]->id;
+              $bookServices['provider_id'] = $service[0]->user_id;
+              $bookServices['user_id'] = $user[0]->id;
+              $bookServices['amount'] = $this->input->post('orderAmount');
+              $bookServices['currency_code'] = 'INR';
+              $bookServices['tokenid'] = 'Old Type';
+              $this->api->serviceBook($bookServices);
+              $walletAmt = $this->api->getwalletamt($this->input->post('token'));
+              if($walletAmt[0]->wallet_amt < $this->input->post('orderAmount')){
+                  echo json_encode(['status'=>'203','message'=>'Amount Is not Enaugh for payment']);                
+              }else{
+                $actualAmount = $walletAmt[0]->wallet_amt - $this->input->post('orderAmount');
+                $waltdata = array();
+                $waltdata['wallet_amt'] = $actualAmount;
+                $this->api->updateWallet($this->input->post('token'),$waltdata);
+                echo json_encode(['status'=>'200','message'=>'Payment Successfully done by wallet']);
+                exit;
+              }
+         }else{
+               $apiEndpoint = "https://test.cashfree.com";
+               $opUrl = $apiEndpoint."/api/v1/order/create";
+
+               $cf_request = array();
+               $cf_request["appId"] = "1459459be8b3a186d7149dd8f49541";
+               $cf_request["secretKey"] = "65e2043ddc2a9274637cc9e9c8889ba067f4d8e0";
+               $cf_request["orderId"] =   rand(1000000,9999999); 
+               $cf_request["orderAmount"] = $this->input->post('orderAmount');
+               $cf_request["orderNote"] = "Hello Cashfree";
+               $cf_request["customerPhone"] = $this->input->post('customerPhone');
+               $cf_request["customerName"] = $this->input->post('customerName');
+               $cf_request["customerEmail"] = $this->input->post('customerEmail');
+               $cf_request["returnUrl"] = base_url().'api/service_book';
+               $cf_request["notifyUrl"] = base_url().'api/service_book';
+
+               $timeout = 10;
+               $request_string = "";
+               foreach($cf_request as $key=>$value) {
+                 $request_string .= $key.'='.rawurlencode($value).'&';
+               }
+                   
+               $ch = curl_init();
+               curl_setopt($ch, CURLOPT_URL,"$opUrl?");
+               curl_setopt($ch,CURLOPT_POST, count($cf_request));
+               curl_setopt($ch,CURLOPT_POSTFIELDS, $request_string);
+               curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+               curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
+               $curl_result=curl_exec ($ch);
+               curl_close ($ch);
+
+                 $jsonResponse = json_decode($curl_result); 
+                 if ($jsonResponse->{'status'} == "OK") {
+                  echo $paymentLink = $jsonResponse->{"paymentLink"};
+
+                  $input = array();
+                  $input['orderid'] =  $cf_request["orderId"];
+                  $input['service_id'] =  $this->input->post('service_id');
+                  $input['amount'] =  $this->input->post('orderAmount');
+                  $input['status'] =  1;
+                  $input['type'] =  'direct';
+                  $input['token'] =  $this->input->post('token');
+                  $input['created_at'] =  date('Y-m-d H:i:s');
+                  $this->api->insertTempOrder($input);
+
+                  echo json_encode(['orderid'=>$input['orderid'],'status'=>'200','message'=>'Payment Successfully done']); exit;
+                 }else{
+                    echo json_encode(['status'=>'201','message'=>'Payment Failed']); exit;       
+                 } 
+         }
+      }
+        //Send this payment link to customer over email/SMS OR redirect to this link on browser
+  }
 
 public function search_services_post(){
   if($this->users_id !=0  || ($this->default_token ==$this->api_token)) {
