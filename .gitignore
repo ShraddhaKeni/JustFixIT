@@ -1,3 +1,5 @@
 /vendor
 application/config/config.php
 application/config/database.php
+.idea/
+assets/img/
