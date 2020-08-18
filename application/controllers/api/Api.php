@@ -2422,32 +2422,39 @@ $this->response($result, REST_Controller::HTTP_OK);
               }
          }else{
                $apiEndpoint = "https://test.cashfree.com";
-               $opUrl = $apiEndpoint."/api/v1/order/create";
+               $opUrl = $apiEndpoint."/api/v2/cftoken/order";
 
                $cf_request = array();
-               $cf_request["appId"] = "1459459be8b3a186d7149dd8f49541";
-               $cf_request["secretKey"] = "65e2043ddc2a9274637cc9e9c8889ba067f4d8e0";
+              // $cf_request["appId"] = "1459459be8b3a186d7149dd8f49541";
+              // $cf_request["secretKey"] = "65e2043ddc2a9274637cc9e9c8889ba067f4d8e0";
                $cf_request["orderId"] =   time();
                $cf_request["orderAmount"] = $this->input->post('orderAmount');
-               $cf_request["orderNote"] = "Hello Cashfree";
-               $cf_request["customerPhone"] = $this->input->post('customerPhone');
-               $cf_request["customerName"] = $this->input->post('customerName');
-               $cf_request["customerEmail"] = $this->input->post('customerEmail');
-               $cf_request["returnUrl"] = base_url().'api/service_book_response';
-               $cf_request["notifyUrl"] = base_url().'api/service_book_response';
+              // $cf_request["orderNote"] = "Hello Cashfree";
+               $cf_request["orderCurrency"] = "INR";
+              // $cf_request["customerPhone"] = $this->input->post('customerPhone');
+              // $cf_request["customerName"] = $this->input->post('customerName');
+              // $cf_request["customerEmail"] = $this->input->post('customerEmail');
+              // $cf_request["returnUrl"] = base_url().'api/service_book_response';
+              // $cf_request["notifyUrl"] = base_url().'api/service_book_response';
 
                $timeout = 10;
-               $request_string = "";
+               /*$request_string = "";
                foreach($cf_request as $key=>$value) {
                  $request_string .= $key.'='.rawurlencode($value).'&';
-               }
+               }*/
 
                $ch = curl_init();
                curl_setopt($ch, CURLOPT_URL,"$opUrl?");
-               curl_setopt($ch,CURLOPT_POST, count($cf_request));
-               curl_setopt($ch,CURLOPT_POSTFIELDS, $request_string);
+               curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                                  'x-client-id: 1459459be8b3a186d7149dd8f49541',
+                                  'x-client-secret: 65e2043ddc2a9274637cc9e9c8889ba067f4d8e0',
+                                  'Content-Type: application/json'
+                              ));
+               //curl_setopt($ch,CURLOPT_POST, json_encode($cf_request) );
+               curl_setopt($ch,CURLOPT_POSTFIELDS,json_encode($cf_request) );
                curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
                curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
+
                $curl_result=curl_exec ($ch);
                curl_close ($ch);
 
@@ -2465,9 +2472,10 @@ $this->response($result, REST_Controller::HTTP_OK);
                   $input['created_at'] =  date('Y-m-d H:i:s');
                   $this->api->insertTempOrder($input);
 
-                  echo json_encode(['orderid'=>$input['orderid'],'status'=>'200','message'=>'Order Created Successfully']); exit;
+                 echo json_encode(['orderid'=>$input['orderid'],'cf_data'=> json_decode($curl_result),'status'=>'200','message'=>'Order Created Successfully']); exit;
+
                  }else{
-                    echo json_encode(['status'=>'201','message'=>'Failed For Some Reason']); exit;
+                    echo json_encode(['status'=>'201','cf_data'=> $curl_result,'message'=>'Failed For Some Reason']); exit;
                  }
          }
 

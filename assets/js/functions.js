@@ -1800,10 +1800,10 @@
             $this.html($this.data('original-text')).prop('disabled','false');
         }
         function getData(page){
-
             var url = $(location).attr('href'),
                 parts = url.split("/"),
                 last_part = parts[parts.length-1];
+            var replaceVal = last_part.replace('-',' ');
 
             var cpage = $(location).attr("href");
             var status=$('#status').val();
@@ -1811,27 +1811,44 @@
             var target=$('#target').val();
             var csrf_token=$('#csrf_token').val();
 
-            if(cpage=='http://localhost/axzora/search/'+last_part){
-                //if(cpage=='http://axzora.com/search/'+last_part){
-                $.ajax({
-                    method: "POST",
-                    url: base_url+'home/ajaxPaginationData2',
-                    data: { page: page,csrf_token_name:csrf_token,status:status,'pageName':last_part },
-                    success: function(data){
-                        console.log(data);
-                        $(target).html(data);
-                        $('.pagination ul li').removeClass('active');
-                        $('.page_nos_'+page).parent('li').addClass('active');
-                    }
-                });
+            var sort_by = $("#sort_by").val();
+            var common_search = $("#common_search").val();
+            var subcategories = $("#subcategories").val();
+            var service_location = $("#service_location").val();
+            var categories = $("#categories").val();
 
+            if((categories=='') && (service_location=='') && (common_search=='')) {
+                if(cpage=='http://axzora.com/search/'+last+part){
+                    //if(cpage=='http://localhost/axzora/search/'+last_part){
+                    $.ajax({
+                        method: "POST",
+                        url: base_url+'home/ajaxPaginationData2',
+                        data: { page: page,csrf_token_name:csrf_token,status:status,'pageName':replaceVal },
+                        success: function(data){
+                            console.log(data);
+                            $(target).html(data);
+                            $('.pagination ul li').removeClass('active');
+                            $('.page_nos_'+page).parent('li').addClass('active');
+                        }
+                    });
+                }else{
+                    $.ajax({
+                        method: "POST",
+                        url: pagination_page+page,
+                        data: { page: page,csrf_token_name:csrf_token,status:status },
+                        success: function(data){
+                            $(target).html(data);
+                            $('.pagination ul li').removeClass('active');
+                            $('.page_nos_'+page).parent('li').addClass('active');
+                        }
+                    });
+                }
             }else{
                 $.ajax({
                     method: "POST",
-                    url: pagination_page+page,
-                    data: { page: page,csrf_token_name:csrf_token,status:status },
+                    url: base_url+'home/ajaxPaginationDataById',
+                    data: { page: page,csrf_token_name:csrf_token,'category':categories,'location':service_location,'common_search':common_search },
                     success: function(data){
-                        //console.log(data);
                         $(target).html(data);
                         $('.pagination ul li').removeClass('active');
                         $('.page_nos_'+page).parent('li').addClass('active');

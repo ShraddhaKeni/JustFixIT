@@ -205,12 +205,10 @@ class Home_model extends CI_Model
        $this->db->select("*");
       $this->db->from('services');
       $this->db->where('category',$id);
+      $this->db->where('status',1);
       $result = $this->db->get()->result_array();
         return $result;
     }
-
-
-
        public function get_pending_bookinglist($provider_id)
      {
         $this->db->select("b.*,s.service_title,s.service_image,s.service_amount,s.rating,s.service_image,c.category_name,sc.subcategory_name,p.profile_img,p.mobileno,p.country_code");
