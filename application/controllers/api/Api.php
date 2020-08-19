@@ -2427,7 +2427,7 @@ $this->response($result, REST_Controller::HTTP_OK);
                $cf_request = array();
               // $cf_request["appId"] = "1459459be8b3a186d7149dd8f49541";
               // $cf_request["secretKey"] = "65e2043ddc2a9274637cc9e9c8889ba067f4d8e0";
-               $cf_request["orderId"] =   time();
+              $cf_request["orderId"] =   time()."";
                $cf_request["orderAmount"] = $this->input->post('orderAmount');
               // $cf_request["orderNote"] = "Hello Cashfree";
                $cf_request["orderCurrency"] = "INR";
