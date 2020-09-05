@@ -4,11 +4,12 @@ require APPPATH . '/libraries/REST_Controller.php';
 class Api extends REST_Controller {
  public function __construct() { 
   parent::__construct();
+  error_reporting(0);
   $this->load->helper('push_notifications');
   $this->load->helper('user_timezone');
   $this->load->model('Chat_model');
   $this->load->model('api_model','api');
-  $this->load->model('user_login_model','user_login');  
+  $this->load->model('user_login_model','user_login');
           $header =  getallheaders(); // Get Header Data
           $token = (!empty($header['token']))?$header['token']:'';
           if(empty($token)){
@@ -47,7 +48,7 @@ class Api extends REST_Controller {
             }
             if($data['key'] == 'stripe_option'){
              $stripe_option = $data['value'];
-           } 
+           }
           }
        }
       if(@$stripe_option == 1){
@@ -90,7 +91,7 @@ class Api extends REST_Controller {
       $res['category_list'] = [];
       $res['popular_services'] = [];
       $res['new_services'] = [];
-      $data = $res; 
+      $data = $res;
     }
     $result = $this->data_format($response_code,$response_message,$data);
     $this->response($result, REST_Controller::HTTP_OK);
@@ -125,7 +126,7 @@ class Api extends REST_Controller {
      $res['category_list'] = $this->api->get_category();
      $res['popular_services'] = $this->api->get_demo_service(1,$user_data);
      $res['new_services'] = $this->api->get_demo_service(2,$user_data);
-     $data = $res; 
+     $data = $res;
     }
  }
  else{
@@ -135,7 +136,7 @@ class Api extends REST_Controller {
   $res['category_list'] = $this->api->get_category();
   $res['popular_services'] = $this->api->get_demo_service(1,$user_data);
   $res['new_services'] = $this->api->get_demo_service(2,$user_data);
-  $data = $res; 
+  $data = $res;
 }
 $result = $this->data_format($response_code,$response_message,$data);
 $this->response($result, REST_Controller::HTTP_OK);
@@ -144,7 +145,7 @@ public function stripe_account_details_post(){
  $data = new stdClass();
  $user_data = array();
  $user_data = $this->post();
- $user_post_data = getallheaders(); 
+ $user_post_data = getallheaders();
 
  $token = (!empty($user_post_data['token']))?$user_post_data['token']:'';
  if(empty($token)){
@@ -199,7 +200,7 @@ public function my_service_post(){
    if(!empty($result) ){
     $response_code = '200';
     $response_message = "Service list";
-    $data= $result; 
+    $data= $result;
   }
   else{
     $response_code = '200';
@@ -256,7 +257,7 @@ public function service_details_get(){
   }
 }
 else{
-  $this->token_error(); 
+  $this->token_error();
 }
 $result = $this->data_format($response_code,$response_message,$data);
 $this->response($result, REST_Controller::HTTP_OK);
@@ -265,14 +266,13 @@ $this->response($result, REST_Controller::HTTP_OK);
 public function all_services_post(){
 
   $user_data=array();
-  
+
   $data =array();
   $user_data=$this->post();
-  echo $user_data['type']; exit;
   $inputs['page']  = (!empty($inputs['page']))?$inputs['page']:1;
   // $user_data['type'] = 'Popular';
-  // $user_data['latitude'] = '26.9124336';
-  // $user_data['longitude'] = '75.7872709';
+   $user_data['latitude'] = '15.2993';
+   $user_data['longitude'] = '74.1240';
 
   if(!empty($user_data['type']) && !empty($user_data['latitude']) && !empty($user_data['longitude']))
   {
@@ -349,7 +349,7 @@ public function provider_signin_post(){
       $is_available_user= $this->api->check_user_mobileno($user_data);
       if($is_available_user==0){
 
-        if($is_available_mobile == 1)         
+        if($is_available_mobile == 1)
         {
 
           $check_data['mobile_number'] = $user_data['mobileno'];
@@ -366,7 +366,7 @@ public function provider_signin_post(){
           if(!empty($user_details)){
             $response_code = '200';
             $response_message = 'LoggedIn Successfully';
-            $data['provider_details']  = $user_details; 
+            $data['provider_details']  = $user_details;
 
           }
           else
@@ -390,7 +390,7 @@ public function provider_signin_post(){
     {
       $response_code = '500';
       $response_message = 'Inputs field missing';
-    } 
+    }
 
 
     $result = $this->data_format($response_code,$response_message,$data);
@@ -412,7 +412,7 @@ public function update_provider_post(){
     $data=array();
     $user_data = array();
     $user_data = $this->post();
-    if(!empty($user_data['name']) ||   !empty($user_data['category']) || !empty($user_data['subcategory'])|| !empty($user_data['profile_img'])){ 
+    if(!empty($user_data['name']) ||   !empty($user_data['category']) || !empty($user_data['subcategory'])|| !empty($user_data['profile_img'])){
   if(!empty($_FILES['profile_img'])){
       $config['upload_path']          = FCPATH.'uploads/profile_img';
       $config['allowed_types']        = 'jpeg|jpg|png|gif|JPEG|JPG|PNG|GIF';
@@ -435,7 +435,7 @@ public function update_provider_post(){
   $result = $this->api->provider_update($user_data,$WHERE);
   if($result){
     $response_code = '200';
-    $response_message = 'Profile updated successfully';           
+    $response_message = 'Profile updated successfully';
     $data =  $this->api->profile(array('user_id' => $WHERE['id'] ));
   }else{
     $response_code = '200';
@@ -447,7 +447,7 @@ public function update_provider_post(){
   }else{
   $response_code = '500';
   $response_message = 'Inputs field missing';
-}  
+}
 $result = $this->data_format($response_code,$response_message,$data);
 $this->response($result, REST_Controller::HTTP_OK);
 }else{
@@ -479,7 +479,7 @@ public function provider_add_post(){
       $data = false;
     }
     $result = $this->data_format($response_code,$response_message,$data);
-    $this->response($result, REST_Controller::HTTP_OK); 
+    $this->response($result, REST_Controller::HTTP_OK);
 }
 
 public function provider_edit_post(){
@@ -508,7 +508,7 @@ public function provider_edit_post(){
       $data = false;
     }
     $result = $this->data_format($response_code,$response_message,$data);
-    $this->response($result, REST_Controller::HTTP_OK); 
+    $this->response($result, REST_Controller::HTTP_OK);
 }
 
 public function delete_provider_post(){
@@ -518,7 +518,7 @@ public function delete_provider_post(){
 }
 
 public function subcategory_services_post()
-{  
+{
 
  if($this->user_id !=0  || ($this->default_token ==$this->api_token)) {
 
@@ -662,7 +662,7 @@ public function subscription_success_post(){
         if($result)
         {
           $response_code = '200';
-          $response_message = 'Profile found';           
+          $response_message = 'Profile found';
         }
         else
         {
@@ -700,7 +700,7 @@ public function subscription_success_post(){
         $thumb_image=array();
         $mobile_image=array();
         if(isset($_FILES["images"]["name"])){
-          $count = count($_FILES["images"]['name']);  
+          $count = count($_FILES["images"]['name']);
           if($count >=3){
             for($i = 0; $i<$count; $i++){
               $_FILES["file"]["name"] =  'full_'.time().$_FILES["images"]["name"][$i];
@@ -724,7 +724,7 @@ public function subscription_success_post(){
           }
           else
           {
-            $data = new stdClass();  
+            $data = new stdClass();
             $response_code = '500';
             $response_message = 'Minimum 3 images required';
 
@@ -760,7 +760,7 @@ public function subscription_success_post(){
             $mobile_image = $mobile_image;
             $service_id = $result;
 
-            
+
 
             for($j=0; $j<$temp;$j++){
               $image = array(
@@ -779,7 +779,7 @@ public function subscription_success_post(){
             if($serviceimage)
             {
               $response_code = '200';
-              $response_message = 'Service added successfully';           
+              $response_message = 'Service added successfully';
             }
             else
             {
@@ -796,7 +796,7 @@ public function subscription_success_post(){
           else
           {
             $response_code = '500';
-            $response_message = 'Add service failed, required fields empty';            
+            $response_message = 'Add service failed, required fields empty';
             $data = new stdClass();
             $result = $this->data_format($response_code,$response_message,$data);
             $this->response($result, REST_Controller::HTTP_OK);
@@ -814,7 +814,7 @@ public function subscription_success_post(){
       }
 
       public function update_service_post()
-      { 
+      {
 
         ini_set('post_max_size', '100M');
         ini_set('upload_max_filesize', '100M');
@@ -825,7 +825,7 @@ public function subscription_success_post(){
 
           $user_data= $this->post();
 
-          if(!empty($user_data['service_title']) && !empty($user_data['service_location'])&& !empty($user_data['category']) && !empty($user_data['subcategory']) && !empty($user_data['service_latitude'])  && !empty($user_data['service_longitude'])  && !empty($user_data['service_amount'])  && !empty($user_data['service_offered'])  && !empty($user_data['about']) && !empty($user_data['id'])){ 
+          if(!empty($user_data['service_title']) && !empty($user_data['service_location'])&& !empty($user_data['category']) && !empty($user_data['subcategory']) && !empty($user_data['service_latitude'])  && !empty($user_data['service_longitude'])  && !empty($user_data['service_amount'])  && !empty($user_data['service_offered'])  && !empty($user_data['about']) && !empty($user_data['id'])){
 
            $inputs=array();
 
@@ -841,8 +841,8 @@ public function subscription_success_post(){
            if(isset($_FILES["images"]))
            {
             $count = count($_FILES["images"]);
-            if($count >=3 ) 
-            {       
+            if($count >=3 )
+            {
               for($count = 0; $count<count($_FILES["images"]["name"]); $count++)
               {
                 $_FILES["file"]["name"] =  'full_'.time().$_FILES["images"]["name"][$count];
@@ -858,9 +858,9 @@ public function subscription_success_post(){
                   $service_image[]=$this->image_resize(360,220,$image_url,'se_'.$data["file_name"],$upload_url);
                   $service_details_image[]=$this->image_resize(820,440,$image_url,'de_'.$data["file_name"],$upload_url);
                   $thumb_image[]=$this->image_resize(60,60,$image_url,'th_'.$data["file_name"],$upload_url);
-                  $mobile_image[]=$this->image_resize(280,160,$image_url,'mo_'.$data["file_name"],$upload_url);            
+                  $mobile_image[]=$this->image_resize(280,160,$image_url,'mo_'.$data["file_name"],$upload_url);
 
-                  
+
                 }
               }
               $inputs['service_image']=implode(',', $service_image);
@@ -870,7 +870,7 @@ public function subscription_success_post(){
             }
             else
             {
-              $data = new stdClass(); 
+              $data = new stdClass();
 
               $response_code = '200';
               $response_message = 'Minimum 3 images required';
@@ -925,7 +925,7 @@ public function subscription_success_post(){
           if($result)
           {
             $response_code = '200';
-            $response_message = 'Service updated successfully';           
+            $response_message = 'Service updated successfully';
           }
           else
           {
@@ -941,7 +941,7 @@ public function subscription_success_post(){
         else
         {
           $response_code = '200';
-          $response_message = 'Update service failed, required fields value missing';            
+          $response_message = 'Update service failed, required fields value missing';
           $data = new stdClass();
           $result = $this->data_format($response_code,$response_message,$data);
           $this->response($result, REST_Controller::HTTP_OK);
@@ -951,7 +951,7 @@ public function subscription_success_post(){
       else
       {
         $this->token_error();
-      }     
+      }
     }
 
     public function delete_service_post()
@@ -968,7 +968,7 @@ public function subscription_success_post(){
           if($result)
           {
             $response_code = '200';
-            $response_message = 'Service deleted successfully';           
+            $response_message = 'Service deleted successfully';
           }
           else
           {
@@ -983,10 +983,10 @@ public function subscription_success_post(){
         else
         {
           $response_code = '200';
-          $response_message = 'Service delete failed';            
+          $response_message = 'Service delete failed';
           $data = new stdClass();
           $result = $this->data_format($response_code,$response_message,$data);
-          $this->response($result, REST_Controller::HTTP_OK);          
+          $this->response($result, REST_Controller::HTTP_OK);
         }
 
       }
@@ -1017,7 +1017,7 @@ public function subscription_success_post(){
             if($result)
             {
               $response_code = '200';
-              $response_message = 'Service image deleted successfully';           
+              $response_message = 'Service image deleted successfully';
             }
             else
             {
@@ -1038,10 +1038,10 @@ public function subscription_success_post(){
        else
        {
         $response_code = '500';
-        $response_message = 'Input field missing';            
+        $response_message = 'Input field missing';
         $data = new stdClass();
         $result = $this->data_format($response_code,$response_message,$data);
-        $this->response($result, REST_Controller::HTTP_OK);          
+        $this->response($result, REST_Controller::HTTP_OK);
       }
 
     }
@@ -1052,9 +1052,9 @@ public function subscription_success_post(){
 
   }
 
-  public function image_resize($width=0,$height=0,$image_url,$filename,$upload_url){          
+  public function image_resize($width=0,$height=0,$image_url,$filename,$upload_url){
 
-    $source_path = base_url().$image_url; 
+    $source_path = base_url().$image_url;
     list($source_width, $source_height, $source_type) = getimagesize($source_path);
     switch ($source_type) {
       case IMAGETYPE_GIF:
@@ -1119,7 +1119,7 @@ imagecopy(
  * Alternatively, you can save the image in file-system or database
  */
 
-$image_url =  $upload_url.$filename;    
+$image_url =  $upload_url.$filename;
 
 imagepng($desired_gdim,$image_url);
 
@@ -1133,7 +1133,7 @@ return $image_url;
 public function subscription_payment_post()
 {
 
-  if($this->user_id !=0  || ($this->default_token ==$this->api_token)) 
+  if($this->user_id !=0  || ($this->default_token ==$this->api_token))
   {
     $params =  $this->post();
     if(!empty($params['amount']) && !empty($params['tokenid']) && !empty($params['description']) && !empty($params['subscription_id']) && $params['amount'] > 0)
@@ -1148,7 +1148,7 @@ public function subscription_payment_post()
 
       $result = $this->stripe->stripe_charges($charges_array);
 
-      $result = json_decode($result,true);         
+      $result = json_decode($result,true);
 
       if(empty($result['error'])){
         $data['transaction_id'] = $result['id'];
@@ -1266,7 +1266,7 @@ public function add_availability_post(){
         $result=$this->api->insert_businesshours($user_data);
         if($result){
           $response_code = '200';
-          $response_message = 'Business hours added successfully';           
+          $response_message = 'Business hours added successfully';
         }else{
           $response_code = '200';
           $response_message = 'Business hours added failed';
@@ -1281,10 +1281,10 @@ public function add_availability_post(){
       $this->response($result, REST_Controller::HTTP_OK);
     }else{
       $response_code = '500';
-      $response_message = 'Input field missing';            
+      $response_message = 'Input field missing';
       $data = new stdClass();
       $result = $this->data_format($response_code,$response_message,$data);
-      $this->response($result, REST_Controller::HTTP_OK);          
+      $this->response($result, REST_Controller::HTTP_OK);
     } }else{
     $this->token_error();
   }}
@@ -1310,7 +1310,7 @@ public function update_availability_post()
         if($result)
         {
           $response_code = '200';
-          $response_message = 'Business hours added successfully';           
+          $response_message = 'Business hours added successfully';
         }
         else
         {
@@ -1333,7 +1333,7 @@ public function update_availability_post()
         if($result)
         {
           $response_code = '200';
-          $response_message = 'Availability updated successfully';           
+          $response_message = 'Availability updated successfully';
         }
         else
         {
@@ -1348,10 +1348,10 @@ public function update_availability_post()
     else
     {
       $response_code = '200';
-      $response_message = 'Input field missing';            
+      $response_message = 'Input field missing';
       $data = new stdClass();
       $result = $this->data_format($response_code,$response_message,$data);
-      $this->response($result, REST_Controller::HTTP_OK);          
+      $this->response($result, REST_Controller::HTTP_OK);
     }
 
   }
@@ -1417,7 +1417,7 @@ public function existing_user_get(){
 
 public function logout_provider_post(){
   $user_data = array();
-  $user_data =  getallheaders(); 
+  $user_data =  getallheaders();
   $user_post_data = $this->post();
   $user_data = array_merge($user_data,$user_post_data);
   $token = $this->api_token;
@@ -1432,7 +1432,7 @@ public function logout_provider_post(){
       $result = $this->api->logout_provider($user_data['token'],$user_data['device_type'],$user_data['device_id']);
       if($result){
         $response_code = '200';
-        $response_message = 'Logout successfully';   
+        $response_message = 'Logout successfully';
       }else{
         $response_code = '202';
         $response_message = 'Invalid user token';
@@ -1471,10 +1471,10 @@ public function user_signin_post(){
             // $user_data['device_id'] = $device_detail[0]->device_id;
             // $user_data['user_id'] = $device_detail[0]->user_id;
             $user_details = $this->api->get_user_details($mobile_number,$user_data);
-          } if(!empty($user_details)){                
+          } if(!empty($user_details)){
             $response_code = '200';
             $response_message = 'LoggedIn Successfully';
-            $data['provider_details']  = $user_details; 
+            $data['provider_details']  = $user_details;
           }else{
             $response_code = '202';
             $response_message = 'Login failed, Invalid OTP or mobile number';
@@ -1487,16 +1487,16 @@ public function user_signin_post(){
       } } else{
       $response_code = '500';
       $response_message = 'Inputs field missing';
-    } 
+    }
     $result = $this->data_format($response_code,$response_message,$data);
     $this->response($result, REST_Controller::HTTP_OK);
-  }else{ 
+  }else{
     $this->token_error();
   }
    }
 
 
-public function generate_userotp_post(){ 
+public function generate_userotp_post(){
   if($this->users_id !=0  || ($this->default_token ==$this->api_token)) {
     $data=array();
     $user_data = array();
@@ -1515,7 +1515,7 @@ public function generate_userotp_post(){
           }else{
             $otp = rand(1000,9999);
           }
-          $message='Your OTP for '.$this->website_name.' is '.$otp.''; 
+          $message='Your OTP for '.$this->website_name.' is '.$otp.'';
           $this->load->library('sms');
           $result=$this->sms->send_message($user_data['country_code'].$user_data['mobileno'],$message);
           $otp_data=array(
@@ -1547,7 +1547,7 @@ public function generate_userotp_post(){
         }else{
           $otp = rand(1000,9999);
         }
-        $message='Your OTP for '.$this->website_name.' is '.$otp.''; 
+        $message='Your OTP for '.$this->website_name.' is '.$otp.'';
         $this->load->library('sms');
         $result=$this->sms->send_message($user_data['country_code'].$user_data['mobileno'],$message);
         $otp_data=array(
@@ -1577,7 +1577,7 @@ public function generate_userotp_post(){
 
 public function logout_post(){
   $user_data = array();
-  $user_data =  getallheaders(); 
+  $user_data =  getallheaders();
   $user_post_data = $this->post();
   $user_data = array_merge($user_data,$user_post_data);
   $token = $this->api_token;
@@ -1608,7 +1608,7 @@ public function update_user_post(){
     $data=array();
     $user_data = array();
     $user_data = $this->post();
-    if(!empty($user_data['name']) || !empty($user_data['email']) || !empty($user_data['mobileno']) || !empty($user_data['country_code']) || !empty($_FILES['profile_img'])){ 
+    if(!empty($user_data['name']) || !empty($user_data['email']) || !empty($user_data['mobileno']) || !empty($user_data['country_code']) || !empty($_FILES['profile_img'])){
      if(!empty($_FILES['profile_img'])){
       $config['upload_path']          = FCPATH.'uploads/profile_img';
       $config['allowed_types']        = 'jpeg|jpg|png|gif|JPEG|JPG|PNG|GIF';
@@ -1633,7 +1633,7 @@ public function update_user_post(){
     $result = $this->api->user_update($user_data,$WHERE);
     if($result){
       $response_code = '200';
-      $response_message = 'Profile updated successfully';           
+      $response_message = 'Profile updated successfully';
       $data =  $this->api->user_profile(array('user_id' => $WHERE['id']));
     }else{
       $response_code = '200';
@@ -1648,7 +1648,7 @@ public function update_user_post(){
  }}else{
   $response_code = '500';
   $response_message = 'Inputs field missing';
-}  
+}
 $result = $this->data_format($response_code,$response_message,$data);
 $this->response($result, REST_Controller::HTTP_OK);
 }else{
@@ -1663,7 +1663,7 @@ public function user_profile_get(){
     $result =  $this->api->user_profile($user_data);
     if($result){
       $response_code = '200';
-      $response_message = 'Profile found';           
+      $response_message = 'Profile found';
     }else{
       $response_code = '200';
       $response_message = 'No Records found';
@@ -1672,7 +1672,7 @@ public function user_profile_get(){
     $result = $this->data_format($response_code,$response_message,$data);
     $this->response($result, REST_Controller::HTTP_OK);
   }else{
-    $this->token_error(); 
+    $this->token_error();
   }
 }
 
@@ -1681,7 +1681,7 @@ public function service_availability_post(){
   $data=array();
   $user_data = array();
   $user_data = $this->post();
-  if(!empty($user_data['date']) && !empty($user_data['service_id']))  { 
+  if(!empty($user_data['date']) && !empty($user_data['service_id']))  {
     $timestamp = strtotime($user_data['date']);
     $day = date('D', $timestamp);
     $inputs = $user_data['service_id'];
@@ -1775,9 +1775,9 @@ $end_time_array = '';
 $timestamp_start = strtotime($temp_start_time);
 $timestamp_end   = strtotime($temp_end_time);
 
-$timing_array = array(); 
+$timing_array = array();
 
-$counter = 1;         
+$counter = 1;
 
 $from_time_railwayhrs  = date('G:i:s',($timestamp_start));
 $to_time_railwayhrs  = date('G:i:s',($timestamp_end));
@@ -1790,10 +1790,10 @@ $i = 1;
 while($timestamp_start_railwayhrs < $timestamp_end_railwayhrs)
 {
 
-  $temp_start_time_ampm = date('G:i:s',($timestamp_start_railwayhrs));                         
+  $temp_start_time_ampm = date('G:i:s',($timestamp_start_railwayhrs));
   $temp_end_time_ampm   = date('G:i:s',(($timestamp_start_railwayhrs)+60*60*1));
 
-  $timestamp_start_railwayhrs = strtotime($temp_end_time_ampm);    
+  $timestamp_start_railwayhrs = strtotime($temp_end_time_ampm);
 
   $timing_array[] = array('id'=>$i,'start_time'=>$temp_start_time_ampm,'end_time'=>$temp_end_time_ampm);
 
@@ -1804,7 +1804,7 @@ while($timestamp_start_railwayhrs < $timestamp_end_railwayhrs)
 
   $counter += 1;
   $i++;
-}                  
+}
 
 
                       // Booking availability
@@ -1817,7 +1817,7 @@ $service_id = $user_data['service_id'];
 $booking_count = $this->api->get_bookings($service_date,$service_id);
 
 
-$new_timingarray = array(); 
+$new_timingarray = array();
 
 if(is_array($booking_count) && empty($booking_count))
 {
@@ -1845,12 +1845,12 @@ elseif(is_array($booking_count) && $booking_count != ''){
 $new_timingarray = array_filter($new_timingarray);
 if(!empty($new_timingarray)){
   $i = 1;
-  foreach ($new_timingarray as $booked_time) 
+  foreach ($new_timingarray as $booked_time)
   {
    $re = strtotime($booked_time['start_time']);
    $re1   = strtotime($booked_time['end_time']);
-   $st_time = date('g:i A',($re)); 
-   $end_time = date('g:i A',($re1));  
+   $st_time = date('g:i A',($re));
+   $end_time = date('g:i A',($re1));
    $time['id'] = "$i";
    $time['start_time'] = $st_time;
    $time['end_time'] = $end_time;
@@ -1863,7 +1863,7 @@ if(!empty($new_timingarray)){
 $data['service_availability'] = $service_availability;
 if($service_availability != ''){
   $response_code = '200';
-  $response_message = 'Availability details';           
+  $response_message = 'Availability details';
 }else{
   $response_code = '200';
   $response_message = 'Availability not found';
@@ -1874,14 +1874,14 @@ $this->response($result, REST_Controller::HTTP_OK);
 else{
   $response_code = '500';
   $response_message = 'Inputs field missing';
-}  
+}
 $result = $this->data_format($response_code,$response_message,$data);
 $this->response($result, REST_Controller::HTTP_OK);
 }else{
   $this->token_error();
 }}
 
-public function book_service_post(){ 
+public function book_service_post(){
   $user_data = array();
           //$user_data =  getallheaders(); // Get Header Data
           $user_post_data = $this->post();
@@ -1926,7 +1926,7 @@ public function book_service_post(){
 
                   return false;
 
-                } 
+                }
                 /*check wallet amount*/
 
 
@@ -1941,7 +1941,7 @@ public function book_service_post(){
                 $availability_details = json_decode($provider_details['availability'],true);
                 //echo json_encode($availability_details); exit;
                 $alldays = false;
-                foreach ($availability_details as $details) 
+                foreach ($availability_details as $details)
                 {
 
                   if(isset($details['day'])&&$details['day']==0)
@@ -2039,9 +2039,9 @@ public function book_service_post(){
             $timestamp_start = strtotime($temp_start_time);
             $timestamp_end   = strtotime($temp_end_time);
 
-            $timing_array = array(); 
+            $timing_array = array();
 
-            $counter = 1;         
+            $counter = 1;
 
             $from_time_railwayhrs  = date('G:i:s',($timestamp_start));
             $to_time_railwayhrs  = date('G:i:s',($timestamp_end));
@@ -2054,10 +2054,10 @@ public function book_service_post(){
             while($timestamp_start_railwayhrs < $timestamp_end_railwayhrs)
             {
 
-              $temp_start_time_ampm = date('G:i:s',($timestamp_start_railwayhrs));                         
+              $temp_start_time_ampm = date('G:i:s',($timestamp_start_railwayhrs));
               $temp_end_time_ampm   = date('G:i:s',(($timestamp_start_railwayhrs)+60*60*1));
 
-              $timestamp_start_railwayhrs = strtotime($temp_end_time_ampm);    
+              $timestamp_start_railwayhrs = strtotime($temp_end_time_ampm);
 
               $timing_array[] = array('id'=>$i,'start_time'=>$temp_start_time_ampm,'end_time'=>$temp_end_time_ampm);
 
@@ -2068,7 +2068,7 @@ public function book_service_post(){
 
               $counter += 1;
               $i++;
-            }                    
+            }
 
             $data['availability'] = $timing_array;
                       // Booking availability
@@ -2076,7 +2076,7 @@ public function book_service_post(){
             $booking_end_time = $user_post_data['to_time'];
 
             $timestamp_from = strtotime($booking_from_time);
-            $timestamp_to  = strtotime($booking_end_time);     
+            $timestamp_to  = strtotime($booking_end_time);
 
             $from_time_railwayhrs  = date('G:i:s',($timestamp_from));
             $to_time_railwayhrs  = date('G:i:s',($timestamp_to));
@@ -2088,7 +2088,7 @@ public function book_service_post(){
             $booking_count = $this->api->get_bookings($service_date,$service_id);
 
 
-            $new_timingarray = array(); 
+            $new_timingarray = array();
 
             if(is_array($booking_count) && empty($booking_count))
             {
@@ -2096,7 +2096,7 @@ public function book_service_post(){
            }
            elseif(is_array($booking_count) && $booking_count != '')
            {
-            foreach ($timing_array as $timing) 
+            foreach ($timing_array as $timing)
             {
               $match_found = false;
 
@@ -2117,7 +2117,7 @@ public function book_service_post(){
                 $timing['end_time'] = "0".$explode_endtime[0].":".$explode_endtime[1].":".$explode_endtime[2];
               }
 
-              foreach ($booking_count as $bookings) 
+              foreach ($booking_count as $bookings)
               {
 
 
@@ -2145,7 +2145,7 @@ public function book_service_post(){
 
                       // Booking code
 
-        foreach ($new_timingarray as $booked_time) 
+        foreach ($new_timingarray as $booked_time)
         {
 
           if($booked_time['start_time'] == $from_time_railwayhrs && $booked_time['end_time'] == $to_time_railwayhrs)
@@ -2214,7 +2214,7 @@ public function book_service_post(){
                       );
 
 
-                      sendFCMMessage($notify_structure,$device['device_id']);  
+                      sendFCMMessage($notify_structure,$device['device_id']);
 
                     }
                     if($device['device_type']=='ios'){
@@ -2224,7 +2224,7 @@ public function book_service_post(){
                       'badge' => 0,
                     );
 
-                     sendApnsMessage($notify_structure,$device['device_id']);  
+                     sendApnsMessage($notify_structure,$device['device_id']);
 
                    }
                  }
@@ -5751,6 +5751,251 @@ public function provider_card_info_post(){
   }
 
 }
+
+
+    public function select_plan_api_post(){
+      $config = [
+      [
+              'field' => 'planid',
+              'label' => 'Plan Id',
+              'rules' => 'required',
+              'errors' => [
+                      'required' => 'Plan Id is required',],
+      ],
+      [
+            'field' => 'orderAmount',
+            'label' => 'Order Amount',
+            'rules' => 'required',
+            'errors' => [
+                    'required' => 'Order Amount is required',],
+      ],
+      [
+            'field' => 'customerPhone',
+            'label' => 'Customer Phone',
+            'rules' => 'required',
+            'errors' => [
+                    'required' => 'Customer Phone is required',],
+      ],
+      [
+            'field' => 'customerName',
+            'label' => 'Customer Name',
+            'rules' => 'required',
+            'errors' => [
+                    'required' => 'Customer Name is required',],
+      ],
+      [
+            'field' => 'customerEmail',
+            'label' => 'Customer Email',
+            'rules' => 'trim|required|valid_email',
+            'errors' => [
+                    'required' => 'Customer Email is required',],
+      ],
+];
+$this->form_validation->set_rules($config);
+if($this->form_validation->run()==FALSE){
+      print_r($this->form_validation->error_array());
+      echo "ERROR!!"; exit;
+    }else{
+        $apiEndpoint = "https://test.cashfree.com";
+      $opUrl = $apiEndpoint."/api/v1/order/create";
+      $orderId = rand(100000,999999);
+      $this->load->model('Api_model');
+      $tempOrder = [
+        "orderid" => $orderId,
+        "service_id" => $this->input->post('planid'),
+        "created_at"=> date('Y-m-d H:i:s'),
+        "type"=>"provider",
+        "token"=>$this->input->post('token'),
+        "amount"=>$this->input->post('orderAmount'),
+        "status"=>1,
+      ];
+      $checkprovider = $this->api->checkprovider($this->input->post('token'));
+      if(count($checkprovider) > 0){
+        $checkplan = $this->api->checkplan($this->input->post('planid'));
+        if($checkplan > 0){
+             $this->api->insertTempOrder($tempOrder);
+             $cf_request = array();
+             $cf_request["appId"] = "1459459be8b3a186d7149dd8f49541";
+             $cf_request["secretKey"] = "65e2043ddc2a9274637cc9e9c8889ba067f4d8e0";
+             $cf_request["orderId"] =   $orderId;
+             $cf_request["orderAmount"] = $this->input->post('orderAmount');
+             $cf_request["orderNote"] = "Select Plan Cashfree";
+             $cf_request["customerPhone"] = $this->input->post('customerPhone');
+             $cf_request["customerName"] = $this->input->post('customerName');
+             $cf_request["customerEmail"] = $this->input->post('customerEmail');
+             $cf_request["returnUrl"] = base_url().'api/select_plan_response_api';
+             $cf_request["notifyUrl"] = base_url().'api/select_plan_response_api';
+             $timeout = 10;
+             $request_string = "";
+             foreach($cf_request as $key=>$value) {
+               $request_string .= $key.'='.rawurlencode($value).'&';
+             }
+
+             $ch = curl_init();
+             curl_setopt($ch, CURLOPT_URL,"$opUrl?");
+             curl_setopt($ch,CURLOPT_POST, count($cf_request));
+             curl_setopt($ch,CURLOPT_POSTFIELDS, $request_string);
+             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+             curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
+             $curl_result=curl_exec ($ch);
+             curl_close ($ch);
+
+               $jsonResponse = json_decode($curl_result);
+              if ($jsonResponse->{'status'} == "OK") {
+               //echo $paymentLink = $jsonResponse->{"paymentLink"};
+              }else {
+              echo json_encode(['status'=>'201','status'=>false,'message'=>'Plan Not Select','orderId'=>$orderId]); exit;
+              }
+        }else{
+          echo json_encode(['status'=>'201','status'=>false,'message'=>'Invalid Plan']); exit;
+        }
+      }else{
+        echo json_encode(['status'=>'201','status'=>false,'message'=>'Invalid Provider']);
+      }
+    }
+}
+
+    public function select_plan_response_api_post(){
+    if($this->input->post('txStatus')=='SUCCESS'){
+    $this->load->model('Subscription_model');
+    $orderId =  $this->input->post('orderId');
+    $plandata = $this->api->getTempOrder($orderId);
+    $getProvider = $this->api->getProviderByToken($plandata[0]->token);
+    $data = [
+    'subscriber_id' => $getProvider[0]->id,
+    'subscription_id' => $plandata[0]->service_id,
+    'type' => 1,
+    'token' => $plandata[0]->token,
+    'args' => 'Days plan',
+    ];
+    $tempOrder = [
+        "orderid" => $orderId,
+        "status"=>0,
+      ];
+    $result = $this->Subscription_model->subscribe_provider_plan($data);
+    $this->api->updatetempOrder($tempOrder);
+    echo json_encode(['status'=>'200','status_message'=>true,'message'=>'Plan Subscribed Successfully']); exit;
+  }else{
+    echo json_encode(['status'=>'201','status_message'=>false,'message'=>'Plan Not Subscribed']);
+  }
+}
+
+    public function addToWallet_api_post(){
+
+  $config = [
+      [
+            'field' => 'token',
+            'label' => 'Token',
+            'rules' => 'required',
+            'errors' => [
+                    'required' => 'User token is required',],
+      ],
+      [
+            'field' => 'orderAmount',
+            'label' => 'Order Amount',
+            'rules' => 'required',
+            'errors' => [
+                    'required' => 'Order Amount is required',],
+      ],
+      [
+            'field' => 'customerPhone',
+            'label' => 'Customer Phone',
+            'rules' => 'required',
+            'errors' => [
+                    'required' => 'Customer Phone is required',],
+      ],
+      [
+            'field' => 'customerName',
+            'label' => 'Customer Name',
+            'rules' => 'required',
+            'errors' => [
+                    'required' => 'Customer Name is required',],
+      ],
+      [
+            'field' => 'customerEmail',
+            'label' => 'Customer Email',
+            'rules' => 'trim|required|valid_email',
+            'errors' => [
+                    'required' => 'Customer Email is required',],
+      ],
+];
+$this->form_validation->set_rules($config);
+if($this->form_validation->run()==FALSE){
+      print_r($this->form_validation->error_array());
+      echo "ERROR!!"; exit;
+    }else{
+      $orderId = rand(100000,999999);
+       $token = $this->input->post('token');
+       $checkUser = $this->api->getProviderByToken($token);
+       if($checkUser){
+           $apiEndpoint = "https://test.cashfree.com";
+           $opUrl = $apiEndpoint."/api/v1/order/create";
+           $cf_request = array();
+           $cf_request["appId"] = "1459459be8b3a186d7149dd8f49541";
+           $cf_request["secretKey"] = "65e2043ddc2a9274637cc9e9c8889ba067f4d8e0";
+           $cf_request["orderId"] =   $orderId;
+           $cf_request["orderAmount"] = $this->input->post('orderAmount');
+           $cf_request["orderNote"] = "Select Plan Cashfree";
+           $cf_request["customerPhone"] = $this->input->post('customerPhone');
+           $cf_request["customerName"] = $this->input->post('customerName');
+           $cf_request["customerEmail"] = $this->input->post('customerEmail');
+           $cf_request["returnUrl"] = base_url().'api/addtowalletresponse_api';
+           $cf_request["notifyUrl"] = base_url().'api/addtowalletresponse_api';
+           $timeout = 10;
+           $request_string = "";
+           foreach($cf_request as $key=>$value) {
+             $request_string .= $key.'='.rawurlencode($value).'&';
+           }
+           $ch = curl_init();
+           curl_setopt($ch, CURLOPT_URL,"$opUrl?");
+           curl_setopt($ch,CURLOPT_POST, count($cf_request));
+           curl_setopt($ch,CURLOPT_POSTFIELDS, $request_string);
+           curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+           curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
+           $curl_result=curl_exec ($ch);
+           curl_close ($ch);
+
+             $jsonResponse = json_decode($curl_result);
+            if ($jsonResponse->{'status'} == "OK") {
+              $tempOrder = [
+                "token"=>$this->input->post('token'),
+                "user_provider_id" => $checkUser[0]->id,
+                "type" => 1,
+                "order_id" => $orderId,
+                "wallet_amt"=> $this->input->post('orderAmount'),
+                "type"=>"provider",
+                "status"=>1,
+              ];
+              $this->api->insertTempWallet($tempOrder);
+             //echo $paymentLink = $jsonResponse->{"paymentLink"};
+             echo json_encode(['status'=>'200','status'=>true,'message'=>'Wallet Order Is active','orderId'=>$orderId]); exit;
+            }else {
+            echo json_encode(['status'=>'201','status'=>false,'message'=>'Wallet Order Failed']); exit;
+            }
+        }else{
+          echo json_encode(['status'=>'201','status'=>false,'message'=>'Invalid User']); exit;
+        }
+    }
+}
+
+    public function addToWalletResponse_api_post(){
+        if($this->input->post('txStatus')=='SUCCESS'){
+        $gettempwallet = $this->api->getTempWallet($this->input->post('orderId'));
+        $walletdata = $this->api->getwalletamt($gettempwallet[0]->token);
+       $Order = [
+        "token"=>$gettempwallet[0]->token,
+        "user_provider_id" => $gettempwallet[0]->user_provider_id,
+        "type" => 1,
+        "wallet_amt"=> $walletdata[0]->wallet_amt + $gettempwallet[0]->wallet_amt,
+       ];
+       $this->api->updateWallet($gettempwallet[0]->token,$Order);
+       $this->api->updateTempWallet($this->input->post('orderId'));
+        echo json_encode(['status'=>'200','status_message'=>true,'message'=>'Payment Added Succeessfully']); exit;
+      }else{
+        echo json_encode(['status'=>'201','status_message'=>false,'message'=>'Payment not added']);
+      }
+    }
+
 public function stripe_details_get()
 {
 
@@ -5925,4 +6170,7 @@ $result = $this->data_format($response_code,$response_message,$data);
 $this->response($result, REST_Controller::HTTP_OK);
 }/*END*/
 }
+
+
+
 ?>
