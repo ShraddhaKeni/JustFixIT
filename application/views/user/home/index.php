@@ -5,7 +5,6 @@
 	$this->db->order_by('total_views','DESC');
 	$this->db->limit(3);
 	$popular = $this->db->get()->result_array();
-	
 	$query = $this->db->query("select * from system_settings WHERE status = 1");
 	$result = $query->result_array();
 	if(!empty($result)) {

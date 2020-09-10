@@ -2390,6 +2390,7 @@ $this->response($result, REST_Controller::HTTP_OK);
   //         $input['status'] =  2;
   //         $input['created_at'] =  date('Y-m-d H:i:s');
   //         $this->api->updateTempOrder($input);
+  //         $this->api->updateTempOrder($input);
   //       echo json_encode(['response'=>'202','message'=>'Payment failed']); exit;
   //     }
   // }

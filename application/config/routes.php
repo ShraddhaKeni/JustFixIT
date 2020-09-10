@@ -298,7 +298,10 @@ $route['api/customer-card-list'] = 'api/api/get_customer_saved_card';
 $route['api/wallet-history'] = 'api/api/wallet_history';
 $route['api/stripe_details'] = 'api/api/stripe_details';
 $route['api/provider-card-info'] = 'api/api/provider_card_info';
-
+$route['api/select_plan_api'] = 'api/api/select_plan_api';
+$route['api/select_plan_response_api'] = 'api/api/select_plan_response_api';
+$route['api/addtowallet_api'] = 'api/api/addtowallet_api';
+$route['api/addtowalletresponse_api'] = 'api/api/addtowalletresponse_api';
 
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
