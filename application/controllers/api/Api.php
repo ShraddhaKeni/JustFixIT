@@ -5754,12 +5754,161 @@ public function provider_card_info_post(){
 }
 
 
-    public function select_plan_api_post(){
-      $config = [
+  public function select_plan_api_post()
+  {
+    $user_id = $this->input->post('user_id');
+    $subscription_id = $this->input->post('subscription_id');
+    $type = $this->input->post('type');
+    $token = $this->input->post('token');
+    $this->db->select('duration,fee');
+    $record = $this->db->get_where('subscription_fee',array('id'=>$subscription_id))->row_array();
+    if(!empty($record))
+    {
+      $duration = $record['duration'];
+      $days = 30;
+      switch ($duration) {
+        case 1:
+          $days = 30;
+          break;
+        case 2:
+          $days = 60;
+          break;
+        case 3:
+          $days = 90;
+          break;
+        case 6:
+          $days = 180;
+          break;
+        case 12:
+          $days = 365;
+          break;
+        case 24:
+          $days = 730;
+          break;
+        default:
+          $days = 30;
+          break;
+      }
+      date_default_timezone_set('Asia/Kolkata');
+      $subscription_date = date('Y-m-d H:i:s');
+      $expiry_date_time =  date('Y-m-d H:i:s',strtotime(date("Y-m-d  H:i:s", strtotime($subscription_date)) ." +".$days."days"));
+      $new_details['subscriber_id'] = $stripe['subscriber_id'] = $user_id;
+      $new_details['subscription_id'] = $stripe['subscription_id'] = $subscription_id;
+      $new_details['subscription_date'] = $stripe['subscription_date'] = $subscription_date;
+      $new_details['expiry_date_time'] = $expiry_date_time;
+      $new_details['type']=1;
+      if($type=='wallet')
+      {
+        //$type = 'wallet';
+        $status = 0;
+        $walletAmt = $this->api->getwalletamt($token);
+        if($walletAmt[0]->wallet_amt < $record['fee'])
+        {
+          echo json_encode(['status'=>'203','message'=>'Not Enough Amount in Wallet']);
+          exit;
+        }
+        else
+        {
+          $actualAmount = $walletAmt[0]->wallet_amt - $record['fee'];
+          $waltdata = array();
+          $waltdata['wallet_amt'] = $actualAmount;
+          $this->db->where('subscriber_id', $user_id);
+          $count = $this->db->count_all_results('subscription_details');
+          if($count == 0)
+          {
+            $this->db->insert('subscription_details', $new_details);
+            $this->db->insert('subscription_details_history', $new_details);
+          }
+          else
+          {
+            $this->db->where('subscriber_id', $user_id);
+            $this->db->update('subscription_details', $new_details);
+            $this->db->insert('subscription_details_history', $new_details);
+            //$this->db->where('subscriber_id', $user_id);
+          }
+          $this->api->updateWallet($token,$waltdata);
+          echo json_encode(['status'=>'200','message'=>'Plan is successfully subscribed']);
+          exit;
+        }
+      }
+      else
+      {
+        $apiEndpoint = "https://test.cashfree.com";
+        $opUrl = $apiEndpoint."/api/v2/cftoken/order";
+        $cf_request = array();
+        // $cf_request["appId"] = "1459459be8b3a186d7149dd8f49541";
+        // $cf_request["secretKey"] = "65e2043ddc2a9274637cc9e9c8889ba067f4d8e0";
+        $cf_request["orderId"] =   time()."";
+        $cf_request["orderAmount"] = $record['fee'];
+        // $cf_request["orderNote"] = "Hello Cashfree";
+        $cf_request["orderCurrency"] = "INR";
+        // $cf_request["customerPhone"] = $this->input->post('customerPhone');
+        // $cf_request["customerName"] = $this->input->post('customerName');
+        // $cf_request["customerEmail"] = $this->input->post('customerEmail');
+        // $cf_request["returnUrl"] = base_url().'api/service_book_response';
+        // $cf_request["notifyUrl"] = base_url().'api/service_book_response';
+        $timeout = 10;
+        /*$request_string = "";
+        foreach($cf_request as $key=>$value) {
+          $request_string .= $key.'='.rawurlencode($value).'&';
+        }*/
+        $ch = curl_init();
+        /*if ($ch === false) {
+          echo('failed to initialize');exit;
+        }
+        else{
+          echo('initialized');exit;
+        }*/
+        curl_setopt($ch, CURLOPT_URL,"$opUrl?");
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+          'x-client-id: 1459459be8b3a186d7149dd8f49541',
+          'x-client-secret: 65e2043ddc2a9274637cc9e9c8889ba067f4d8e0',
+          'Content-Type: application/json'
+        ));
+        //curl_setopt($ch,CURLOPT_POST, json_encode($cf_request) );
+        curl_setopt($ch,CURLOPT_POSTFIELDS,json_encode($cf_request) );
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+        $curl_result=curl_exec ($ch);
+
+        if (curl_errno($ch)) { 
+             echo curl_error($ch);exit; 
+          } 
+        curl_close ($ch);
+
+        $jsonResponse = json_decode($curl_result);
+        if ($jsonResponse->{'status'} == "OK")
+        {
+          //$paymentLink = $jsonResponse->{"paymentLink"};
+          $tempOrder = [
+            "orderid" => $cf_request["orderId"],
+            "planid" => $subscription_id,
+            "provider_id" => $user_id,
+            "created_at"=> date('Y-m-d H:i:s'),
+          ];
+          $this->api->insertTempplanOrder($tempOrder);
+          echo json_encode(['orderid'=>$cf_request["orderId"],'cf_data'=> json_decode($curl_result),'status'=>'200','message'=>'Order successfully created']); 
+          exit;
+        }
+        else
+        {
+          echo json_encode(['status'=>'201','cf_data'=> $curl_result,'message'=>'Failed For Some Reason','demo'=>$jsonResponse]);
+          exit;
+        }
+      }
+      //$stripe['payment_details'] = $data['args'];
+    }
+    else{
+      echo "End";
+      exit;
+    }
+     /* $config = [
       [
               'field' => 'planid',
               'label' => 'Plan Id',
-              'rules' => 'required',
+              'rules' => 'required',copy the file C:\wamp64\bin\php\php7.2.18\libssh2.dll to C:\wamp64\bin\apache\apache2.4.39\bin\libssh2.dll
               'errors' => [
                       'required' => 'Plan Id is required',],
       ],
@@ -5853,11 +6002,12 @@ if($this->form_validation->run()==FALSE){
       }else{
         echo json_encode(['status'=>'201','status'=>false,'message'=>'Invalid Provider']);
       }
-    }
-}
+    }*/
+  }
 
-    public function select_plan_response_api_post(){
-    if($this->input->post('txStatus')=='SUCCESS'){
+  public function select_plan_response_api_post()
+  {
+    /*if($this->input->post('txStatus')=='SUCCESS'){
     $this->load->model('Subscription_model');
     $orderId =  $this->input->post('orderId');
     $plandata = $this->api->getTempOrder($orderId);
@@ -5878,7 +6028,77 @@ if($this->form_validation->run()==FALSE){
     echo json_encode(['status'=>'200','status_message'=>true,'message'=>'Plan Subscribed Successfully']); exit;
   }else{
     echo json_encode(['status'=>'201','status_message'=>false,'message'=>'Plan Not Subscribed']);
-  }
+  }*/
+  //echo "Hii";exit;
+  if($this->input->post('txStatus')=='SUCCESS'){
+    $getTempOrder = $this->api->getTempplanOrder($this->input->post('orderId'),$this->input->post('user_id'));
+
+    $user_id = $this->input->post('user_id');
+    $subscription_id = $getTempOrder[0]->planid;
+    //echo $subscription_id;exit;
+    //$token = $this->input->post('token');
+    $this->db->select('duration,fee');
+    $record = $this->db->get_where('subscription_fee',array('id'=>$subscription_id))->row_array();
+    if(!empty($record))
+    {
+      $duration = $record['duration'];
+      $days = 30;
+      switch ($duration) {
+        case 1:
+          $days = 30;
+          break;
+        case 2:
+          $days = 60;
+          break;
+        case 3:
+          $days = 90;
+          break;
+        case 6:
+          $days = 180;
+          break;
+        case 12:
+          $days = 365;
+          break;
+        case 24:
+          $days = 730;
+          break;
+        default:
+          $days = 30;
+          break;
+      }
+      date_default_timezone_set('Asia/Kolkata');
+      $subscription_date = date('Y-m-d H:i:s');
+      $expiry_date_time =  date('Y-m-d H:i:s',strtotime(date("Y-m-d  H:i:s", strtotime($subscription_date)) ." +".$days."days"));
+      $new_details['subscriber_id'] = $user_id;
+      $new_details['subscription_id'] = $subscription_id;
+      $new_details['subscription_date'] = $subscription_date;
+      $new_details['expiry_date_time'] = $expiry_date_time;
+      $new_details['type']=1;
+
+      $this->db->where('subscriber_id', $user_id);
+          $count = $this->db->count_all_results('subscription_details');
+          if($count == 0)
+          {
+            $this->db->insert('subscription_details', $new_details);
+            $this->db->insert('subscription_details_history', $new_details);
+          }
+          else
+          {
+            $this->db->where('subscriber_id', $user_id);
+            $this->db->update('subscription_details', $new_details);
+            $this->db->insert('subscription_details_history', $new_details);
+            //$this->db->where('subscriber_id', $user_id);
+          }
+          echo json_encode(['status'=>'200','message'=>'Plan subscribed successfully']);
+         }
+         else{
+            echo json_encode(['status'=>'201','message'=>'There was a problem Placing your Order']);
+         }
+    }
+    else
+    {
+      echo json_encode(['status'=>'201','message'=>'Transection Failed']);
+    }
 }
 
     public function addToWallet_api_post(){

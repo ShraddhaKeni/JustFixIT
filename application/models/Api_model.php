@@ -2810,6 +2810,19 @@ public function get_wallet($token){
                       
   }
 
+  public function insertTempplanOrder($data){
+    $this->db->insert('tempplanselect',$data);
+  }
+
+  public function getTempplanOrder($orderid,$providerid){
+    $this->db->select("*");
+    $this->db->from('tempplanselect');
+    $this->db->where('orderid',$orderid);
+    $this->db->where('provider_id',$providerid);
+      $records = $this->db->get();
+      return $records->result();
+  }
+
   /*END*/
  }
 
