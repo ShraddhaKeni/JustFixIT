@@ -58,8 +58,28 @@ class Api_model extends CI_Model{
   public function updatetempOrder($data){
     $this->db->where('orderid',$data['orderid'])->update('temproryorder',$data);
   }
+  public function getTempWallet($orderid){
+    $this->db->select("*");
+    $this->db->from('temp_wallet');
+    $this->db->where('order_id',$orderid);
+    $this->db->where('status',1);
+      $records = $this->db->get();
+      return $records->result();
+  }
+  public function insertTempWallet($data){
+    $this->db->insert('temp_wallet',$data);
+  }
+  // public function updateWallet($data){
+  //   $this->db->where('user_provider_id',$data['user_provider_id'])->update('wallet_table',$data);
+  // }
+  public function updateTempWallet($data){
+    $this->db->where('order_id', $data);
+    $this->db->delete('temp_wallet');
+    //$this->db->where('user_provider_id',$data['user_provider_id'])->update('temp_wallet',$data);
+  }
+
   public function getService($id){
-    $this->db->select("id,user_id");
+    $this->db->select("id,user_id,service_title,service_amount");
     $this->db->from("services");
     $this->db->where("id",$id);
     $result = $this->db->get();
@@ -67,8 +87,38 @@ class Api_model extends CI_Model{
   }
 
   public function getUserByToken($token){
-    $this->db->select("id");
+    $this->db->select("id,mobileno,name");
     $this->db->from("users");
+    $this->db->where("token",$token);
+    $result = $this->db->get();
+    return $result->result();
+  }
+
+  public function getProviderByToken($token){
+    $this->db->select("id");
+    $this->db->from("providers");
+    $this->db->where("token",$token);
+    $result = $this->db->get();
+    return $result->result();
+  }
+  public function getProviderById($id){
+    $this->db->select("id,mobileno,name");
+    $this->db->from("providers");
+    $this->db->where("id",$id);
+    $result = $this->db->get();
+    return $result->result();
+  }
+
+  public function checkplan($id){
+    $this->db->from("subscription_fee");
+    $this->db->where("id",$id);
+    $result = $this->db->get();
+    return $result->num_rows();
+  }
+
+  public function checkprovider($token){
+    $this->db->select("id");
+    $this->db->from("providers");
     $this->db->where("token",$token);
     $result = $this->db->get();
     return $result->result();
