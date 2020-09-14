@@ -1,0 +1,23 @@
+--
+-- Database: `happyexpert`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tempplanselect`
+--
+
+DROP TABLE IF EXISTS `tempplanselect`;
+CREATE TABLE IF NOT EXISTS `tempplanselect` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `orderid` int NOT NULL,
+  `planid` int NOT NULL,
+  `provider_id` int NOT NULL,
+  `created_at` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+
+ALTER TABLE `subscription_details_history` ADD `free_service` VARCHAR(45) NULL AFTER `type`;
