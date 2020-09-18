@@ -19,13 +19,15 @@
 							<div class="col-lg-12">
 								<div class="form-group">
 									<label>Business Title <span class="text-danger">*</span></label>
-									<input class="form-control" type="text" name="service_title" id="service_title" required>
+									<input class="form-control" type="text" name="service_title" id="service_title" 
+									placeholder="Enter your name or business name" required>
 								</div>
 							</div>
 							<div class="col-lg-6">
 								<div class="form-group">
 									<label>Service Price <span class="text-danger">*</span></label>
-									<input class="form-control" type="text" name="service_amount" id="service_amount" required>
+									<input class="form-control" type="text" name="service_amount" id="service_amount" 
+									placeholder="Enter your fees" required>
 								</div>
 							</div>
 							<div class="col-lg-6">
@@ -50,7 +52,7 @@
 							<div class="col-lg-6">
 								<div class="form-group">
 									<label>Subcategory <span class="text-danger">*</span></label>
-									<select class="form-control select" title="Sub Category" name="subcategory" id="subcategory"  required></select>
+									<select class="form-control select" title="Select Your SubCategory" name="subcategory" id="subcategory"  required></select>
 								</div>
 							</div>
 						</div>

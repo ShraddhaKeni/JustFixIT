@@ -869,9 +869,9 @@ while($timestamp_start_railwayhrs < $timestamp_end_railwayhrs)
 
 $service_date = $booking_date;
 
+$convert_date=date("Y-m-d",strtotime($service_date));
 
-
-$booking_count = $this->service->get_bookings($service_date,$service_id);
+$booking_count = $this->service->get_bookings($convert_date,$service_id);
 
 
 
@@ -1071,7 +1071,7 @@ public function booking_details_user()
 
 public function get_category()
 {
-  $this->db->where('status',1);
+  $this->db->where('status',1)->order_by('category_name','ASC');
   $query=$this->db->get('categories');
   $result= $query->result();
   $data=array();

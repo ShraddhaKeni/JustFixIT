@@ -316,7 +316,7 @@ $days=$hours=$minutes=$seconds=0;
 												<?php }elseif($provider_online['is_online']==1){?>
 													<i class="fas fa-circle online"></i> Online</p>
 												<?php }?>
-												<p class="text-muted mb-1">Member Since <?= date('M Y',strtotime($provider['created_at']));?></p>
+												<p class="text-muted mb-1">Member Since <?= date('M, Y',strtotime($provider['created_at']));?></p>
 											</div>
 										</div>
 										<hr>

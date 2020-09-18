@@ -451,7 +451,7 @@ if (!empty($my_subscribe['subscription_id']))
     } ?></p></li><li class="col-sm-4"><p><span class="amount">₹<?php if (!empty($subscription_name['fee']))
     {
         echo $subscription_name['fee'];
-    } ?></span><span class="badge bg-success-light">Paid</span></p></li></ul></div></div></div><h5 class="mb-4">Subscribed Details</h5><div class="card transaction-table mb-0"><div class="card-body"><div class="table-responsive"><table class="table table-center mb-0 no-footer"><thead><tr><th>Plan</th><th>Start Date</th><th>End Date</th><th>Amount</th><th>Status</th></tr></thead><tbody><?php foreach ($my_subscribe_list as $row)
+    } ?></span><span class="badge bg-success-light">Paid</span></p></li></ul></div></div></div><h5 class="mb-4">Subscription Details</h5><div class="card transaction-table mb-0"><div class="card-body"><div class="table-responsive"><table class="table table-center mb-0 no-footer"><thead><tr><th>Plan</th><th>Start Date</th><th>End Date</th><th>Amount</th><th>Status</th></tr></thead><tbody><?php foreach ($my_subscribe_list as $row)
     { ?><tr role="row"><td><?=$row['subscription_name']; ?></td><td><?=date('d-m-Y', strtotime($row['subscription_date'])); ?></td><td><?=date('d-m-Y', strtotime($row['expiry_date_time'])); ?></td><td><?=$row['fee']; ?></td><td><span class="badge bg-success-light">Paid</span></td></tr><?php
     } ?></tbody></table></div></div></div><?php
 } ?></div></div></div></div>

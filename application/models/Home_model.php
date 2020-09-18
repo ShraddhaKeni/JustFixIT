@@ -354,7 +354,7 @@ class Home_model extends CI_Model
 
       public function get_subscription()
      {
-        return $this->db->where('status',1)->get('subscription_fee')->result_array();
+        return $this->db->where('status',1)->order_by('fee','DESC')->get('subscription_fee')->result_array();
 
      }
 

@@ -60,26 +60,29 @@
 							<div class="col-lg-12">
 								<div class="form-group">
 									<label>Name <span class="text-danger">*</span></label>
-									<input class="form-control" type="text" name="name" id="service_title" required>
+									<input class="form-control" type="text" name="name" id="service_title" placeholder="Your name please!" 
+									required>
 								</div>
 							</div>
 							<div class="col-lg-6">
 								<div class="form-group">
-									<label>Number <span class="text-danger">*</span></label>
-									<input class="form-control" type="text" name="mobile" id="service_amount" required>
+									<label>Contact No. <span class="text-danger">*</span></label>
+									<input class="form-control" type="text" name="mobile" id="service_amount" placeholder="Your contact no. please"
+									required>
 								</div>
 							</div>
 							<div class="col-lg-6">
 								<div class="form-group">
 									<label>Email <span class="text-danger">*</span></label>
-									<input class="form-control" type="text" name="email" id="service_location" required>
+									<input class="form-control" type="text" name="email" id="service_location" placeholder="Your Email ID"
+									required>
 								</div>
 							</div>
 
 							<div class="col-lg-6">
 								<div class="form-group">
-									<label>Tell us how we can help you. <span class="text-danger">*</span></label>
-									<textarea class="form-control" name='description'></textarea>
+									<label>Tell us how we can help you? <span class="text-danger">*</span></label>
+									<textarea class="form-control" name='description' placeholder="Tell us how we can help you?"></textarea>
 								</div>
 							</div>
 						</div>
