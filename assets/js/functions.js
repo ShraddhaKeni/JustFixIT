@@ -1799,6 +1799,7 @@
             var $this = $('.btn');
             $this.html($this.data('original-text')).prop('disabled','false');
         }
+
         function getData(page){
             var url = $(location).attr('href'),
                 parts = url.split("/"),
@@ -1816,44 +1817,43 @@
             var subcategories = $("#subcategories").val();
             var service_location = $("#service_location").val();
             var categories = $("#categories").val();
-
-            if((categories=='') && (service_location=='') && (common_search=='')) {
-                if(cpage=='http://axzora.com/search/'+last+part){
-                    //if(cpage=='http://localhost/axzora/search/'+last_part){
+            if((categories==undefined || categories=='') && (service_location=='') && (common_search==undefined || common_search=='')) {
+                $.ajax({
+                    method: "POST",
+                    url: pagination_page+page,
+                    data: { page: page,csrf_token_name:csrf_token,status:status },
+                    success: function(data){
+                        $(target).html(data);
+                        //$('.pagination ul li').removeClass('active');
+                        $('.page_nos_'+page).parent('li').addClass('active');
+                    }
+                });
+            }
+            else{
+                if(cpage=='http://www.axzora.com/search'){
                     $.ajax({
                         method: "POST",
-                        url: base_url+'home/ajaxPaginationData2',
-                        data: { page: page,csrf_token_name:csrf_token,status:status,'pageName':replaceVal },
-                        success: function(data){
-                            console.log(data);
-                            $(target).html(data);
-                            $('.pagination ul li').removeClass('active');
-                            $('.page_nos_'+page).parent('li').addClass('active');
-                        }
-                    });
-                }else{
-                    $.ajax({
-                        method: "POST",
-                        url: pagination_page+page,
-                        data: { page: page,csrf_token_name:csrf_token,status:status },
+                        url: base_url+'home/ajaxPaginationData2/'+page,
+                        data: { page: page,csrf_token_name:csrf_token,status:status,'pageName':replaceVal,'common_search':common_search},
                         success: function(data){
                             $(target).html(data);
-                            $('.pagination ul li').removeClass('active');
+                            //$('.pagination ul li').removeClass('active');
                             $('.page_nos_'+page).parent('li').addClass('active');
                         }
                     });
                 }
-            }else{
-                $.ajax({
-                    method: "POST",
-                    url: base_url+'home/ajaxPaginationDataById',
-                    data: { page: page,csrf_token_name:csrf_token,'category':categories,'location':service_location,'common_search':common_search },
-                    success: function(data){
-                        $(target).html(data);
-                        $('.pagination ul li').removeClass('active');
-                        $('.page_nos_'+page).parent('li').addClass('active');
-                    }
-                });
+                else{
+                    $.ajax({
+                        method: "POST",
+                        url: base_url+'home/ajaxPaginationDataById/'+page,
+                        data: { page: page,csrf_token_name:csrf_token,'category':categories,'location':service_location,'common_search':common_search},
+                        success: function(data){
+                            $(target).html(data);
+                            //$('.pagination ul li').removeClass('active');
+                            $('.page_nos_'+page).parent('li').addClass('active');
+                        }
+                    });
+                }
             }
         }
 

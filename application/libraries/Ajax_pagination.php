@@ -17,17 +17,17 @@ class Ajax_pagination{
 	var $per_page	 	= 10; // Max number of items you want shown per page
 	var $num_links		=  3; // Number of "digit" links to show before/after the currently viewed page
 	var $cur_page	 	=  0; // The current page being viewed
-	var $first_link   	= 'First';
+	var $first_link   	= '<i class="fa fa-angle-double-left"></i>';
 	var $next_link		= '<i class="fas fa-angle-right"></i>';
 	var $prev_link		= '<i class="fas fa-angle-left"></i>';
-	var $last_link		= '';
-	var $uri_segment	= 10;
+	var $last_link		= '<i class="fa fa-angle-double-right"></i>';
+	var $uri_segment	= 3;
 	var $full_tag_open	= '<div class="pagination"><ul>';
 	var $full_tag_close	= '</ul></div>';
-	var $first_tag_open	= '';
-	var $first_tag_close	= '&nbsp;';
-	var $last_tag_open	= '&nbsp;';
-	var $last_tag_close	= '';
+	var $first_tag_open	= '<li>';
+	var $first_tag_close= '</li>';
+	var $last_tag_open	= '<li>';
+	var $last_tag_close	= '</li>';
 	var $cur_tag_open	= '<li class="active"><a href="javascript:void(0);" data-id="0" class="pagination_no page_nos_0" >';
 	var $cur_tag_close	= '</a></li>';
 	var $next_tag_open	= '<li class="arrow">';
@@ -88,7 +88,7 @@ class Ajax_pagination{
 		}
 		// Calculate the total number of pages
 		$num_pages = ceil($this->total_rows / $this->per_page);
-		
+
 		// Is there only one page? Hm... nothing more to do here then.
 		if ($num_pages == 1){
 			$info='';
@@ -99,7 +99,6 @@ class Ajax_pagination{
 		$CI =& get_instance();	
 		if ($CI->uri->segment($this->uri_segment) != 0){
 			$this->cur_page = $CI->uri->segment($this->uri_segment);
-			
 			// Prep the current page - no funny business!
 			$this->cur_page = (int) $this->cur_page;
 		}
@@ -160,7 +159,7 @@ class Ajax_pagination{
 
 		// Write the digit links
 		for ($loop = $start -1; $loop <= $end; $loop++){
-			$i = ($loop * $this->per_page) - $this->per_page;	
+			$i = ($loop * $this->per_page) - $this->per_page;
 			if ($i >= 0){
 				if ($this->cur_page == $loop){
 					$output .= $this->cur_tag_open.$loop.$this->cur_tag_close; // Current page
@@ -174,11 +173,11 @@ class Ajax_pagination{
 		}
 
 		// Render the "next" link
-		// if ($this->cur_page < $num_pages){
-		// 	$output .= $this->next_tag_open 
-		// 		. $this->getAJAXlink( $this->cur_page * $this->per_page , $this->next_link )
-		// 		. $this->next_tag_close;
-		// }
+		 if ($this->cur_page < $num_pages){
+		 	$output .= $this->next_tag_open 
+		 		. $this->getAJAXlink( $this->cur_page * $this->per_page , $this->next_link )
+		 		. $this->next_tag_close;
+		 }
 
 		// Render the "Last" link
 		if (($this->cur_page + $this->num_links) < $num_pages){
@@ -205,7 +204,7 @@ class Ajax_pagination{
         if(is_numeric($text)){
         $class='class="pagination_no page_nos_'.$pageCount.'" ';
     }else{
-    	$class="";
+    	$class='class="pagination_no page_nos_'.$pageCount.'" ';
     }
         return '<a href="javascript:void(0);"' . $class . ' data-id="'.$pageCount.'" >'. $text .'</a>';
 		

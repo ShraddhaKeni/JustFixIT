@@ -68,7 +68,7 @@ class Home extends CI_Controller {
 			$inputs['service_longitude'] = $this->input->post('user_longitude'); 
 			$inputs['user_address']=$this->input->post('user_address');
 		}
-		$totalRec = $this->home->get_all_service($conditions,$inputs); 
+		$totalRec = $this->home->get_all_service($conditions,$inputs);
         // Pagination configuration 
         $config['target']      = '#dataList'; 
         $config['link_func']      = 'getData';
@@ -222,7 +222,8 @@ class Home extends CI_Controller {
 
 
 
-	function ajaxPaginationData(){ 
+	function ajaxPaginationData()
+	{ 
         // Define offset 
         $page = $this->input->post('page'); 
         //echo $page; exit;
@@ -231,7 +232,6 @@ class Home extends CI_Controller {
         }else{ 
             $offset = $page; 
         } 
-         
         // Get record count 
         $conditions['returnType'] = 'count'; 
         $totalRec = $this->home->get_all_service($conditions); 
@@ -254,13 +254,12 @@ class Home extends CI_Controller {
         ); 
          
         // Load the data list view 
-         $this->data['module']    = 'services';
-         $this->data['page'] = 'ajax_service';
-	     $this->data['service']=$this->home->get_all_service($conditions);
-	     $result['count']=$totalRec;
-	      $this->load->vars($this->data);
-	     $this->load->view($this->data['theme'].'/'.$this->data['module'].'/'.$this->data['page']);
-	     
+        $this->data['module']    = 'services';
+        $this->data['page'] = 'ajax_service';
+	    $this->data['service']=$this->home->get_all_service($conditions);
+	    $result['count']=$totalRec;
+	    $this->load->vars($this->data);
+	    $this->load->view($this->data['theme'].'/'.$this->data['module'].'/'.$this->data['page']); 
     }
 
 
@@ -273,19 +272,24 @@ class Home extends CI_Controller {
             $end = 12; 
         }else{
         	$start = $page;
-        	$end = $page * 2;
-        	 
-        } 
-        $categoryid = $this->home->getcategoryByName($pagename); 
-        $totalRec = $this->home->getcategoryServices($categoryid[0]['id']);
+        	$end = $page + 12;
+        }
+
+		$inputs['common_search'] = $this->input->post('common_search'); 
+		$totalRec = $this->home->get_all_service($conditions,$inputs);
+        if(count($totalRec)<$end)
+        {
+        	$x=count($totalRec)%12;
+        	$end=$page+$x;
+        }
         $vals = array();
 
         for($start; $start<$end; $start++){
         	$vals[] = $totalRec[$start];
         }
-         $config['target']      = '#dataList';
+        $config['target']      = '#dataList';
         $config['link_func']      = 'getData';
-        $config['loading']='<img src="'.base_url().'assets/img/loader.gif" alt="" />';
+        $config['loading']	='<img src="'.base_url().'assets/img/loader.gif" alt="" />';
         $config['base_url']    = base_url('home/ajaxPaginationData');
         $config['total_rows']  = count($totalRec);
         $config['per_page']    = $this->perPage;
@@ -304,8 +308,8 @@ class Home extends CI_Controller {
          $this->data['page'] = 'ajax_service';
 	     $this->data['service']=$vals;
 	     //echo "<pre>"; print_r($vals); exit;
-	     //$result['count']=$totalRec;
-	      $this->load->vars($this->data);
+	     $result['count']=$totalRec;
+	     $this->load->vars($this->data);
 	     $this->load->view($this->data['theme'].'/'.$this->data['module'].'/'.$this->data['page']);
 
     }
@@ -321,16 +325,22 @@ class Home extends CI_Controller {
             $end = 12;
         }else{
         	$start = $page;
-        	$end = $page * 2;
+        	$end = $page + 12;
 
         }
         $totalRec = $this->home->getcategoryServices($categoryid);
+
+        if(count($totalRec)<$end)
+        {
+        	$x=count($totalRec)%12;
+        	$end=$page+$x;
+        }
         $vals = array(); 
         
         for($start; $start<$end; $start++){
         	$vals[] = $totalRec[$start];
         }
-         $config['target']      = '#dataList'; 
+        $config['target']      = '#dataList'; 
         $config['link_func']      = 'getData';
         $config['loading']='<img src="'.base_url().'assets/img/loader.gif" alt="" />';
         $config['base_url']    = base_url('home/ajaxPaginationData'); 
@@ -433,7 +443,6 @@ class Home extends CI_Controller {
 			foreach ($result as $row)
 			$arr_result[] = ucfirst($row['service_title']);
 		    $arr_result[] = ucfirst($row['category_name']);
-
 		    echo json_encode($arr_result);
 			}
 	  }

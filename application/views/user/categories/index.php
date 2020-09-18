@@ -21,7 +21,7 @@
 	<div class="container">
 		<div class="">
 			<?php 
-			$pagination=explode('|',$this->ajax_pagination->create_links());
+				$pagination=explode('|',$this->ajax_pagination->create_links());
 			?>
 		</div>					
 		<div class="catsec">

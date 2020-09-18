@@ -1,32 +1,34 @@
 <?php
-if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-class Api_model extends CI_Model{
-  public function __construct() {
-        parent::__construct();
-        $this->load->database();
-        $this->load->helper('user_timezone');
-        date_default_timezone_set('UTC');
-        $this->date = date('Y-m-d');
-        $this->date = utc_date_conversion($this->date);
-        $this->date = date('Y-m-d',strtotime($this->date));
-        $this->base_url = base_url();
-    }
+if(!defined('BASEPATH')) exit('No direct script access allowed');
+class Api_model extends CI_Model
+{
+  public function __construct(){
+    parent::__construct();
+    $this->load->database();
+    $this->load->helper('user_timezone');
+    date_default_timezone_set('UTC');
+    $this->date = date('Y-m-d');
+    $this->date = utc_date_conversion($this->date);
+    $this->date = date('Y-m-d',strtotime($this->date));
+    $this->base_url = base_url();
+  }
  
-    public function existing_user($mobile_no){
-      $this->db->select('*');
-      $this->db->from('users');
-      $this->db->where('mobileno',$mobile_no);
-      $records = $this->db->get();
-      return $records->num_rows();
-    }
+  public function existing_user($mobile_no){
+    $this->db->select('*');
+    $this->db->from('users');
+    $this->db->where('mobileno',$mobile_no);
+    $records = $this->db->get();
+    return $records->num_rows();
+  }
 
-    public function get_user_id_using_token($token){
+  public function get_user_id_using_token($token){
     if($token!=''){
       $this->db->select('*');
       $records = $this->db->get_where('providers', array('token' => $token))->row_array();
       if(!empty($records)){
         return $records['id'];
-      }else{
+      }
+      else{
         return 0;
       }
     }
@@ -37,9 +39,10 @@ class Api_model extends CI_Model{
     $this->db->select("*");
     $this->db->from('wallet_table');
     $this->db->where('token',$tokenval);
-      $records = $this->db->get();
-      return $records->result();
+    $records = $this->db->get();
+    return $records->result();
   }
+
   public function updateWallet($token,$data){
     $this->db->where('token',$token)->update('wallet_table',$data);
   }
@@ -49,29 +52,34 @@ class Api_model extends CI_Model{
     $this->db->from('temproryorder');
     $this->db->where('orderid',$orderid);
     $this->db->where('status',1);
-      $records = $this->db->get();
-      return $records->result();
-  }  
+    $records = $this->db->get();
+    return $records->result();
+  }
+
   public function insertTempOrder($data){
     $this->db->insert('temproryorder',$data);
   }
+
   public function updatetempOrder($data){
     $this->db->where('orderid',$data['orderid'])->update('temproryorder',$data);
   }
+
   public function getTempWallet($orderid){
     $this->db->select("*");
     $this->db->from('temp_wallet');
     $this->db->where('order_id',$orderid);
     $this->db->where('status',1);
-      $records = $this->db->get();
-      return $records->result();
+    $records = $this->db->get();
+    return $records->result();
   }
+
   public function insertTempWallet($data){
     $this->db->insert('temp_wallet',$data);
   }
-  // public function updateWallet($data){
-  //   $this->db->where('user_provider_id',$data['user_provider_id'])->update('wallet_table',$data);
-  // }
+
+  //public function updateWallet($data){
+  //  $this->db->where('user_provider_id',$data['user_provider_id'])->update('wallet_table',$data);
+  //}
   public function updateTempWallet($data){
     $this->db->where('order_id', $data);
     $this->db->delete('temp_wallet');
@@ -101,6 +109,7 @@ class Api_model extends CI_Model{
     $result = $this->db->get();
     return $result->result();
   }
+
   public function getProviderById($id){
     $this->db->select("id,mobileno,name");
     $this->db->from("providers");
@@ -126,70 +135,70 @@ class Api_model extends CI_Model{
   
   public function serviceBook($data){
     $this->db->insert('book_service',$data);
+    return $this->db->insert_id();
   }  
 
-  public function save_provider($data){
+  public function save_provider($data)
+  {
     $result = $this->db->insert('providers',$data);
     $user_id = $this->db->insert_id();
     $subscription_id = 1;
     $this->db->select('duration');
-       $record = $this->db->get_where('subscription_fee',array('id'=>$subscription_id))->row_array();
-       if(!empty($record)){
-       $duration = $record['duration'];
-       $days = 30;
-       switch ($duration) {
-         case 1:
-           $days = 30;
-           break;
-         case 2:
-           $days = 60;
-           break;
-         case 3:
-           $days = 90;
-           break;
-         case 6:
-           $days = 180;
-           break;
-         case 12:
-           $days = 365;
-           break;
-         case 24:
-           $days = 730;
-           break;
-
-         default:
-           $days = 30;
-           break;
-       }
-        $subscription_date = date('Y-m-d H:i:s');
-        $expiry_date_time =  date('Y-m-d H:i:s',strtotime(date("Y-m-d  H:i:s", strtotime($subscription_date)) ." +".$days."days"));
-
-    $new_details['subscriber_id'] = $stripe['subscriber_id'] = $user_id;
-       $new_details['subscription_id'] = $stripe['subscription_id'] = $subscription_id;
-       $new_details['subscription_date'] = $stripe['subscription_date'] = $subscription_date;
-       $new_details['expiry_date_time'] = $expiry_date_time;
-       $new_details['type']=1;  
-       $this->db->where('subscriber_id', $user_id);
-       $count = $this->db->count_all_results('subscription_details');
-       if($count == 0){
-       $this->db->insert('subscription_details', $new_details);
-       $this->db->insert('subscription_details_history', $new_details);
-       $stripe['sub_id'] = $this->db->insert_id();
-
-       }else{
-
-         $this->db->where('subscriber_id', $user_id);
+    $record = $this->db->get_where('subscription_fee',array('id'=>$subscription_id))->row_array();
+    if(!empty($record))
+    {
+      $duration = $record['duration'];
+      $days = 30;
+      switch ($duration) {
+        case 1:
+          $days = 30;
+          break;
+        case 2:
+          $days = 60;
+          break;
+        case 3:
+          $days = 90;
+          break;
+        case 6:
+          $days = 180;
+          break;
+        case 12:
+          $days = 365;
+          break;
+        case 24:
+          $days = 730;
+          break;
+        default:
+          $days = 30;
+          break;
+      }
+      $subscription_date = date('Y-m-d H:i:s');
+      $expiry_date_time =  date('Y-m-d H:i:s',strtotime(date("Y-m-d  H:i:s", strtotime($subscription_date)) ." +".$days."days"));
+      $new_details['subscriber_id'] = $stripe['subscriber_id'] = $user_id;
+      $new_details['subscription_id'] = $stripe['subscription_id'] = $subscription_id;
+      $new_details['subscription_date'] = $stripe['subscription_date'] = $subscription_date;
+      $new_details['expiry_date_time'] = $expiry_date_time;
+      $new_details['type']=1;  
+      $this->db->where('subscriber_id', $user_id);
+      $count = $this->db->count_all_results('subscription_details');
+      if($count == 0){
+        $this->db->insert('subscription_details', $new_details);
+        $this->db->insert('subscription_details_history', $new_details);
+        $stripe['sub_id'] = $this->db->insert_id();
+      }
+      else{
+        $this->db->where('subscriber_id', $user_id);
         $this->db->update('subscription_details', $new_details);
-          $this->db->insert('subscription_details_history', $new_details);
-         $this->db->where('subscriber_id', $user_id);
-       $details_sub = $this->db->get('subscription_details')->row_array();
-       $stripe['sub_id'] = $details_sub['id'];
-       }
-       $stripe['tokenid'] = 'Free Token';
-       //$stripe['payment_details'] = $data['args'];
-        return $this->db->insert('subscription_payment', $stripe);
+        $this->db->insert('subscription_details_history', $new_details);
+        $this->db->where('subscriber_id', $user_id);
+        $details_sub = $this->db->get('subscription_details')->row_array();
+        $stripe['sub_id'] = $details_sub['id'];
+      }
+      $stripe['tokenid'] = 'Free Token';
+      //$stripe['payment_details'] = $data['args'];
+      return $this->db->insert('subscription_payment', $stripe);
+    }
   }
-}
 
   public function edit_provider($data){
     //echo "<pre>"; print_r($data['id']); exit;
@@ -213,277 +222,218 @@ class Api_model extends CI_Model{
 
   public function get_category()
   {
-     $this->db->select('c.id,c.category_name,c.category_image, (SELECT COUNT(s.id) FROM services AS s WHERE s.category=c.id AND s.status=1 ) AS category_count');
-           $this->db->from('categories c');
-           $this->db->where('c.status',1);
-           $this->db->join('subcategories s', 'c.id = s.category', 'INNER');
-           $this->db->group_by('c.id');
-           $this->db->order_by('category_count','DESC');
-           
-           $this->db->limit(6);
-             $result = $this->db->get()->result_array();
-             return $result;
+    $this->db->select('c.id,c.category_name,c.category_image, (SELECT COUNT(s.id) FROM services AS s WHERE s.category=c.id AND s.status=1 ) AS category_count');
+    $this->db->from('categories c');
+    $this->db->where('c.status',1);
+    $this->db->join('subcategories s', 'c.id = s.category', 'INNER');
+    $this->db->group_by('c.id');
+    $this->db->order_by('category_count','DESC');       
+    $this->db->limit(6);
+    $result = $this->db->get()->result_array();
+    return $result;
   }
+
   public function get_categories()
   {
-       $this->db->select('id,category_name,category_image');
-       $this->db->from('categories');
-       $this->db->where('categories.status',1);
-     
-       $this->db->group_by('categories.id');
-       $result = $this->db->get()->result_array();
-       return $result;
+    $this->db->select('id,category_name,category_image');
+    $this->db->from('categories');
+    $this->db->where('categories.status',1); 
+    $this->db->group_by('categories.id');
+    $result = $this->db->get()->result_array();
+    return $result;
   }
 
   public function get_subcategories($category)
   {
-           $this->db->select('id,subcategory_name,subcategory_image');
-           $this->db->from('subcategories');
-           $this->db->where('status',1);
-           $this->db->where('category',$category);
-           $result = $this->db->get()->result_array();
-          return $result;
+    $this->db->select('id,subcategory_name,subcategory_image');
+    $this->db->from('subcategories');
+    $this->db->where('status',1);
+    $this->db->where('category',$category);
+    $result = $this->db->get()->result_array();
+    return $result;
   }
 
   public function check_email($inputs='')
   {
-      $email = $inputs['email'];
-      $this->db->where('email',$email);
-      return $this->db->count_all_results('providers');
+    $email = $inputs['email'];
+    $this->db->where('email',$email);
+    return $this->db->count_all_results('providers');
   }
 
-   public function check_mobile_no($inputs='')
-   {
-
-      $mobileno = $inputs['mobileno'];
-      $this->db->where(array('country_code'=>$inputs['country_code'],'mobileno'=>$mobileno));
-      return $this->db->count_all_results('providers');
-   }
-
-    public function check_user_email($inputs='')
+  public function check_mobile_no($inputs='')
   {
-      $email = $inputs['email'];
-      $this->db->where('email',$email);
-      return $this->db->count_all_results('users');
+    $mobileno = $inputs['mobileno'];
+    $this->db->where(array('country_code'=>$inputs['country_code'],'mobileno'=>$mobileno));
+    return $this->db->count_all_results('providers');
   }
 
-   public function check_user_mobileno($inputs='')
-   {
+  public function check_user_email($inputs='')
+  {
+    $email = $inputs['email'];
+    $this->db->where('email',$email);
+    return $this->db->count_all_results('users');
+  }
 
-      $mobileno = $inputs['mobileno'];
-      $this->db->where(array('country_code'=>$inputs['country_code'],'mobileno'=>$mobileno));
-      return $this->db->count_all_results('users');
-   }
+  public function check_user_mobileno($inputs='')
+  {
+    $mobileno = $inputs['mobileno'];
+    $this->db->where(array('country_code'=>$inputs['country_code'],'mobileno'=>$mobileno));
+    return $this->db->count_all_results('users');
+  }
 
-   public function provider_signup($user_details,$device_data)
-   {
-        
-        $user_details['created_at'] = date('Y-m-d H:i:s');
-        $result  = $this->db->insert('providers',$user_details);
-        $records=array();
-        if($result)
-        {
-            $user_id = $this->db->insert_id();
-            $token = $this->getToken(14,$user_id);
-                          /*insert wallet*/
-              $data=array(
-                          "token"=>$token,
-                          "user_provider_id"=>$user_id,
-                          "type"=>1,
-                          "wallet_amt"=>0,
-                          "created_at"=>utc_date_conversion(date('Y-m-d H:i:s'))
-                        );
-              $wallet_result  = $this->db->insert('wallet_table',$data);
-              /*insert wallet*/
+  public function provider_signup($user_details,$device_data)
+  {      
+    $user_details['created_at'] = date('Y-m-d H:i:s');
+    $result  = $this->db->insert('providers',$user_details);
+    $records=array();
+    if($result)
+    {
+      $user_id = $this->db->insert_id();
+      $token = $this->getToken(14,$user_id);
+      /*insert wallet*/
+      $data=array(
+        "token"=>$token,
+        "user_provider_id"=>$user_id,
+        "type"=>1,
+        "wallet_amt"=>0,
+        "created_at"=>utc_date_conversion(date('Y-m-d H:i:s'))
+      );
+      $wallet_result  = $this->db->insert('wallet_table',$data);
+      /*insert wallet*/
+      $this->db->where('id', $user_id);
+      $this->db->update('providers', array('token'=>$token));
+      $profile_img=base_url().'assets/img/professional.png';
+      $device_type = $device_data['device_type'];
+      $device_id = $device_data['device_id'];
+      $date = date('Y-m-d H:i:s');
+      $devicetype = strtolower($device_type);
+      $deviceid   = $device_id;
+      $type = '1';
+      $this->db->insert('device_details', array('user_id'=> $user_id,'device_type'=> $devicetype,'device_id'=> $deviceid,'created'=>$date,'type'=>$type));
+      $this->db->select('name,email,country_code,mobileno,category,subcategory,IF(profile_img IS NULL or profile_img = "", "'.$profile_img.'", profile_img) as profile_img,token','type','user_type');
+      $this->db->where('id',$user_id);
+      $records=$this->db->get('providers')->row_array();
+    }
+    return $records;
+  }
 
-            $this->db->where('id', $user_id);
-            $this->db->update('providers', array('token'=>$token));
-            $profile_img=base_url().'assets/img/professional.png';
+  public function provider_update($inputs,$where)
+  {
+    $inputs['updated_at'] = date('Y-m-d H:i:s');       
+    $this->db->set($inputs);
+    $this->db->where($where);
+    $this->db->update('providers');
+    return $this->db->affected_rows() != 0 ? true : false; 
+  }
 
+  public function user_update($inputs,$where)
+  {
+    $inputs['updated_at'] = date('Y-m-d H:i:s');       
+    $this->db->set($inputs);
+    $this->db->where($where);
+    $this->db->update('users');
+    return $this->db->affected_rows() != 0 ? true : false; 
+  }
 
-            $device_type = $device_data['device_type'];
-            $device_id = $device_data['device_id'];
-            $date = date('Y-m-d H:i:s');
-            $devicetype = strtolower($device_type);
-
-            $deviceid   = $device_id;
-            $type = '1';
-
-            $this->db->insert('device_details', array('user_id'=> $user_id,'device_type'=> $devicetype,'device_id'=> $deviceid,'created'=>$date,'type'=>$type));
-           
-            $this->db->select('name,email,country_code,mobileno,category,subcategory,IF(profile_img IS NULL or profile_img = "", "'.$profile_img.'", profile_img) as profile_img,token','type','user_type');
-            $this->db->where('id',$user_id);
-            $records=$this->db->get('providers')->row_array();
-
-        }
-        return $records;
- 
-   }
-
-
-
-   public function provider_update($inputs,$where)
-   {
-        $inputs['updated_at'] = date('Y-m-d H:i:s');       
-        $this->db->set($inputs);
-        $this->db->where($where);
-        $this->db->update('providers');
-        return $this->db->affected_rows() != 0 ? true : false; 
-        
-       
- 
-   }
-
-   public function user_update($inputs,$where)
-   {
-        $inputs['updated_at'] = date('Y-m-d H:i:s');       
-        $this->db->set($inputs);
-        $this->db->where($where);
-        $this->db->update('users');
-        return $this->db->affected_rows() != 0 ? true : false; 
-        
-       
- 
-   }
-
-   public function user_signup($user_details,$device_data)
-   {
-        $user_details['created_at'] = date('Y-m-d H:i:s');
-        $result  = $this->db->insert('users',$user_details);
-        $records=array();
-        if($result)
-        {
-            $user_id = $this->db->insert_id();
-            $token = $this->getToken(14,$user_id);
-
-                          /*insert wallet*/
-              $data=array(
-                          "token"=>$token,
-                          "user_provider_id"=>$user_id,
-                          "type"=>2,
-                          "wallet_amt"=>0,
-                          "created_at"=>utc_date_conversion(date('Y-m-d H:i:s'))
-                        );
-              $wallet_result  = $this->db->insert('wallet_table',$data);
-              /*insert wallet*/
-            $this->db->where('id', $user_id);
-            $this->db->update('users', array('token'=>$token));
-
-            $device_type = $device_data['device_type'];
-
-            $device_id = $device_data['device_id'];
-            $date = date('Y-m-d H:i:s');
-            $devicetype = strtolower($device_type);
-
-            $deviceid   = $device_id;
-            $type = '2';
-
-            $this->db->insert('device_details', array('user_id'=> $user_id,'device_type'=> $devicetype,'device_id'=> $deviceid,'created'=>$date,'type'=>$type));
-           
-            $this->db->select('*');
-            $this->db->where('id',$user_id);
-            $records=$this->db->get('users')->row_array();
-
-        }
-        return $records;
- 
-   }
+  public function user_signup($user_details,$device_data)
+  {
+    $user_details['created_at'] = date('Y-m-d H:i:s');
+    $result  = $this->db->insert('users',$user_details);
+    $records=array();
+    if($result)
+    {
+      $user_id = $this->db->insert_id();
+      $token = $this->getToken(14,$user_id);
+      /*insert wallet*/
+      $data=array(
+        "token"=>$token,
+        "user_provider_id"=>$user_id,
+        "type"=>2,
+        "wallet_amt"=>0,
+        "created_at"=>utc_date_conversion(date('Y-m-d H:i:s'))
+      );
+      $wallet_result  = $this->db->insert('wallet_table',$data);
+      /*insert wallet*/
+      $this->db->where('id', $user_id);
+      $this->db->update('users', array('token'=>$token));
+      $device_type = $device_data['device_type'];
+      $device_id = $device_data['device_id'];
+      $date = date('Y-m-d H:i:s');
+      $devicetype = strtolower($device_type);
+      $deviceid   = $device_id;
+      $type = '2';
+      $this->db->insert('device_details', array('user_id'=> $user_id,'device_type'=> $devicetype,'device_id'=> $deviceid,'created'=>$date,'type'=>$type));
+      $this->db->select('*');
+      $this->db->where('id',$user_id);
+      $records=$this->db->get('users')->row_array();
+    }
+    return $records;
+  }
 
   public function get_service($type,$inputs)
   {
-
-
-        $latitude   = $inputs['latitude'];
-
-        $longitude  = $inputs['longitude'];
-
-        $radius     = 10;
-
-
-       $longitude_min = $longitude - 100 / abs(cos(deg2rad($longitude)) * 69);
-
-       $longitude_max = $longitude + 100 / abs(cos(deg2rad($longitude)) * 69);
-
-       $latitude_min  = $latitude - (100 / 69);
-
-       $latitude_max  = $latitude + (100 / 69);
-
-
-
-        $this->db->select("s.id,s.service_title,s.service_amount,s.service_location,s.service_image,s.service_latitude,s.service_longitude,c.category_name,u.profile_img,1.609344 * 3956 * 2 * ASIN(SQRT( POWER(SIN((" . $latitude . " - s.service_latitude) *  pi()/180 / 2), 2) +COS(" . $latitude . " * pi()/180) * COS(s.service_latitude * pi()/180) * POWER(SIN((" . $longitude . " - s.service_longitude) * pi()/180 / 2), 2) )) AS distance");
-        $this->db->from('services s');
-        $this->db->join('categories c', 'c.id = s.category', 'LEFT');
-        $this->db->join('providers u', 'u.id = s.user_id', 'LEFT');
-        $this->db->where("s.status = 1");
-        $this->db->having('distance <=', $radius);
-
-
-        if($type=='1')
-        {
-          $this->db->order_by('s.total_views','DESC');
-        }
-        elseif($type == '2')
-        {
-          $this->db->order_by('s.id','DESC');
-        }
-        
-        $this->db->limit(10);
-        $result = $this->db->get()->result_array();
-
-        if (count($result) > 0) {
-
-             $response=array();
-             $data=array();
-            foreach($result as $r)
-            {
-
-              $rating_count = $this->db->where(array("service_id"=>$r['id'],'status'=>1))->count_all_results('rating_review');
-
-
-              $this->db->select('AVG(rating)');
-              $this->db->where(array('service_id'=>$r['id'],'status'=>1));
-              $this->db->from('rating_review');
-
-              $rating = $this->db->get()->row_array();
-              
-              $avg_rating = round($rating['AVG(rating)'],2);
-
-
-              $serviceimage=explode(',', $r['service_image']);
-              $data['service_id']=$r['id'];
-              $data['service_title']=$r['service_title'];
-              $data['service_amount']=$r['service_amount'];
-              $data['service_image']=$serviceimage[0];
-              $data['category_name']=$r['category_name'];
-              $data['ratings']= "$avg_rating";
-              $data['rating_count']= "$rating_count";
-              if(is_null($r['profile_img'])){
-                $data['user_image']="";
-              }else{
-                $data['user_image']=$r['profile_img'];
-              }
-              
-              $data['currency']=currency_conversion(settings('currency'));
-              $response[]=$data;
-            }
-
-            return $response;
-
-        }else{
-
-            return array();
-
-        }
-
-          
+    $latitude   = $inputs['latitude'];
+    $longitude  = $inputs['longitude'];
+    $radius     = 10;
+    $longitude_min = $longitude - 100 / abs(cos(deg2rad($longitude)) * 69);
+    $longitude_max = $longitude + 100 / abs(cos(deg2rad($longitude)) * 69);
+    $latitude_min  = $latitude - (100 / 69);
+    $latitude_max  = $latitude + (100 / 69);
+    $this->db->select("s.id,s.service_title,s.service_amount,s.service_location,s.service_image,s.service_latitude,s.service_longitude,c.category_name,u.profile_img,1.609344 * 3956 * 2 * ASIN(SQRT( POWER(SIN((" . $latitude . " - s.service_latitude) *  pi()/180 / 2), 2) +COS(" . $latitude . " * pi()/180) * COS(s.service_latitude * pi()/180) * POWER(SIN((" . $longitude . " - s.service_longitude) * pi()/180 / 2), 2) )) AS distance");
+    $this->db->from('services s');
+    $this->db->join('categories c', 'c.id = s.category', 'LEFT');
+    $this->db->join('providers u', 'u.id = s.user_id', 'LEFT');
+    $this->db->where("s.status = 1");
+    $this->db->having('distance <=', $radius);
+    if($type=='1')
+    {
+      $this->db->order_by('s.total_views','DESC');
     }
+    elseif($type == '2')
+    {
+      $this->db->order_by('s.id','DESC');
+    }    
+    $this->db->limit(10);
+    $result = $this->db->get()->result_array();
+    if(count($result) > 0)
+    {
+      $response=array();
+      $data=array();
+      foreach($result as $r)
+      {
+        $rating_count = $this->db->where(array("service_id"=>$r['id'],'status'=>1))->count_all_results('rating_review');
+        $this->db->select('AVG(rating)');
+        $this->db->where(array('service_id'=>$r['id'],'status'=>1));
+        $this->db->from('rating_review');
+        $rating = $this->db->get()->row_array();
+        $avg_rating = round($rating['AVG(rating)'],2);
+        $serviceimage=explode(',', $r['service_image']);
+        $data['service_id']=$r['id'];
+        $data['service_title']=$r['service_title'];
+        $data['service_amount']=$r['service_amount'];
+        $data['service_image']=$serviceimage[0];
+        $data['category_name']=$r['category_name'];
+        $data['ratings']= "$avg_rating";
+        $data['rating_count']= "$rating_count";
+        if(is_null($r['profile_img'])){
+          $data['user_image']="";
+        }
+        else{
+          $data['user_image']=$r['profile_img'];
+        }   
+        $data['currency']=currency_conversion(settings('currency'));
+        $response[]=$data;
+      }
+      return $response;
+    }
+    else{
+      return array();
+    }     
+  }
 
   public function get_demo_service($type,$inputs)
   {
-
-
-
-        $this->db->select("s.id,s.service_title,s.service_amount,s.service_location,s.service_image,s.service_latitude,s.service_longitude,c.category_name,u.profile_img");
+    $this->db->select("s.id,s.service_title,s.service_amount,s.service_location,s.service_image,s.service_latitude,s.service_longitude,c.category_name,u.profile_img");
         $this->db->from('services s');
         $this->db->join('categories c', 'c.id = s.category', 'LEFT');
         $this->db->join('providers u', 'u.id = s.user_id', 'LEFT');
