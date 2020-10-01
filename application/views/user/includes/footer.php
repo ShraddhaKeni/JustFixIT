@@ -270,11 +270,11 @@ $country_list=$this->db->where('status',1)->order_by('country_name',"ASC")->get(
 								<label>Mobile Number</label>
 								<div class="row">
 									<div class="col-4 pr-0">
-										<select name="countryCode" id="countryCode" class="form-control countryCode final_provider_c_code">
+										<select name="countryCode" id="countryCode" class="form-control final_provider_c_code">
 											<?php
 											foreach ($country_list as $key => $country) { 
-												if($country['country_id']=='91'){$select1='selected';}else{ $select1='';} ?>
-												<option <?=$select1;?> data-countryCode="<?=$country['country_code'];?>" value="<?=$country['country_id'];?>"><?=$country['country_name'];?></option>
+												if($country['country_id']=='91'){$select='selected';}else{ $select='';} ?>
+												<option <?=$select;?> data-countryCode="<?=$country['country_code'];?>" value="<?=$country['country_id'];?>"><?=$country['country_name'];?></option>
 											<?php } ?>
 										</select>
 									</div>
@@ -383,11 +383,11 @@ $country_list=$this->db->where('status',1)->order_by('country_name',"ASC")->get(
 									<label>Mobile Number</label>
 									<div class="row">
 										<div class="col-4 pr-0">
-											<select name="countryCode" id="country_code" class="form-control countryCode final_country_code">
+											<select name="countryCode" id="country_code" class="form-control final_country_code">
 												<?php
 												foreach ($country_list as $key => $country) { 
-													if($country['country_id']=='91'){$select2='selected';}else{ $select2='';} ?>
-													<option <?=$select2;?> data-countryCode="<?=$country['country_code'];?>" value="<?=$country['country_id'];?>"><?=$country['country_name'];?></option>
+													if($country['country_id']=='91'){$select='selected';}else{ $select='';} ?>
+													<option <?=$select;?> data-countryCode="<?=$country['country_code'];?>" value="<?=$country['country_id'];?>"><?=$country['country_name'];?></option>
 												<?php } ?>
 											</select>
 										</div>
@@ -800,8 +800,8 @@ $country_list=$this->db->where('status',1)->order_by('country_name',"ASC")->get(
 													<select name="countryCode" id="login_country_code" class="form-control login_country_code">
 														<?php
 														foreach ($country_list as $key => $country) { 
-															if($country['country_id']=='91'){$select3='selected';}else{ $select3='';} ?>
-															<option <?=$select3;?> data-countryCode="<?=$country['country_code'];?>" value="<?=$country['country_id'];?>"><?=$country['country_name'];?></option>
+															if($country['country_id']=='91'){$select='selected';}else{ $select='';} ?>
+															<option <?=$select;?> data-countryCode="<?=$country['country_code'];?>" value="<?=$country['country_id'];?>"><?=$country['country_name'];?></option>
 														<?php } ?>
 													</select>
 												</div>
