@@ -285,7 +285,7 @@ array("id"=>7,'value'=>'Cancel')
 											</h2>
 										</td>
 										<td>'.$rows['service_title'].'</td>
-										<td>$'.$rows['amount'].'</td>
+										<td>₹'.$rows['amount'].'</td>
 										<td>'.$rows['reason'].'</td>
 										<td><label class="badge badge-'.$color.'">'.ucfirst($badge).'</lable></td>
 										<td>'.$timeBase.'</td>';

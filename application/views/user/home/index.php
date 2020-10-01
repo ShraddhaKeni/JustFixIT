@@ -25,7 +25,7 @@
 							<h3> Got a problem? <span> JUST FIX IT!</span></h3>
 							<p> Search From Over <?php echo $services_count?> Home Services! </p>
 							<div class="search-box">
-								<form action="<?php echo base_url();?>search" id="search_service" method="post">
+								<form action="<?php echo base_url();?>search/" id="search_service" method="post">
 									<input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>" />
 									<div class="search-input line">
 										<i class="fas fa-tv bficon"></i>
@@ -53,7 +53,8 @@
 								<span>Popular Searches</span>
 								<?php foreach ($popular as $popular_services) { 
 									if(($popular_services['status']==2) || ($popular_services['status']==0)){}else{ ?>
-								<a href="<?php echo base_url().'service-preview/'.str_replace(' ', '-', $popular_services['service_title']).'?sid='.md5($popular_services['id']);?>">
+								<a href="<?php echo base_url().'service-preview/'.str_replace(' ', '-', $popular_services['service_title']).'
+								-'.str_replace(', ', '-', $popular_services['service_location']).'?sid='.md5($popular_services['id']);?>">
 									<?php echo $popular_services['service_title']?>
 								</a>
 								<?php } }?>
@@ -114,7 +115,7 @@
 						 } ?>
 						</div>
 					</div>
-				</div>
+				</div> 	
 			</div>
 		</div>
 	</section>
@@ -162,7 +163,7 @@
 										?>
 									<div class="service-widget">
 										<div class="service-img">
-											<a href="<?php echo base_url().'service-preview/'.str_replace(' ', '-', $srows['service_title']).'?sid='.md5($srows['id']);?>">
+											<a href="<?php echo base_url().'service-preview/'.str_replace(' ', '-', $srows['service_title']).'-'.str_replace(', ', '-', $srows['service_location']).'?sid='.md5($srows['id']);?>">
 												<img class="img-fluid serv-img" alt="Service Image" src="<?php echo base_url().$image['service_image'];?>">
 											</a>
 											<div class="item-info">
@@ -182,7 +183,7 @@
 										</div>
 										<div class="service-content">
 											<h3 class="title">
-												<a href="<?php echo base_url().'service-preview/'.str_replace(' ', '-', $srows['service_title']).'?sid='.md5($srows['id']);?>"><?php echo ucfirst($srows['service_title']);?></a>
+												<a href="<?php echo base_url().'service-preview/'.str_replace(' ', '-', $srows['service_title']).'-'.str_replace(', ', '-', $srows['service_location']).'?sid='.md5($srows['id']);?>"><?php echo ucfirst($srows['service_title']);?></a>
 											</h3>
 											<div class="rating">
 												<?php 

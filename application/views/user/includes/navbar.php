@@ -53,7 +53,7 @@
 								<li>
 									<!-- <a href="<?php echo base_url();?>search/<?php echo str_replace(' ', '-',strtolower($res['category_name'])); ?>"><?php echo ucfirst($res['category_name']); echo $res['id']; ?></a> -->
 
-									<a href="<?php echo base_url();?>subcategory/<?php echo $res['id'];  ?>"><?php echo ucfirst($res['category_name']); ?></a>
+									<a href="<?php echo base_url();?>subcategory/<?php echo str_replace(' ', '-', $res['category_name']).'.'.$res['id'];  ?>"><?php echo ucfirst($res['category_name']); ?></a>
 
 								</li>
 								<?php } ?>

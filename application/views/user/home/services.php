@@ -152,7 +152,7 @@ $currency = currency_conversion(settings('currency'));
 								<div class="col-lg-4 col-md-6">
 									<div class="service-widget">
 										<div class="service-img">
-											<a href="<?php echo base_url().'service-preview/'.str_replace(' ', '-', strtolower($srows['service_title'])).'?sid='.md5($srows['id']);?>">
+											<a href="<?php echo base_url().'service-preview/'.str_replace(' ', '-', strtolower($srows['service_title'])).'-'.str_replace(' ,', '-', strtolower($srows['service_location'])).'?sid='.md5($srows['id']);?>">
 												<?php if(!empty($serviceimages['service_image'])){ ?>
 												<img class="img-fluid serv-img" alt="Service Image" src="<?php echo base_url().$serviceimages['service_image'];?>">
 											<?php }else{?>
@@ -175,7 +175,14 @@ $currency = currency_conversion(settings('currency'));
 										</div>
 										<div class="service-content">
 											<h3 class="title">
-												<a href="<?php echo base_url().'service-preview/'.str_replace(' ', '-', strtolower($srows['service_title'])).'?sid='.md5($srows['id']);?>"><?php echo ucfirst($srows['service_title']);?></a>
+												<?php
+												if($srows['service_latitude'] == ''){
+													$slocation=str_replace(' ', '-', strtolower($srows['service_location']));
+												}else{
+													$slocation=str_replace(', ', '-', strtolower($srows['service_location']));
+												}
+												?>
+												<a href="<?php echo base_url().'service-preview/'.str_replace(' ', '-', strtolower($srows['service_title'])).'-'.$slocation.'?sid='.md5($srows['id']);?>"><?php echo ucfirst($srows['service_title']);?></a>
 											</h3>
 											<div class="rating">
 														<?php 

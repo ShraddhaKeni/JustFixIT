@@ -55,75 +55,94 @@ $this->load->view($this->data['theme'].'/template');
 }
 
 public function user_wallet_submit(){
-if($this->input->post()){
-if($this->input->post('txStatus')=='SUCCESS'){
-$this->load->model('Wallet_model');
-$type = $this->session->userdata('usertype');
-if($type=='provider'){
-$typeVal = 1;
-}else{
-$typeVal = 2;
+	if($this->input->post())
+	{
+		if($this->input->post('txStatus')=='SUCCESS')
+		{
+			$this->load->model('Wallet_model');
+			$type = $this->session->userdata('usertype');
+			if($type=='provider'){
+				$typeVal = 1;
+			}else{
+				$typeVal = 2;
+			}
+			$checkuser = $this->Wallet_model->wallet_info_id($this->session->userdata('id'),$typeVal);
+			$getamount = 0;
+			for($i=0; $i<count($checkuser); $i++){ 
+				$getamount=$checkuser[$i]->wallet_amt;
+			}
+			if(count($checkuser) >= 1)
+			{
+				//echo "first"; exit;
+				$data = [
+					'user_provider_id' => $this->session->userdata('id'),
+					'type' => $typeVal,
+					'wallet_amt' =>$this->input->post('orderAmount')+ $getamount,
+					'token' => $this->session->userdata('chat_token'),
+					'updated_on' => date('Y-m-d H:i:s'),
+				];
+				$result = $this->Wallet_model->update_user_provider_wallet($data,$this->session->userdata('id'));
+			}
+			else
+			{
+				//echo "second"; exit;
+				$data = [
+					'user_provider_id' => $this->session->userdata('id'),
+					'type' => $typeVal,
+					'wallet_amt' =>$this->input->post('orderAmount'),
+					'token' => $this->session->userdata('chat_token'),
+					'created_at' => date('Y-m-d H:i:s'),
+				];
+				$result = $this->Wallet_model->add_user_provider_wallet($data);
+			}
+			$this->session->set_flashdata('success_message','Amout is successfully add in wallet');
+			redirect(base_url()."user-wallet");
+		}
+		elseif($this->input->post('txStatus')=='CANCELLED')
+		{
+			$this->session->set_flashdata('error_message','Amout not added in wallet');
+			//echo "<pre>"; print_r($this->input->post());
+			redirect(base_url()."user-wallet");
+		}
+		else
+		{
+			$this->session->set_flashdata('error_message','Amout not added in wallet');
+			//echo "<pre>"; print_r($this->input->post());
+			redirect(base_url()."user-wallet");
+		}
+	}
+	else
+	{
+		//$appId = pk_test_51Gzz20HShEbk1dXRzGAJl1NjXak3AhEzDdyar62TT
+		//$secretKey = "48a401703d4f6f03fd4ff5da44689d582776e650";
+		// $apklive = pk_live_51Gzz20HShEbk1dXRqkZYmBp8giBe2DrGrLd4jku82;
+		// $secretkeyLive = sk_live_51Gzz20HShEbk1dXRl28UmwFr6S0OKIxEaXqqxnf2sabeGbdCtgRLYphkji7Ik;
+		$secretKey =$this->input->get('secretKey');
+		$data = [
+			//"token" => $this->input->get('token'),
+			"appId" => $this->input->get('appId'),
+			"orderId" => $this->input->get('orderId'),
+			"orderAmount" => $this->input->get('orderAmount'),
+			"returnUrl" => $this->input->get('returnUrl'),
+			"orderCurrency" => $this->input->get('orderCurrency'),
+			"orderNote" => $this->input->get('orderNote'),
+			"customerName" => $this->input->get('customerName'),
+			"customerPhone" => $this->input->get('customerPhone'),
+			"customerEmail" => $this->input->get('customerEmail'),
+			"notifyUrl" => $this->input->get('notifyUrl'),
+		];
+		// get secret key from your config
+		ksort($data);
+		$signatureData = "";
+		foreach ($data as $key => $value){
+		$signatureData .= $key.$value;
+		}
+		$signature = hash_hmac('sha256', $signatureData, $secretKey,true);
+		$signature = base64_encode($signature);
+		$data['signature'] = $signature;
+		echo json_encode($signature);
+	}
 }
-$checkuser = $this->Wallet_model->wallet_info_id($this->session->userdata('id'),$typeVal);
-$getamount = 0;
-for($i=0; $i<count($checkuser); $i++){ $getamount=$checkuser[$i]->wallet_amt;
-}
-if(count($checkuser) >= 1){
-	//echo "first"; exit;
-$data = [
-'user_provider_id' => $this->session->userdata('id'),
-'type' => $typeVal,
-'wallet_amt' =>$this->input->post('orderAmount')+ $getamount,
-'token' => $this->session->userdata('chat_token'),
-'updated_on' => date('Y-m-d H:i:s'),
-];
-$result = $this->Wallet_model->update_user_provider_wallet($data,$this->session->userdata('id'));
-}else{
-	//echo "second"; exit;
-$data = [
-'user_provider_id' => $this->session->userdata('id'),
-'type' => $typeVal,
-'wallet_amt' =>$this->input->post('orderAmount'),
-'token' => $this->session->userdata('chat_token'),
-'created_at' => date('Y-m-d H:i:s'),
-];
-$result = $this->Wallet_model->add_user_provider_wallet($data);
-}$this->session->set_flashdata('success_message','Amout is successfully add in wallet');
-redirect(base_url().'user-wallet');
-}else{
-$this->session->set_flashdata('error_message','Amout not added in wallet');
-echo "<pre>"; print_r($this->input->post());
-redirect(base_url().'user-wallet');
-}}else{
-	//$appId = pk_test_51Gzz20HShEbk1dXRzGAJl1NjXak3AhEzDdyar62TT
-	//$secretKey = "48a401703d4f6f03fd4ff5da44689d582776e650";
-	// $apklive = pk_live_51Gzz20HShEbk1dXRqkZYmBp8giBe2DrGrLd4jku82;
-	// $secretkeyLive = sk_live_51Gzz20HShEbk1dXRl28UmwFr6S0OKIxEaXqqxnf2sabeGbdCtgRLYphkji7Ik;
-$secretKey =$this->input->get('secretKey');
-$data = [
-//"token" => $this->input->get('token'),
-"appId" => $this->input->get('appId'),
-"orderId" => $this->input->get('orderId'),
-"orderAmount" => $this->input->get('orderAmount'),
-"returnUrl" => $this->input->get('returnUrl'),
-"orderCurrency" => $this->input->get('orderCurrency'),
-"orderNote" => $this->input->get('orderNote'),
-"customerName" => $this->input->get('customerName'),
-"customerPhone" => $this->input->get('customerPhone'),
-"customerEmail" => $this->input->get('customerEmail'),
-"notifyUrl" => $this->input->get('notifyUrl'),
-];
-// get secret key from your config
-ksort($data);
-$signatureData = "";
-foreach ($data as $key => $value){
-$signatureData .= $key.$value;
-}
-$signature = hash_hmac('sha256', $signatureData, $secretKey,true);
-$signature = base64_encode($signature);
-$data['signature'] = $signature;
-echo json_encode($signature);
-}}
 
 
 

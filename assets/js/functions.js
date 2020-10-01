@@ -1,6 +1,6 @@
-(function($) {
+(function($)
+{
     "use strict";
-
     var base_url=$('#base_url').val();
     var BASE_URL=$('#base_url').val();
     var csrf_token=$('#csrf_token').val();
@@ -8,19 +8,17 @@
     var csrfHash=$('#csrfHash').val();
     var user_type=$('#user_type').val();
     var modules=$('#modules_page').val();
-    $( document ).ready(function() {
+    $( document ).ready(function()
+    {
         $('#flash_succ_message2').hide();
         $('#flash_error_message1').hide();
         $('#otp_final_div').hide();
         $("#reason_div").hide();
-
         $('.error_rating').hide();
         $('.error_review').hide();
         $('.error_type').hide();
-
         $('.error_cancel').hide();
         $('.header-content-blk').hide();
-
         $('#re_send_otp_user').on('click',function(){
             re_send_otp_user();
         });
@@ -89,6 +87,11 @@
         $('.search_service').on('click',function(){
             $('#search_service').submit();
         });
+        $('#search_service').submit(function(){
+            var booking_d = $('#search-blk').val()
+            var str = booking_d.replace(/\s+/g, '-');
+            $(this).attr('action', $(this).attr('action') + str) ;
+        });
         $('.check_user_reason').on('submit',function(){
             var result=check_user_reason();
             return result;
@@ -107,20 +110,67 @@
             getData(id);
         });
 
+        $("#mybtn").click(function(){
+            var id = $(this).data("id");
+            var booking_date = $('#booking_date').val();
+            var from_time = $('#from_time').val();
+            var service_location = $('#service_location').val();
+            if (booking_date==""){
+                alert("Please select the booking date");
+            }
+            else{
+                if(from_time==""){
+                    alert("Please select the Time slot");
+                }
+                else{
+                    if(service_location==""){
+                        alert("Please enter the Service Location");
+                    }
+                    else{
+                        if(id==1){
+                            $('#myModal').modal('show');
+                        }
+                        else{
+                            //$("#book_services").submit();
+                            document.getElementById("book_services").submit();
+                        }
+                    }
+                }
+            }
+        });
+
+        $("#walletsub").click(function(){
+            var provider_id= $('#provider_id').val();
+            var service_id= $('#service_id').val();
+            var booking_d = $('#booking_date').val();
+            var from_time = $('#from_time').val();
+            var service_location = $('#service_location').val();
+            var service_latitude = $('#service_latitude').val();
+            var service_longitude = $('#service_longitude').val();
+            var notes = $('#notes').val();
+            var suburl = base_url+'booking_service_submit_wallet';
+            
+            var data = {provider_id:provider_id,service_id:service_id,booking_date:booking_d,from_time:from_time,service_location:service_location,service_latitude:service_latitude,service_longitude:service_longitude,notes:notes};
+            window.location.href = base_url+'booking_service_submit_wallet?data='+JSON.stringify(data);
+        });
+
+        $("#service_location").change(function(){
+          $('#bsub').removeAttr("disabled");
+          $('#rspan').prop("hidden", true);
+        });
 
         $(".user_mobile").on('keyup keypress blur change', function(e) {
             //return false if not 0-9
             if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
                 return false;
-            }else{
+            }
+            else{
                 //limit length but allow backspace so that you can still delete the numbers.
                 if( $(this).val().length >= parseInt($(this).attr('maxlength')) && (e.which != 8 && e.which != 0)){
                     return false;
                 }
             }
-
         });
-
 
         $('#step1_footer').prop("disabled", true);
         $.ajax({
@@ -128,22 +178,16 @@
             url: base_url+"user/service/get_category",
             data:{id:$(this).val(),csrf_token_name:csrf_token},
             beforeSend :function(){
-
                 $('#categorys').find("option:eq(0)").html("Please wait..");
-
             },
             success: function (data) {
-
                 $('#categorys').find("option:eq(0)").html("Select Category");
-
                 var obj=jQuery.parseJSON(data);
-
                 $(obj).each(function(){
                     var option = $('<option />');
                     option.attr('value', this.value).text(this.label);
                     $('#categorys').append(option);
                 });
-
             }
         });
 
@@ -151,12 +195,12 @@
             if($(this).val()){
                 $('#step1_footer').prop("disabled", false);
             }
-            else {$('#step1_footer').prop("disabled", true);
+            else {
+                $('#step1_footer').prop("disabled", true);
             }
-
-
             $('#subcategorys').html('<option value="">Select subcategory</option>');
-            if($(this).val()!=''){
+            if($(this).val()!='')
+            {
                 $.ajax({
                     type: "POST",
                     url: base_url+"user/service/get_subcategory",
@@ -176,13 +220,14 @@
                 });
             }
         });
+
         $('#subcategorys').on('change',function(){
             if($(this).val()){
                 $('#step3_footer').prop("disabled", false);
             }
-            else {$('#step3_footer').prop("disabled", true);}
-
-
+            else {
+                $('#step3_footer').prop("disabled", true);
+            }
         });
 
         $('#new_fourth_page').bootstrapValidator({
@@ -195,8 +240,7 @@
                     }
                 },
             }
-
-        }).on('success.form.bv', function(e) {
+        }).on('success.form.bv', function(e){
             var otp =         $('#otp_number').val();
             var userMobile =  $('#userMobile').val();
             var categorys=    $('#categorys').val();
@@ -265,8 +309,10 @@
                     $.ajax({
                         type : "GET",
                         url : base_url+path+"provider_subscription",
-                        data : {'subscriber_id':subscriber_id,'subscription_id':subscription_id,
-                            'subscription_date':subscription_date,'type':type,'token':token,'args':args},
+                        data : {
+                                'subscriber_id':subscriber_id,'subscription_id':subscription_id,
+                                'subscription_date':subscription_date,'type':type,'token':token,'args':args
+                            },
                         success: function(data){
                             window.location = base_url+path;
                         },
@@ -302,9 +348,7 @@
             $('#registration_final').removeClass('invisible');
         });
 
-
         $('#new_third_pagelogin').bootstrapValidator({
-
             fields: {
                 userName: {
                     validators: {
@@ -329,8 +373,6 @@
                         notEmpty: {
                             message: 'Please enter email address'
                         },
-
-
                     }
                 },
                 userMobile: {
@@ -360,7 +402,6 @@
 
             }
         }).on('success.form.bv', function(e) {
-
             var categorys=    $('#categorys').val();
             var subcategorys= $('#subcategorys').val();
             var userName=     $('#userName').val();
@@ -380,25 +421,17 @@
                     'mobileno':userMobile
                 },
                 success: function (data) {
-
-
                     var obj = JSON.parse(data);
-
-
-                    if(obj.response=='ok')
-                    {
+                    if(obj.response=='ok'){
                         sendEvent('#modal-wizard', 4);
                     }
-                    else
-                    {
+                    else{
                         $('#registration_submit').prop("disabled", false);
                     }
                 }
-            } );
+            });
             return false;
-
         });
-
 
         $('#new_third_page1').bootstrapValidator({
             fields: {
@@ -415,7 +448,6 @@
                             url: base_url + 'user/login/email_chk',
                             data: function(validator) {
                                 return {
-
                                     userEmail: validator.getFieldElements('userEmail').val(),
                                     csrf_token_name:csrf_token
                                 };
@@ -426,13 +458,10 @@
                         notEmpty: {
                             message: 'Please enter email address'
                         },
-
-
                     }
                 },
                 userMobile: {
                     validators: {
-
                         remote: {
                             url: base_url + 'user/login/mobileno_chk',
                             data: function(validator) {
@@ -454,16 +483,12 @@
                         }
                     }
                 },
-
             }
         }).on('success.form.bv', function(e) {
-
-
             var userName=     $('#userName').val();
             var userEmail=    $('#userEmail').val();
             var userMobile=   $('#userMobile').val();
-            var countryCode=   $('#countryCode').val();
-
+            var countryCode=  $('#countryCode').val();
             $.ajax({
                 type: "POST",
                 url: base_url+"user/login/send_otp_request",
@@ -475,24 +500,18 @@
                     'csrf_token_name':csrf_token
                 },
                 success: function (data) {
-
-
                     var obj = JSON.parse(data);
-
-
-                    if(obj.response=='ok')
-                    {
+                    if(obj.response=='ok'){
                         sendEvent('#modal-wizard1', 2);
                     }
-                    else
-                    {
+                    else{
                         $('#registration_submit').prop("disabled", false);
                     }
                 }
-            } );
+            });
             return false;
-
         });
+
         $('#booking_date').datepicker({
             dateFormat: 'dd-mm-yy',
             minDate: new Date(),
@@ -508,19 +527,15 @@
                 var service_id = $("#service_id").val();
                 $('#from_time').empty();
                 $('#book_services').bootstrapValidator('revalidateField', 'booking_date');
-
                 if(date!="" && date!=undefined){
-
                     $.ajax({
                         url: base_url+"user/service/service_availability/",
                         data : {date:date,provider_id:provider_id, service_id:service_id,csrf_token_name:csrf_token},
                         type: "POST",
-
                         success: function(response){
                             $('#from_time').find("option:eq(0)").html("Select time slot");
                             if(response!=''){
                                 var obj=jQuery.parseJSON(response);
-
                                 if(obj != '')
                                 {
                                     $(obj).each(function(){
@@ -534,11 +549,8 @@
                                     var msg = 'Availability not found';
                                     $('#from_time').append(msg);
                                 }
-
                                 $('#to_time').find("option:eq(0)").html("Select end time");
                                 var obj=jQuery.parseJSON(response);
-
-
                                 $(obj).each(function(){
                                     var option = $('<option />');
                                     option.attr('value', this.end_time).text(this.end_time);
@@ -546,46 +558,40 @@
                                 });
                             }
                         }
-
                     });
                 }
             }
-
         });
         $('.close').on('click', function() {
             $(".user_mobile").val('');
             $(".countryCode").val('');
         })
+        
         $('#order-summary').DataTable();
-
-
-
-
-        if($('.days_check').is(':checked') == true){
-
+        if($('.days_check').is(':checked') == true)
+        {
             $('.eachdays').removeAttr('style');
             $('.eachdayfromtime').removeAttr('style');
             $('.eachdaytotime').removeAttr('style');
-
             if($('.daysfromtime_check').val()==''){
                 $('.daysfromtime_check').attr('style','border-color:red');
                 error = 1;
-            }else{
+            }
+            else{
                 $('.daysfromtime_check').removeAttr('style');
             }
             if($('.daystotime_check').val()==''){
                 error = 1;
                 $('.daystotime_check').attr('style','border-color:red');
-
-            }else{
+            }
+            else{
                 $('.daystotime_check').removeAttr('style');
             }
-
-        }else{
+        }
+        else{
             var oneday = 0;
             $('.daysfromtime_check').removeAttr('style');
             $('.daystotime_check').removeAttr('style');
-
             $('.eachdays').each(function(){
                 if($(this).is(':checked') == true){
                     oneday = 1;
@@ -596,20 +602,15 @@
                 $('.eachdayfromtime').removeAttr('style');
                 $('.eachdaytotime').removeAttr('style');
             }
-
             $('.eachdays').each(function(){
-
                 if($(this).is(':checked') == true){
-
-
                     var val = $(this).val();
                     val = parseInt(val);
-
                     if($('.eachdayfromtime'+val).val() ==''){
                         error = 1;
-
                         $('.eachdayfromtime'+val).attr('style','border-color:red');
-                    }else{
+                    }
+                    else{
                         $('.eachdayfromtime'+val).removeAttr('style');
                     }
 
@@ -1817,6 +1818,7 @@
             var subcategories = $("#subcategories").val();
             var service_location = $("#service_location").val();
             var categories = $("#categories").val();
+            var str = common_search.replace(/\s+/g, '-');
             if((categories==undefined || categories=='') && (service_location=='') && (common_search==undefined || common_search=='')) {
                 $.ajax({
                     method: "POST",
@@ -1826,11 +1828,14 @@
                         $(target).html(data);
                         //$('.pagination ul li').removeClass('active');
                         $('.page_nos_'+page).parent('li').addClass('active');
+                        $('body,html').animate({
+                            scrollTop: 0
+                        }, 600);
                     }
                 });
             }
             else{
-                if(cpage=='http://www.axzora.com/search'){
+                if(cpage==base_url+'search/'+str){
                     $.ajax({
                         method: "POST",
                         url: base_url+'home/ajaxPaginationData2/'+page,
@@ -1839,6 +1844,9 @@
                             $(target).html(data);
                             //$('.pagination ul li').removeClass('active');
                             $('.page_nos_'+page).parent('li').addClass('active');
+                            $('body,html').animate({
+                                scrollTop: 0
+                            }, 600);
                         }
                     });
                 }
@@ -1851,6 +1859,9 @@
                             $(target).html(data);
                             //$('.pagination ul li').removeClass('active');
                             $('.page_nos_'+page).parent('li').addClass('active');
+                            $('body,html').animate({
+                                scrollTop: 0
+                            }, 600);
                         }
                     });
                 }
@@ -1879,7 +1890,7 @@
                     $(target).html(obj.service_details);
                 }
             });
-        }
+        }        
     });
 
 })(jQuery);

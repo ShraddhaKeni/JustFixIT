@@ -13,7 +13,7 @@
 							<select class="form-control-sm custom-select searchFilter" id="status">
 								<option value=''>All</option>
 								<option value="1">Pending</option>
-								<option value="2">Progress</option>
+								<option value="2">In Progress</option>
 								<option value="3">Complete Request</option>
 								<option value="5">Rejected</option>
 								<option value="7">Cancelled</option>

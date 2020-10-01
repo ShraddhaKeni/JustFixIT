@@ -141,8 +141,8 @@ $route['provider_subscription'] = 'user/service/provider_subscription';
 $route['featured-category'] = 'user/categories/featured_categories';
 $route['service-preview/(:any)'] = 'home/service_preview/$1';
 $route['all-services'] = 'home/services';
-$route['services/(:num)'] = 'home/show_service/$1';
-$route['subcategory/(:num)'] = 'home/subcategory/$1';
+$route['services/(:any)'] = 'home/show_service/$1';
+$route['subcategory/(:any)'] = 'home/subcategory/$1';
 //$route['subcategories'] = 'home/showAllSubcategory';
 $route['featured-services'] = 'user/service/featured_services';  // Done
 $route['popular-services'] = 'user/service/popular_services'; // Done
@@ -302,6 +302,9 @@ $route['api/select_plan_api'] = 'api/api/select_plan_api';
 $route['api/select_plan_response_api'] = 'api/api/select_plan_response_api';
 $route['api/addtowallet_api'] = 'api/api/addtowallet_api';
 $route['api/addtowalletresponse_api'] = 'api/api/addtowalletresponse_api';
+$route['api/booking_conformation_sms'] = 'api/api/booking_conformation_sms';
+
+$route['booking_service_submit_wallet']='user/booking/booking_service_submit_wallet';
 
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;

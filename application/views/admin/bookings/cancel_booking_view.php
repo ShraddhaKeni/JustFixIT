@@ -281,7 +281,7 @@ array("id"=>7,'value'=>'Cancel')
 											</h2>
 										</td>
 										<td>'.$rows['service_title'].'</td>
-										<td>$'.$rows['amount'].'</td>
+										<td>₹'.$rows['amount'].'</td>
 										<td><label class="badge badge-'.$color.'">'.ucfirst($badge).'</lable></td>
 										<td>'.$timeBase.'</td>';
 										if($rows['admin_change_status']==1){

@@ -157,7 +157,7 @@ class Service_model extends CI_Model
 
      public function subscription_list()
         {
-            return $this->db->where("status",1)->get('subscription_fee')->result_array();
+            return $this->db->where("status",1)->order_by('fee','DESC')->get('subscription_fee')->result_array();
         }
 
     public function subscription_details($id)

@@ -143,7 +143,7 @@ $bookinglist = $this->dashboard->get_bookinglist();
 											<span class="badge bg-success inv-badge"><?php if($list['status'] == '6') { ?>Accepted<?php } else { ?>Pending<?php }?></span>
 										</td>
 										<td class="text-right">
-											<div class="font-weight-600">$<?php echo $list['service_amount']?></div>
+											<div class="font-weight-600">₹<?php echo $list['service_amount']?></div>
 										</td>
 									</tr>
 									<?php } } else {
@@ -231,7 +231,7 @@ $bookinglist = $this->dashboard->get_bookinglist();
 										<td><?=date('d-m-Y',strtotime($rows['service_date']));?></td>
 										<td><?php echo $provider_name['name'] ?></td>
 										<td><?php echo $service['service_title']?></td>
-										<td>$<?php echo $rows['amount']?></td>
+										<td>₹<?php echo $rows['amount']?></td>
 										<td><span class="badge bg-<?=$color;?> inv-badge"><?php echo $status?></span></td>
 									</tr>
 									<?php } } else {

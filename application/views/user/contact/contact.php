@@ -25,14 +25,14 @@
 				<div class="contact-blk-content">
 					<p>
 						<b>Have any queries? We are always happy to help!<br>
-						Give us a ring on 9923843467<br>
+						Give us a ring on 9262626262<br>
 						Or drop us a mail at teamaxzora@gmail.com</b>
 					</p>
                     <hr>
                     <div class="col-md-12">
 						<div class='col-md-4' style="display: inline-block; vertical-align: top;"><b> GOA </b><br>
-							Y-11, 5th Floor, Building No. 2<br>
-							Jairam Complex, Neugi Nagar<br>
+							Y-11, 5th Floor, Building No. 1-A,<br>
+							Jairam Complex, Neugi Nagar,<br>
 							Panaji - Goa, 403 001<br>
 						</div>
 						<div class='col-md-7'style="display: inline-block;">

@@ -52,7 +52,7 @@
 							<div class="col-lg-6">
 								<div class="form-group">
 									<label>Subcategory <span class="text-danger">*</span></label>
-									<select class="form-control select" title="Select Your SubCategory" name="subcategory" id="subcategory"  required></select>
+									<select class="form-control select" title="Select Your Subcategory" name="subcategory" id="subcategory"  required></select>
 								</div>
 							</div>
 						</div>
@@ -63,7 +63,7 @@
 								<div class="col-lg-6">
 									<div class="form-group">
 										<label>Service / Services Offered <span class="text-danger">*</span></label>
-										<input class="form-control" type="text" name="service_offered[]" id="field1" class="" required="">
+										<input class="form-control" type="text" name="service_offered[]" id="field1" class="" required="" placeholder="Enter service you offer">
 									</div> 
 								</div>
 							</div>

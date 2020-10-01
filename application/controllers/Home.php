@@ -93,7 +93,10 @@ class Home extends CI_Controller {
 
 	public function subcategory($id){
 		error_reporting(0);
-		$this->data['subcategory']=$this->home->getsubcategory($id);
+		//echo"<script>alert('ss".$id."')</script>";
+		$dataSplit = explode(".","$id"); //Added on 28-09-2020
+		$aftersplit = $dataSplit[1]; //Added on 28-09-2020
+		$this->data['subcategory']=$this->home->getsubcategory($aftersplit);
 		$this->data['page']='subcategory';
 		$this->load->vars($this->data);
 		$this->load->view($this->data['theme'].'/template');
@@ -115,9 +118,17 @@ class Home extends CI_Controller {
 	}
 	public function show_service($id){
 		error_reporting(0);
+		
+		//echo"<script>alert('ss".$id."')</script>";
+		//$pattern = "-";
+    	$dataSplit = explode(".","$id"); //Added on 28-09-2020
+
+		//echo"<script>alert('kkk".json_encode($dataSplit)."')</script>";
+		$aftersplit = $dataSplit[1]; //Added on 28-09-2020
+		//echo"<script>alert('after".$aftersplit."')</script>";
 		$this->data['category']=$this->home->get_category();
 		$this->data['page']='services';
-		$this->data['service'] = $this->home->getservice($id);
+		$this->data['service'] = $this->home->getservice($aftersplit);
 		$this->load->vars($this->data);
 		$this->load->view($this->data['theme'].'/template');		
 	}
@@ -372,9 +383,9 @@ class Home extends CI_Controller {
 
 	public function service_preview()
   {
-
       if(isset($_GET['sid'])&&!empty($_GET['sid']))
       {
+      	
       	extract($_GET);
       	 $inputs=array();
       	 $inputs['id']=$_GET['sid'];

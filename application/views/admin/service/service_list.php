@@ -150,7 +150,7 @@
                                         <td>'.$rows['service_location'].'</td>
                                         <td>'.$rows['category_name'].'</td>
                                         <td>'.$rows['subcategory_name'].'</td>
-                                        <td>$'.$rows['service_amount'].'</td>
+                                        <td>₹'.$rows['service_amount'].'</td>
                                         <td>'.$date.'</td>
                                         <td>
 											<div '.$tag.'>
@@ -173,7 +173,7 @@
                                         <td>'.$rows['service_location'].'</td>
                                         <td>'.$rows['category_name'].'</td>
                                         <td>'.$rows['subcategory_name'].'</td>
-                                        <td>$'.$rows['service_amount'].'</td>
+                                        <td>₹'.$rows['service_amount'].'</td>
                                         <td>'.$date.'</td>
                                         <td>
 											<div '.$tag.'>

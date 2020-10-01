@@ -2058,8 +2058,7 @@ class Api extends REST_Controller
                         );
                         sendFCMMessage($notify_structure,$device['device_id']);
                       }
-                      if($device['device_type']=='ios')
-                      {
+                      if($device['device_type']=='ios'){
                         $notify_structure= array(
                           'alert' => $msg,
                           'sound' => 'default',
@@ -2080,8 +2079,7 @@ class Api extends REST_Controller
               }
             }
           }
-          if($booking == false)
-          {
+          if($booking == false){
             $response_code = '500';
             $response_message = 'Booking not available';
             $data = new stdClass();
@@ -2089,14 +2087,12 @@ class Api extends REST_Controller
             $this->response($res, REST_Controller::HTTP_OK);
           }
         }
-        else
-        {
+        else{
           $response_code = '201';
           $response_message = 'Input field missing';
         }
       }
-      else
-      {
+      else{
         $response_code = '202';
         $response_message = 'Invalid user or token';
       }
@@ -2277,6 +2273,7 @@ class Api extends REST_Controller
         $history_pay['created_at']=date('Y-m-d H:i:s');
         $this->db->insert('wallet_transaction_history',$history_pay);
         $this->api->updateWallet($this->input->post('token'),$waltdata);
+        $this->booking_conformation_sms($bookingid);
         echo json_encode(['status'=>'200','message'=>'Order Placed Successfully']);
         exit;
       }
@@ -2313,8 +2310,12 @@ class Api extends REST_Controller
       curl_setopt($ch,CURLOPT_POSTFIELDS,json_encode($cf_request) );
       curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
       curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
+      curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+      curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
       $curl_result=curl_exec ($ch);
+      $err = curl_error($ch);
       curl_close ($ch);
+      
       $jsonResponse = json_decode($curl_result);
       if($jsonResponse->{'status'} == "OK")
       {
@@ -2355,8 +2356,9 @@ class Api extends REST_Controller
       $input = array();
       $input['orderid'] =  $this->input->post('orderId');
       $input['status'] =  0;
-      $this->api->serviceBook($bookServices);
+      $bookingid=$this->api->serviceBook($bookServices);
       $this->api->updateTempOrder($input);
+      $this->booking_conformation_sms($bookingid);
       echo json_encode(['status'=>'200','message'=>'Order Successfully Placed']);
     }
     else{
@@ -3628,7 +3630,7 @@ class Api extends REST_Controller
                   error_reporting(0);
                   $curl = curl_init();
                   curl_setopt_array($curl, array(
-                    CURLOPT_URL => "https://2factor.in/API/V1/".$api_key."/SMS/".$user_data['mobileno']."/".$otp,
+                    CURLOPT_URL => "https://2factor.in/API/V1/523977b1-cfcd-11ea-9fa5-0200cd936042/SMS/".$user_data['mobileno']."/".$otp."/register_provider",
                     CURLOPT_RETURNTRANSFER => true,
                     CURLOPT_ENCODING => "",
                     CURLOPT_MAXREDIRS => 10,
@@ -3706,7 +3708,7 @@ class Api extends REST_Controller
                 error_reporting(0);
                 $curl = curl_init();
                   curl_setopt_array($curl, array(
-                  CURLOPT_URL => "https://2factor.in/API/V1/".$api_key."/SMS/".$user_data['mobileno']."/".$otp,
+                  CURLOPT_URL => "https://2factor.in/API/V1/523977b1-cfcd-11ea-9fa5-0200cd936042/SMS/".$user_data['mobileno']."/".$otp."/register_provider",
                   CURLOPT_RETURNTRANSFER => true,
                   CURLOPT_ENCODING => "",
                   CURLOPT_MAXREDIRS => 10,
@@ -3813,7 +3815,7 @@ class Api extends REST_Controller
                   error_reporting(0);
                   $curl = curl_init();
                   curl_setopt_array($curl, array(
-                    CURLOPT_URL => "https://2factor.in/API/V1/".$api_key."/SMS/".$user_data['mobileno']."/".$otp,
+                    CURLOPT_URL => "https://2factor.in/API/V1/523977b1-cfcd-11ea-9fa5-0200cd936042/SMS/".$user_data['mobileno']."/".$otp."/AxzoraServices",
                     CURLOPT_RETURNTRANSFER => true,
                     CURLOPT_ENCODING => "",
                     CURLOPT_MAXREDIRS => 10,
@@ -3891,7 +3893,7 @@ class Api extends REST_Controller
                 error_reporting(0);
                 $curl = curl_init();
                 curl_setopt_array($curl, array(
-                  CURLOPT_URL => "https://2factor.in/API/V1/".$api_key."/SMS/".$user_data['mobileno']."/".$otp,
+                  CURLOPT_URL => "https://2factor.in/API/V1/523977b1-cfcd-11ea-9fa5-0200cd936042/SMS/".$user_data['mobileno']."/".$otp."/AxzoraServices",
                   CURLOPT_RETURNTRANSFER => true,
                   CURLOPT_ENCODING => "",
                   CURLOPT_MAXREDIRS => 10,
@@ -5767,6 +5769,64 @@ class Api extends REST_Controller
     }
     $result = $this->data_format($response_code,$response_message,$data);
     $this->response($result, REST_Controller::HTTP_OK);
+  }
+
+  public function booking_conformation_sms($booking_id)
+  {
+    $booking_details=$this->api->get_book_info_b($booking_id);
+    $user_details=$this->api->get_user_info($booking_details['user_id'],2);
+    $provider_details=$this->api->get_user_info($booking_details['provider_id'],1);
+    $user_mobileno=$user_details['mobileno'];
+    $provider_mobileno=$provider_details['mobileno'];
+    $book_time="from%20".$booking_details['from_time']."%20to%20".$booking_details['to_time']."%20on%20".date("d-m-Y", strtotime($booking_details['service_date']));
+    $book_det_user="Booking%20Date:%20".date("d-m-Y", strtotime($booking_details['service_date']))."%20Booking%20Time:%20".$booking_details['from_time']."%20to%20".$booking_details['to_time'];
+    //echo json_encode($booking_details);
+    if(($_SERVER['HTTP_HOST']=='https://') || ($_SERVER['HTTP_HOST']=='http://')){
+      $api_key = "523977b1-cfcd-11ea-9fa5-0200cd936042";  
+    }
+    else{
+      $api_key = 'default_otp';
+    }
+    //$api_key = "523977b1-cfcd-11ea-9fa5-0200cd936042";
+    $curl1 = curl_init();
+    curl_setopt_array($curl1, array(
+      CURLOPT_URL => "https://2factor.in/API/R1/?module=TRANS_SMS&apikey=523977b1-cfcd-11ea-9fa5-0200cd936042&to=".$user_mobileno."&from=AXZORA&templatename=bookserviceUser&var1=".$user_details['name']."&var2=".$book_det_user,
+      CURLOPT_RETURNTRANSFER => true,
+      CURLOPT_ENCODING => "",
+      CURLOPT_MAXREDIRS => 10,
+      CURLOPT_TIMEOUT => 30,
+      CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+      CURLOPT_CUSTOMREQUEST => "GET",
+      CURLOPT_POSTFIELDS => "",
+      CURLOPT_HTTPHEADER => array(
+        "content-type: application/x-www-form-urlencoded"
+      ),
+    ));
+    curl_setopt($curl1, CURLOPT_SSL_VERIFYHOST, 0);
+    curl_setopt($curl1, CURLOPT_SSL_VERIFYPEER, 0);
+    $response1 = curl_exec($curl1);
+    $err1 = curl_error($curl1);
+    curl_close($curl1);
+
+    $curl2 = curl_init();
+    curl_setopt_array($curl2, array(
+      CURLOPT_URL => "https://2factor.in/API/R1/?module=TRANS_SMS&apikey=523977b1-cfcd-11ea-9fa5-0200cd936042&to=".$provider_mobileno."&from=AXZORA&templatename=bookedServiceProvider&var1=".$user_details['name']."&var2=".$book_time,
+      CURLOPT_RETURNTRANSFER => true,
+      CURLOPT_ENCODING => "",
+      CURLOPT_MAXREDIRS => 10,
+      CURLOPT_TIMEOUT => 30,
+      CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+      CURLOPT_CUSTOMREQUEST => "GET",
+      CURLOPT_POSTFIELDS => "",
+      CURLOPT_HTTPHEADER => array(
+        "content-type: application/x-www-form-urlencoded"
+      ),
+    ));
+    curl_setopt($curl2, CURLOPT_SSL_VERIFYHOST, 0);
+    curl_setopt($curl2, CURLOPT_SSL_VERIFYPEER, 0);
+    $response2 = curl_exec($curl2);
+    $err2 = curl_error($curl2);
+    curl_close($curl2);
   }/*END*/
 }
 ?>
