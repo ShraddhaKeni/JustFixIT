@@ -9,6 +9,7 @@ class Api extends REST_Controller
     error_reporting(0);
     $this->load->helper('push_notifications');
     $this->load->helper('user_timezone');
+    $this->load->library('Form_validation');
     $this->load->model('Chat_model');
     $this->load->model('api_model','api');
     $this->load->model('user_login_model','user_login');
