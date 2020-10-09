@@ -5,7 +5,7 @@
 					$category_name=strtolower($crows['category_name']);
 				?>
 			<div class="col-lg-4 col-md-6">
-				<a href="<?php echo base_url();?>search/<?php echo str_replace(' ', '-', $category_name);?>">
+				<a href="<?php echo base_url();?>subcategory/<?php echo str_replace(' ', '-', $crows['category_name']).'.'.$crows['id']; ?>">
 					<div class="cate-widget">
 						<img src="<?php echo base_url().$crows['category_image'];?>" alt="">
 						<div class="cate-title">

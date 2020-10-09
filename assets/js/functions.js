@@ -131,8 +131,8 @@
                             $('#myModal').modal('show');
                         }
                         else{
-                            //$("#book_services").submit();
-                            document.getElementById("book_services").submit();
+                            $("#book_services").submit();
+                            //document.getElementById("book_services").submit();
                         }
                     }
                 }
@@ -1401,7 +1401,7 @@
                 success : function(data){
                     var JsonVal = $.parseJSON(data);
                     var subcategory = '';
-                    subcategory+="<option>Select Subcategory</option>";
+                    subcategory+="<option value='0'>Select Subcategory</option>";
                     for (var i = 0; i < JsonVal.length; i++) {
                         var text = JsonVal[i];
                         subcategory+= "<option value='"+text['id']+"'>"+text['subcategory_name']+"</option>";
@@ -1818,8 +1818,9 @@
             var subcategories = $("#subcategories").val();
             var service_location = $("#service_location").val();
             var categories = $("#categories").val();
-            var str = common_search.replace(/\s+/g, '-');
-            if((categories==undefined || categories=='') && (service_location=='') && (common_search==undefined || common_search=='')) {
+            var subcategoryid = $("#subcategories").val();
+
+            if((categories==undefined || categories=='') && (service_location=='') && (common_search==undefined || common_search=='') && (subcategoryid==undefined || subcategoryid=='' || subcategoryid==0 || subcategoryid=='0')) {
                 $.ajax({
                     method: "POST",
                     url: pagination_page+page,
@@ -1834,12 +1835,14 @@
                     }
                 });
             }
-            else{
+            else
+            {
+                var str = common_search.replace(/\s+/g, '-');
                 if(cpage==base_url+'search/'+str){
                     $.ajax({
                         method: "POST",
                         url: base_url+'home/ajaxPaginationData2/'+page,
-                        data: { page: page,csrf_token_name:csrf_token,status:status,'pageName':replaceVal,'common_search':common_search},
+                        data: { page: page,csrf_token_name:csrf_token,status:status,'pageName':replaceVal,'common_search':common_search,subcategoryid:subcategoryid,sort_by:sort_by,categories:categories},
                         success: function(data){
                             $(target).html(data);
                             //$('.pagination ul li').removeClass('active');
@@ -1850,11 +1853,28 @@
                         }
                     });
                 }
-                else{
+                else if(subcategoryid==0 || subcategoryid==undefined || subcategoryid==null)
+                {
                     $.ajax({
                         method: "POST",
                         url: base_url+'home/ajaxPaginationDataById/'+page,
-                        data: { page: page,csrf_token_name:csrf_token,'category':categories,'location':service_location,'common_search':common_search},
+                        data: { page: page,csrf_token_name:csrf_token,'category':categories,'location':service_location,'common_search':common_search,sort_by:sort_by},
+                        success: function(data){
+                            $(target).html(data);
+                            //$('.pagination ul li').removeClass('active');
+                            $('.page_nos_'+page).parent('li').addClass('active');
+                            $('body,html').animate({
+                                scrollTop: 0
+                            }, 600);
+                        }
+                    });
+                }
+                else
+                {
+                    $.ajax({
+                        method: "POST",
+                        url: base_url+'home/ajaxPaginationDataById2/'+page,
+                        data: { page: page,csrf_token_name:csrf_token,status:status,'pageName':replaceVal,'common_search':common_search,'subcategory':subcategoryid,sort_by:sort_by},
                         success: function(data){
                             $(target).html(data);
                             //$('.pagination ul li').removeClass('active');

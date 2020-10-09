@@ -106,7 +106,7 @@
 										<span class='badge badge-pill badge-prof <?php echo $class; ?>'><?=$badge;?></span>
 									</li>
 									<li><span>Booking time</span> <?=$bookings['from_time']?> - <?=$bookings['to_time']?></li>
-									<li><span>Amount</span> $<?=$bookings['amount']?></li>
+									<li><span>Amount</span> ₹<?=$bookings['amount']?></li>
 									<li><span>Location</span> <?php echo $bookings['location']?></li>
 									<li><span>Phone</span> <?php echo $user_info['mobileno']?></li>
 									<li>

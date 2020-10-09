@@ -53,8 +53,14 @@
 								<span>Popular Searches</span>
 								<?php foreach ($popular as $popular_services) { 
 									if(($popular_services['status']==2) || ($popular_services['status']==0)){}else{ ?>
-								<a href="<?php echo base_url().'service-preview/'.str_replace(' ', '-', $popular_services['service_title']).'
-								-'.str_replace(', ', '-', $popular_services['service_location']).'?sid='.md5($popular_services['id']);?>">
+									<?php
+										$servicetitle = str_ireplace(array('\'', '"', ',', ';', '<', '>', ' ','/', '\\'), '-', 
+											$popular_services['service_title']);
+										$servicelocation = str_ireplace(array('\'','"', ',', ';', '<', '>', ' ','/', '\\' ), '-', 
+											$popular_services['service_location']);
+								    ?>	
+								<a href="<?php echo base_url().'service-preview/'.$servicetitle.'
+								-'.$servicelocation.'?sid='.md5($popular_services['id']);?>">
 									<?php echo $popular_services['service_title']?>
 								</a>
 								<?php } }?>
@@ -163,7 +169,13 @@
 										?>
 									<div class="service-widget">
 										<div class="service-img">
-											<a href="<?php echo base_url().'service-preview/'.str_replace(' ', '-', $srows['service_title']).'-'.str_replace(', ', '-', $srows['service_location']).'?sid='.md5($srows['id']);?>">
+											<?php
+												$servicetitle = str_ireplace(array('\'', '"', ',', ';', '<', '>', ' ','/', '\\'), '-', 
+																$srows['service_title']);
+												$servicelocation = str_ireplace(array('\'','"', ',', ';', '<', '>', ' ','/', '\\' ), '-', 
+																$srows['service_location']);
+								   			 ?>
+											<a href="<?php echo base_url().'service-preview/'.$servicetitle.'-'.$servicelocation.'?sid='.md5($srows['id']);?>">
 												<img class="img-fluid serv-img" alt="Service Image" src="<?php echo base_url().$image['service_image'];?>">
 											</a>
 											<div class="item-info">
@@ -183,7 +195,13 @@
 										</div>
 										<div class="service-content">
 											<h3 class="title">
-												<a href="<?php echo base_url().'service-preview/'.str_replace(' ', '-', $srows['service_title']).'-'.str_replace(', ', '-', $srows['service_location']).'?sid='.md5($srows['id']);?>"><?php echo ucfirst($srows['service_title']);?></a>
+											<?php
+												$servicetitle = str_ireplace(array('\'', '"', ',', ';', '<', '>', ' ','/', '\\'), '-', 
+																$srows['service_title']);
+												$sloervicecation = str_ireplace(array('\'','"', ',', ';', '<', '>', ' ','/', '\\' ), '-', 
+																$srows['service_location']);
+								   			 ?>
+												<a href="<?php echo base_url().'service-preview/'.$servicetitle.'-'.$sloervicecation.'?sid='.md5($srows['id']);?>"><?php echo ucfirst($srows['service_title']);?></a>
 											</h3>
 											<div class="rating">
 												<?php 

@@ -90,6 +90,19 @@ $currency = currency_conversion(settings('currency'));
 											<div class="filter-list">
 												<h4 class="filter-title">SubCategories</h4>
 												<select id="subcategories" class="form-control form-control selectbox select">
+													<?php
+														echo'<option value="0">Select Subcategory</option>';
+														foreach ($subcategory as $crows) {
+														$selected='';
+														if(isset($subcategory_id) && !empty($subcategory_id))
+														{
+															if($crows['id']==$subcategory_id)
+															{
+																$selected='selected';
+															}
+														}
+														echo'<option value="'.$crows['id'].'" '.$selected.'>'.$crows['subcategory_name'].'</option>';	
+													}?>
 												</select>
 											</div>
 
@@ -153,7 +166,11 @@ $currency = currency_conversion(settings('currency'));
 								<div class="col-lg-4 col-md-6">
 									<div class="service-widget">
 										<div class="service-img">
-											<a href="<?php echo base_url().'service-preview/'.str_replace(' ', '-', strtolower($srows['service_title'])).'-'.str_replace(', ', '-', $srows['service_location']).'?sid='.md5($srows['id']);?>">
+											<?php
+												$servicetitle = str_ireplace(array('\'', '"', ',', ';', '<', '>', ' ','/', '\\'), '-',$srows['service_title']);
+												$servicelocation = str_ireplace(array('\'','"', ',', ';', '<', '>', ' ','/', '\\' ), '-',$srows['service_location']);
+								   			 ?>	
+											<a href="<?php echo base_url().'service-preview/'.$servicetitle.'-'.$servicelocation.'?sid='.md5($srows['id']);?>">
 												<?php if(!empty($serviceimages['service_image'])){ ?>
 												<img class="img-fluid serv-img" alt="Service Image" src="<?php echo base_url().$serviceimages['service_image'];?>">
 											<?php }else{?>
@@ -176,7 +193,14 @@ $currency = currency_conversion(settings('currency'));
 										</div>
 										<div class="service-content">
 											<h3 class="title">
-												<a href="<?php echo base_url().'service-preview/'.str_replace(' ', '-', strtolower($srows['service_title'])).'-'.str_replace(', ', '-', $srows['service_location']).'?sid='.md5($srows['id']);?>"><?php echo ucfirst($srows['service_title']);?></a>
+												<?php
+													$servicetitle = str_ireplace(array('\'', '"', ',', ';', '<', '>', ' ','/', '\\'), '-', 
+														$srows['service_title']);
+													$servicelocation = str_ireplace(array('\'','"', ',', ';', '<', '>', ' ','/', '\\' ), '-', 
+														$srows['service_location']);
+								   				 ?>	
+
+												<a href="<?php echo base_url().'service-preview/'.$servicetitle.'-'.$servicelocation.'?sid='.md5($srows['id']);?>"><?php echo ucfirst($srows['service_title']);?></a>
 											</h3>
 											<div class="rating">
 														<?php 

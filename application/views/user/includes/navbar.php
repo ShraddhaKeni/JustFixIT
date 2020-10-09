@@ -44,7 +44,7 @@
 							$this->db->select('*');
 							$this->db->from('categories');
 							$this->db->where('status',1);
-							$this->db->order_by('id','DESC');
+							$this->db->order_by('category_name','ASC');
 							$result = $this->db->get()->result_array();
 							?>
 							<a href="<?php echo base_url();?>all-categories">Categories <i class="fas fa-chevron-down"></i></a>

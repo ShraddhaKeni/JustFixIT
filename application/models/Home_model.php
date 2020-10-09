@@ -128,7 +128,7 @@ class Home_model extends CI_Model
             $this->db->or_like('c.category_name', $inputs['common_search'],'match');
             $this->db->group_end();
 	     }
-
+       
    if(isset($inputs['user_address']) && !empty($inputs['user_address']))
        {    
           $this->db->like('s.service_location', $inputs['user_address']);
@@ -139,6 +139,12 @@ class Home_model extends CI_Model
 	     {
 	     	$this->db->where('s.category',$inputs['categories']);
 	     }
+
+       if($inputs['subcategory'] != 0 || $inputs['subcategory'] != '0')
+       {    
+          $this->db->where('s.subcategory',$inputs['subcategory']); 
+           
+       }
      
 	     if(isset($inputs['service_latitude']) && !empty($inputs['service_latitude']) && isset($inputs['service_longitude']) && !empty($inputs['service_longitude']))
 	     {

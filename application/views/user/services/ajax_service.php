@@ -28,7 +28,13 @@
 <div class="col-lg-4 col-md-6">
 	<div class="service-widget">
 		<div class="service-img">
-			<a href="<?php echo base_url().'service-preview/'.str_replace(' ', '-', $srows['service_title']).'-'.str_replace(', ', '-', $srows['service_location']).'?sid='.md5($srows['id']);?>">
+			<?php
+					$servicetitle = str_ireplace(array('\'', '"', ',', ';', '<', '>', ' ','/', '\\'), '-', 
+								$srows['service_title']);
+					$servicelocation = str_ireplace(array('\'','"', ',', ';', '<', '>', ' ','/', '\\' ), '-', 
+								$srows['service_location']);
+			?>	
+			<a href="<?php echo base_url().'service-preview/'.$servicetitle.'-'.$servicelocation.'?sid='.md5($srows['id']);?>">
 				<img class="img-fluid serv-img" alt="Service Image" src="<?php echo base_url().$serviceimages['service_image'];?>">
 			</a>
 			<div class="item-info">
@@ -47,7 +53,13 @@
 		</div>
 		<div class="service-content">
 			<h3 class="title">
-				<a href="<?php echo base_url().'service-preview/'.str_replace(' ', '-', $srows['service_title']).'-'.str_replace(', ', '-', $srows['service_location']).'?sid='.md5($srows['id']);?>"><?php echo ucfirst($srows['service_title']);?></a>
+				<?php
+					$servicetitle = str_ireplace(array('\'', '"', ',', ';', '<', '>', ' ','/', '\\'), '-', 
+								$srows['service_title']);
+					$servicelocation = str_ireplace(array('\'','"', ',', ';', '<', '>', ' ','/', '\\' ), '-', 
+								$srows['service_location']);
+				?>	
+				<a href="<?php echo base_url().'service-preview/'.$servicetitle.'-'.$servicelocation.'?sid='.md5($srows['id']);?>"><?php echo ucfirst($srows['service_title']);?></a>
 			</h3>
 				<div class="rating">
 				<?php 

@@ -33,7 +33,10 @@
 					$category_name=strtolower($subcategories['subcategory_name']);
 				?>
 			<div class="col-lg-4 col-md-6">
-				<a href="<?php echo base_url();?>services/<?php echo str_replace(' ', '-', $category_name).'.'.$subcategories['id']; ?>">
+				<?php
+					$cname = str_ireplace(array('\'', '"', ',', ';', '<', '>', ' ','/', '\\'), '-',$category_name);
+				?>
+				<a href="<?php echo base_url();?>services/<?php echo $cname.'-'.$subcategories['category'].'.'.$subcategories['id']; ?>">
 					<div class="cate-widget">
 						<img src="<?php echo base_url().$subcategories['subcategory_image'];?>" alt="">
 						<div class="cate-title">

@@ -1087,7 +1087,7 @@ public function get_category()
 public function get_subcategory()
 {
  $this->db->where('status',1);
- $this->db->where('category',$_POST['id']);
+ $this->db->where('category',$_POST['id'])->order_by('subcategory_name','ASC');
  $query=$this->db->get('subcategories');
  $result= $query->result();
  $data=array();

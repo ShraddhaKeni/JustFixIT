@@ -254,12 +254,10 @@ class Booking extends CI_Controller {
       elseif($this->input->post('txStatus')=='CANCELLED')
       {
         $this->session->set_flashdata('error_message','Payment not done');
-        //echo "<pre>"; print_r($this->input->post());
         redirect(base_url()."user-bookings");
       }
       else{
         $this->session->set_flashdata('error_message','Payment not done');
-        //echo "<pre>"; print_r($this->input->post());
         redirect(base_url()."user-bookings");
       }
     }
@@ -307,8 +305,6 @@ class Booking extends CI_Controller {
         "customerEmail" => $this->input->get('customerEmail'),
         "notifyUrl" => $this->input->get('notifyUrl'),
       ];
-      //echo json_encode(['data'=>$data,'secretKey'=>$secretKey]); exit;
-      // get secret key from your config
       ksort($data);
       $signatureData = "";
       foreach ($data as $key => $value){
@@ -342,7 +338,6 @@ class Booking extends CI_Controller {
     if($walletAmt[0]->wallet_amt < $records['service_amount'])
     {
       $this->session->set_flashdata('error_message','Not Enough Amount in Wallet');
-      echo "<pre>"; print_r($this->input->post());
       redirect(base_url().'user-bookings');
     }
     else
@@ -456,7 +451,6 @@ class Booking extends CI_Controller {
       $response = curl_exec($curl1);
       $err = curl_error($curl1);
       curl_close($curl1);
-      //$this->booking->deleteLastRecord($serviceval['id']);
       $this->session->set_flashdata('success_message','Payment has been successfully done');
       redirect(base_url().'user-bookings');
     }
@@ -490,7 +484,6 @@ class Booking extends CI_Controller {
     else
     {  
       $response = json_decode($response);
-      //print_r($response);
       if($response->status=="OK")
       {
         $booking_data = $this->db->where('id',$order_id)->from('book_service')->get()->row_array();

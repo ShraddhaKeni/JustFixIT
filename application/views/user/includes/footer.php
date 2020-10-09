@@ -532,7 +532,7 @@ $country_list=$this->db->where('status',1)->order_by('country_name',"ASC")->get(
 						$this->db->select('*');
 						$this->db->from('categories');
 						$this->db->where('status',1);
-						$this->db->order_by('id','DESC');
+						$this->db->order_by('category_name','ASC');
 						$this->db->limit(5);
 						$result = $this->db->get()->result_array();
 
@@ -762,7 +762,7 @@ $country_list=$this->db->where('status',1)->order_by('country_name',"ASC")->get(
 		<?php if($this->uri->segment(1)=="edit_service"){ ?>
 			<script src="<?php echo $base_url; ?>assets/js/edit_service.js"></script>
 		<?php }?>	
-		<?php if($this->uri->segment(1)=="all-services" ||$this->uri->segment(1)=="search"){ ?>
+		<?php if($this->uri->segment(1)=="all-services" || $this->uri->segment(1)=="search" || $this->uri->segment(1)=="services"){ ?>
 			<script src="<?php echo base_url(); ?>assets/js/service_search.js"></script>
 		<?php }?>
 		<?php if($this->uri->segment(1)=="book-service"){ ?>

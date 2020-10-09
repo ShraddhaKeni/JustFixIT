@@ -286,7 +286,7 @@ class Dashboard_model extends CI_Model {
         $this->db->join('services s', 'b.service_id = s.id', 'LEFT');
         $this->db->join('categories c', 'c.id = s.category', 'LEFT');
         $this->db->join('subcategories sc', 'sc.id = s.subcategory', 'LEFT');
-        $this->db->join('users p', 'b.provider_id = p.id', 'LEFT');
+        $this->db->join('users p', 'b.user_id = p.id', 'LEFT');
         $this->db->order_by('id','DESC');
         $this->db->limit(5);
        
