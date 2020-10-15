@@ -21,7 +21,7 @@
 			$rating = $this->db->get()->row_array();
 			$avg_rating = round($rating['AVG(rating)'],1);
 			$service_amount = $srows['service_amount'];
-			$serviceimages=$this->db->where('service_id',$srows['id'])->get('services_image')->row_array();
+			$serviceimages=$this->db->where(array('service_id'=>$srows['id'],'is_wallpaper'=>1))->get('services_image')->row_array();
 			
 		?>
 		

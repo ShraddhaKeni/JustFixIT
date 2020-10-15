@@ -193,7 +193,7 @@ $days=$hours=$minutes=$seconds=0;
 							$this->db->select("service_image");
 							$this->db->from('services_image');
 							$this->db->where("service_id",$serv['id']);
-							$this->db->where("status",1);
+							$this->db->where("is_wallpaper",1);
 							$image = $this->db->get()->row_array(); 
 							$service_amount = $serv['service_amount'];
 						?>

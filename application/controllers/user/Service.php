@@ -177,18 +177,38 @@ class Service extends CI_Controller {
   if(empty($this->session->userdata('id'))){
     redirect(base_url());
   }
-
   $service_id = $this->uri->segment('4');
   $this->data['page'] = 'edit_service';
   $this->data['model'] = 'service';
   $this->data['services']=$services=$this->service->get_service_id($service_id);
   $this->data['serv_offered'] = $this->db->from('service_offered')->where('service_id',$services['id'])->get()->result_array();
-
   $this->load->vars($this->data);
   $this->load->view($this->data['theme'].'/template');
 
 
+} 
+
+public function delete_image(){
+
+   $s_id = $this->input->post('s_id');
+   $result = $this->service->delete_service_image($s_id);
+   if($result){
+    $message= 'Image deleted successfully';
+    $this->session->set_flashdata('success_message',$message);
+  }
+  else{
+    $message= 'Something went wrong.Please try again later.';
+    $this->session->set_flashdata('error_message',$message);
+  }
 }
+
+public function update_wallpaper(){
+   $s_id = $this->input->post('s_id');
+   $serviceimg_id = $this->input->post('serviceimg_id');
+   $result = $this->service->update_service_imagewallpaper($s_id,$serviceimg_id);
+
+}
+
 
 public function provider_subscription(){
   $this->load->model('Subscription_model');

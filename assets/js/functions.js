@@ -172,6 +172,44 @@
             }
         });
 
+        $(document).on('click','#del_image',function() {
+        var s_id = $(this).attr("data-id");
+        var serviceimg_id = $('#serviceimgid').val();
+        if(confirm("Do you want to delete this image?")){
+            var url = base_url+'user/service/delete_image';
+            $.ajax({
+                url:url,
+                data:{s_id:s_id,csrf_token_name:csrf_token},
+                type:"POST",
+            
+                success: function(res){
+                    window.location = base_url+'user/service/edit_service/'+serviceimg_id;
+                   
+                }
+            });
+        }
+      
+    });
+
+        $(document).on('click','#set_image',function() {
+        var s_id = $(this).attr("data-id");
+        var serviceimg_id = $('#serviceimgid').val();
+        if(confirm("Do you want to set this image as wallpaper?")){
+            var url = base_url+'user/service/update_wallpaper';
+            $.ajax({
+                url:url,
+                data:{s_id:s_id,csrf_token_name:csrf_token,serviceimg_id:serviceimg_id},
+                type:"POST",
+                 success: function(res){
+                    alert('Image set as wallpaper');
+                   
+                }
+            
+            });
+        }
+      
+    });
+
         $('#step1_footer').prop("disabled", true);
         $.ajax({
             type: "GET",

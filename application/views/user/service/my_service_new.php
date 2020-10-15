@@ -22,7 +22,7 @@
 									$this->db->select("service_image");
 									$this->db->from('services_image');
 									$this->db->where("service_id",$srows['id']);
-									$this->db->where("status",1);
+									$this->db->where("is_wallpaper",1);
 									$image = $this->db->get()->row_array(); 
 									$this->db->select('AVG(rating)');
 									$this->db->where(array('service_id'=>$srows['id'],'status'=>1));

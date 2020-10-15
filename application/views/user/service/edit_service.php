@@ -145,10 +145,13 @@ $service_id=$services['id'];
 									<li>
 										<div class=" upload-images">
 
-											<img alt="Service Image" src="<?php echo base_url().$service_image[$i]['service_image']; ?>">
+											<img alt="Service Image" src="<?php echo base_url().$service_image[$i]['service_image']; ?>"><br>
+											<a href="javascript:void(0)" id="del_image" data-id="<?php echo $service_image[$i]['id']; ?>" class="si-delete-inactive-service text-danger"><i class="far fa-trash-alt"></i>Delete</a>&nbsp;
+											<a href="javascript:void(0)" id="set_image" data-id="<?php echo $service_image[$i]['id']; ?>" class="si-delete-inactive-service text-success"><i class="fa fa-check"></i>Wallpaper</a>
 										</div>
 									</li>
 									<?php } ?>
+									<input type="hidden" id="serviceimgid" value="<?php echo $service_id; ?>">
 									</ul>
 								</div>
 								

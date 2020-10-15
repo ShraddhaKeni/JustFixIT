@@ -53,13 +53,40 @@ class Service_model extends CI_Model
 
 	public function service_image($service_id)
 	{
-		$this->db->select("service_image");
+		$this->db->select("id,service_image");
 		$this->db->from('services_image');
 		$this->db->where("service_id",$service_id);
 		$this->db->where("status",1);
+    $this->db->order_by('is_wallpaper','DESC');
 		return $this->db->get()->result_array();
 
 	}
+
+//Added
+  public function delete_service_image($id){
+     $this->db->where('id',$id);
+     $this->db->where("status",1);
+     $request = $this->db->delete('services_image');
+    return $request;
+}
+
+public function update_service_imagewallpaper($id,$serviceimg_id)
+    {
+      $this->db->set('is_wallpaper',0);
+      $this->db->where('service_id',$serviceimg_id);
+      $this->db->update('services_image');
+      $this->db->set('is_wallpaper',1);
+      $this->db->where('id',$id);
+      $this->db->update('services_image');
+      $image = $this->db->where(array('is_wallpaper'=>1,'service_id'=>$serviceimg_id))->get('services_image')->result_array();
+      $this->db->set('service_image', $image[0]['service_image']);
+      $this->db->set('service_details_image', $image[0]['service_details_image']);
+      $this->db->set('thumb_image', $image[0]['thumb_image']);
+      $this->db->set('mobile_image', $image[0]['mobile_image']);
+      $this->db->where('id', $serviceimg_id);
+      $this->db->update('services');
+    }
+
 	 public function update_service($inputs,$where)
 	  {
 	    $this->db->set($inputs);
@@ -456,6 +483,7 @@ class Service_model extends CI_Model
     }
     /*service filter*/
     public function service_filter($service_title,$category,$subcategory,$from,$to){
+      
           if(!empty($from)) {
           $from_date=date("Y-m-d 00:00:00", strtotime($from));
           }else{
@@ -477,6 +505,7 @@ class Service_model extends CI_Model
           }
           if(!empty($category)){
           $this->db->where('S.category',$category);
+         
           }
           if(!empty($subcategory)){
           $this->db->where('S.subcategory',$subcategory);

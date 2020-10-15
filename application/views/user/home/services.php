@@ -139,7 +139,7 @@ if(!empty($result))
 						foreach ($service as $srows)
 						{
 							$serviceimage=explode(',', $srows['service_image']);
-							$serviceimages=$this->db->where('service_id',$srows['id'])->get('services_image')->row_array();
+							$serviceimages=$this->db->where(array('service_id'=>$srows['id'],'is_wallpaper'=>1))->get('services_image')->row_array();
 							$provider_details = $this->db->where('id',$srows['user_id'])->get('providers')->row_array();
 							$this->db->select('AVG(rating)');
 							$this->db->where(array('service_id'=>$srows['id'],'status'=>1));

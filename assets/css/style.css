@@ -2731,7 +2731,7 @@ small.help-block {
 }
 .upload-images img {
 	border-radius: 4px;
-	height: 60px;
+	height: 100px;
 	width: auto;
 }
 .upload-wrap {

@@ -286,7 +286,7 @@ $country_list=$this->db->where('status',1)->order_by('country_name',"ASC")->get(
 							<div class="form-group">
 								<div class="custom-control custom-control-xs custom-checkbox">
 									<input type="checkbox" class="custom-control-input" name="agreeCheckbox" id="agree_checkbox" value="1">
-									<label class="custom-control-label" for="agree_checkbox">I agree to <?=settingValue('website_name')?></label> <a tabindex="-1" href="javascript:void(0);">Privacy Policy</a> &amp; <a tabindex="-1" href="javascript:void(0);"> Terms.</a>
+									<label class="custom-control-label" for="agree_checkbox">I agree to <?=settingValue('website_name')?></label> <a tabindex="-1" href="<?php echo base_url().'privacy';?>">Privacy Policy</a> &amp; <a tabindex="-1" href="<?php echo base_url().'terms-conditions';?>"> Terms.</a>
 								</div>
 							</div>
 							<div class="form-group">
@@ -399,7 +399,7 @@ $country_list=$this->db->where('status',1)->order_by('country_name',"ASC")->get(
 								<div class="form-group">
 									<div class="custom-control custom-control-xs custom-checkbox">
 										<input type="checkbox" class="custom-control-input" name="agreeCheckboxUser" id="agree_checkbox_user" value="1">
-										<label class="custom-control-label" for="agree_checkbox_user">I agree to <?=settingValue('website_name')?></label> <a tabindex="-1" href="javascript:void(0);">Privacy Policy</a> &amp; <a tabindex="-1" href="javascript:void(0);"> Terms.</a>
+										<label class="custom-control-label" for="agree_checkbox_user">I agree to <?=settingValue('website_name')?></label> <a tabindex="-1" href="<?php echo base_url().'privacy';?>">Privacy Policy</a> &amp; <a tabindex="-1" href="<?php echo base_url().'terms-conditions';?>"> Terms.</a>
 									</div>
 								</div>
 								<div class="form-group">
@@ -539,7 +539,7 @@ $country_list=$this->db->where('status',1)->order_by('country_name',"ASC")->get(
 						?>
 						<ul>
 							<?php foreach ($result as $res) { ?>
-								<li><a href="<?php echo base_url();?>subcategory/<?php echo $res['id'];?>"><?php echo ucfirst($res['category_name']); ?></a></li>
+								<li><a href="<?php echo base_url();?>subcategory/<?php echo str_replace(' ', '-', $res['category_name']).'.'.$res['id']; ?>"><?php echo ucfirst($res['category_name']); ?></a></li>
 							<?php } ?>
 						</ul>
 					</div>
@@ -764,7 +764,7 @@ $country_list=$this->db->where('status',1)->order_by('country_name',"ASC")->get(
 		<?php }?>	
 		<?php if($this->uri->segment(1)=="all-services" || $this->uri->segment(1)=="search" || $this->uri->segment(1)=="services"){ ?>
 			<script src="<?php echo base_url(); ?>assets/js/service_search.js"></script>
-		<?php }?>
+		<?php }?> 
 		<?php if($this->uri->segment(1)=="book-service"){ ?>
 		 <script src="<?php echo base_url(); ?>assets/js/book_service.js"></script>
 		<?php }?>
