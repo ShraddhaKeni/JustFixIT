@@ -21,3 +21,6 @@ CREATE TABLE IF NOT EXISTS `tempplanselect` (
 
 
 ALTER TABLE `subscription_details_history` ADD `free_service` VARCHAR(45) NULL AFTER `type`;
+
+
+ALTER TABLE `services_image` ADD `is_wallpaper` INT NOT NULL DEFAULT '1' AFTER `is_url`;
