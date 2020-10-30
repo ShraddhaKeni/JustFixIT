@@ -129,7 +129,7 @@ $get_details = $this->db->where('id',$this->session->userdata('id'))->get('users
 							<input class="avatar-src" name="avatar_src" type="hidden">
 							<input class="avatar-data" name="avatar_data" type="hidden">
 							<label for="avatarInput">Select Image</label>
-							<input type="file" accept="image/*" class="avatar-input ad_pd_file" id="avatarInput" name="profile_img">
+							<input type="file" accept="image/*" class="avatar-input ad_pd_file" id="avatarInput" name="profile_img" required>
 							
 						</div>
 

@@ -3,7 +3,6 @@
 ?>
 <div class="page-wrapper">
 	<div class="content container-fluid">
-	
 		<!-- Page Header -->
 		<div class="page-header">
 			<div class="row">
@@ -25,12 +24,9 @@
 		<!-- Search Filter -->
 		<form action="<?php echo base_url()?>admin/service/provider_list" method="post" id="filter_inputs">
 			<input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>" />
-    
-
 			<div class="card filter-card">
 				<div class="card-body pb-0">
 					<div class="row filter-row">
-					
 						<div class="col-sm-6 col-md-3">
 							<div class="form-group">
 								<label>Provider Name</label>
@@ -55,17 +51,26 @@
 						</div>
 						<div class="col-sm-6 col-md-3">
 							<div class="form-group">
+								<label>Status</label>
+								<select class="form-control" name="status">
+									<option value="">Select status</option>
+									<option value="0">Verified</option>
+									<option value="1">Not Verified</option>
+								</select>
+							</div>
+						</div>
+						<!--<div class="col-sm-6 col-md-3">
+							<div class="form-group">
 								<label>Sub Category</label>
-								
 								<select class="form-control" name="subcategory">
-									<option value="">Select subcategory</option>
+									<option value="">Select Category</option>
 									<?php foreach ($subcategory as $sub_category) { ?>
 									<option value="<?=$sub_category['id']?>"><?php echo $sub_category['subcategory_name']?>
 									</option>
 									<?php } ?>
 								</select>
 							</div>
-						</div>
+						</div>-->
 						<div class="col-sm-6 col-md-3">
 							<div class="form-group">
 								<label>From Date</label>
@@ -132,14 +137,29 @@
 										}else{
                                             $date='-';
 										}
+										if ($rows['is_verified']==0) {
+											$verifyed='Verified';
+										}
+										else{
+											$verifyed='Not Verified';
+										}
 										echo'<tr>
 											<td>'.$i++.'</td>
-											<td><h2 class="table-avatar"><a href="#" class="avatar avatar-sm mr-2"> <img class="avatar-img rounded-circle" src="'.base_url().$profile_img.'"></a>
-											<a href="'.base_url().'user-details/'.$rows['id'].'">'.str_replace('-', ' ', $rows['name']).'</a></h2></td>
-											<td>desi</td>
+											<td>
+												<h2 class="table-avatar">
+													<a href="#" class="avatar avatar-sm mr-2"> <img class="avatar-img rounded-circle" src="'.base_url().$profile_img.'"></a>
+													<a href="'.base_url().'user-details/'.$rows['id'].'">'.str_replace('-', ' ', $rows['name']).'</a>
+												</h2>
+											</td>
+											<td>'.$rows['mobileno'].'</td>
 											<td>'.$rows['email'].'</td>
 											<td>'.$date.'</td>
 											<td>'.$rows['subscription_name'].'</td>
+											<td>'.$verifyed.'</td>
+											<td>
+												<a href="'.base_url().'edit-service-providers/'.$rows['id'].'" class="btn btn-sm bg-success-light" title="Edit" data-id="'.$rows['id'].'"><i class="far fa-edit mr-1"></i> Edit</a>
+          										<a href="javascript:void(0)" data-id="'.$rows['id'].'" class="btn btn-sm bg-danger-light delete_provider" title="Delete" data-id="'.$rows['id'].'"><i class="far fa-trash mr-1"></i> Delete</a>
+          									</td>
 										</tr>';
 									}
                                     }

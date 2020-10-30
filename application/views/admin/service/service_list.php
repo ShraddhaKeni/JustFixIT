@@ -5,7 +5,6 @@
 ?>
 <div class="page-wrapper">
 	<div class="content container-fluid">
-	
 		<!-- Page Header -->
 		<div class="page-header">
 			<div class="row">
@@ -20,15 +19,12 @@
 			</div>
 		</div>
 		<!-- /Page Header -->
-		
 		<!-- Search Filter -->
 		<form action="<?php echo base_url()?>admin/service/service_list" method="post" id="filter_inputs">
 			<input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>" />
-    
 			<div class="card filter-card">
 				<div class="card-body pb-0">
 					<div class="row filter-row">
-					
 						<div class="col-sm-6 col-md-3">
 							<div class="form-group">
 								<label>Service Title</label>
@@ -84,7 +80,6 @@
 							</div>
 						</div>
 					</div>
-
 				</div>
 			</div>
 		</form>
@@ -105,9 +100,7 @@
                                         <th>Subcategory</th>
                                         <th>Amount</th>
                                         <th>Date</th>
-                                        
                                         <th>Status</th>
-                                  
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -115,15 +108,13 @@
                                     <?php
                                     if(!empty($list)) {
 									$i=1;
-
 									foreach ($list as $rows) {
 										
 									$ser_image='';
-									$service_img=$this->db->where('service_id',$rows['id'])->get('services_image')->row();
+									$service_img=$this->db->where(array('service_id'=>$rows['id'],'is_wallpaper'=>1))->get('services_image')->row();
 									if(!empty($service_img->service_image)){
 										$ser_image=$service_img->service_image;
 									}
-									
 									$avail=$this->service->check_booking_list($rows['id']);
 									if($avail==0){
                                         $attr='';

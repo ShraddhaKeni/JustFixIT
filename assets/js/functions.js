@@ -155,8 +155,8 @@
         });
 
         $("#service_location").change(function(){
-          $('#bsub').removeAttr("disabled");
-          $('#rspan').prop("hidden", true);
+            $('#bsub').removeAttr("disabled");
+            $('#rspan').prop("hidden", true);
         });
 
         $(".user_mobile").on('keyup keypress blur change', function(e) {
@@ -173,42 +173,37 @@
         });
 
         $(document).on('click','#del_image',function() {
-        var s_id = $(this).attr("data-id");
-        var serviceimg_id = $('#serviceimgid').val();
-        if(confirm("Do you want to delete this image?")){
-            var url = base_url+'user/service/delete_image';
-            $.ajax({
-                url:url,
-                data:{s_id:s_id,csrf_token_name:csrf_token},
-                type:"POST",
-            
-                success: function(res){
-                    window.location = base_url+'user/service/edit_service/'+serviceimg_id;
-                   
-                }
-            });
-        }
-      
-    });
+            var s_id = $(this).attr("data-id");
+            var serviceimg_id = $('#serviceimgid').val();
+            if(confirm("Do you want to delete this image?")){
+                var url = base_url+'user/service/delete_image';
+                $.ajax({
+                    url:url,
+                    data:{s_id:s_id,csrf_token_name:csrf_token},
+                    type:"POST",
+                    success: function(res){
+                        window.location = base_url+'user/service/edit_service/'+serviceimg_id;
+                    }
+                });
+            }
+        });
 
         $(document).on('click','#set_image',function() {
-        var s_id = $(this).attr("data-id");
-        var serviceimg_id = $('#serviceimgid').val();
-        if(confirm("Do you want to set this image as wallpaper?")){
-            var url = base_url+'user/service/update_wallpaper';
-            $.ajax({
-                url:url,
-                data:{s_id:s_id,csrf_token_name:csrf_token,serviceimg_id:serviceimg_id},
-                type:"POST",
-                 success: function(res){
-                    alert('Image set as wallpaper');
-                   
-                }
-            
-            });
-        }
-      
-    });
+            var s_id = $(this).attr("data-id");
+            var serviceimg_id = $('#serviceimgid').val();
+            if(confirm("Do you want to set this image as wallpaper?")){
+                var url = base_url+'user/service/update_wallpaper';
+                $.ajax({
+                    url:url,
+                    data:{s_id:s_id,csrf_token_name:csrf_token,serviceimg_id:serviceimg_id},
+                    type:"POST",
+                     success: function(res){
+                        alert('Image set as wallpaper');
+                    }
+                
+                });
+            }
+        });
 
         $('#step1_footer').prop("disabled", true);
         $.ajax({
@@ -358,20 +353,6 @@
                             console.log(data);
                         }
                     });
-                    // if(data.response=='ok'){
-                    //    var base_url = window.location.origin;
-                    //    var path = window.location.pathname;
-                    //    //window.location = base_url+path+"/verified";
-                    //  }
-                    // else if(data.response=='error'){
-                    //   $('#otp_error_msg').show();
-                    //   $('#otp_error_msg').text(data.msg);
-                    //   if(data.result=='otp_expired'){
-                    //    $('#registration_resend').show();
-                    //    $('#registration_final').addClass('invisible');
-                    //    $('#registration_resend').removeClass('invisible');
-                    //    }
-                    // }
                 }
             });
             return false;
@@ -437,7 +418,6 @@
                         }
                     }
                 },
-
             }
         }).on('success.form.bv', function(e) {
             var categorys=    $('#categorys').val();
@@ -658,9 +638,7 @@
                     }else{
                         $('.eachdaytotime'+val).removeAttr('style');
                     }
-
                 }
-
             });
             if(oneday == 0){
                 $('.eachdays').attr('style','opacity:unset;position:unset;');
@@ -669,15 +647,11 @@
                 var error = 1;
             }else{
             }
-
         }
 
-
-        $(document).on('click','.days_check',function(){
-
+        $(document).on('click','.days_check',function()
+        {
             if($(this).is(':checked') == true){
-
-
                 $('.daysfromtime_check').val('00:00 AM');
                 $('.daystotime_check').val('11:30 PM');
                 $('.eachdays').attr('disabled','disabled');
@@ -689,21 +663,17 @@
                 $('.eachdays').removeAttr('style');
                 $('.eachdayfromtime').removeAttr('style');
                 $('.eachdaytotime').removeAttr('style');
-
-            }else{
+            }
+            else{
                 $('.eachdays').removeAttr('disabled');
                 $('.eachdayfromtime').removeAttr('disabled');
                 $('.eachdaytotime').removeAttr('disabled');
-
                 $('.daysfromtime_check').val('');
                 $('.daystotime_check').val('');
                 $('.daysfromtime_check').removeAttr('style');
                 $('.daystotime_check').removeAttr('style');
             }
-
         });
-
-
 
         $("#loginsubmit").on("click", function(){
             $("#userSignIn").submit();
@@ -742,14 +712,12 @@
                     else {
                         $("#flash_error_message1").show();
                         $('#flash_error_message1').append('Wrong Credentials');
-
                         return false;
                     }
                 }
             });
             return false;
         });
-
 
         $("#user_submit").on("click", function(){
             $("#reg_user").submit();
@@ -822,7 +790,9 @@
         $('.rates').on('click', function() {
             $("#myInput").val($("input[name='rates']:checked").val());
         })
-        $('.myReview').on('click', function() {
+
+        $('.myReview').on('click', function() 
+        {
             $('#booking_id').val('');
             $('#provider_id').val('');
             $('#user_id').val('');
@@ -844,9 +814,6 @@
             $("#service_id").val(function() {
                 return this.value + service_id;
             });
-
-
-
         });
 
         $('.myCancel').on('click', function() {
@@ -874,12 +841,9 @@
             });
         });
 
-
         var timeout = 3000; // in miliseconds (3*1000)
         $('#flash_succ_message').delay(timeout).fadeOut(500);
         $('#flash_error_message').delay(timeout).fadeOut(500);
-
-
 
         var rating = '';
         var review = '';
@@ -902,32 +866,20 @@
             }
         }
 
-
-
-
-
-
-
-
-        function date_handler(e){
-
+        function date_handler(e)
+        {
             var date = e.target.value;
             var dataString="date="+date;
             var provider_id = $("#provider_id").val();
             var service_id = $("#service_id").val();
 
-
-
             $.ajax({
                 url: base_url+"user/service/service_availability/",
                 data : {date:date,provider_id:provider_id, service_id:service_id,csrf_token_name:csrf_token},
                 type: "POST",
-
                 success: function(response){
                     $('#from_time').find("option:eq(0)").html("Select time slot");
                     var obj=jQuery.parseJSON(response);
-
-
                     if(obj != '')
                     {
                         $(obj).each(function(){
@@ -951,25 +903,18 @@
                         $('#to_time').append(option);
                     });
                 }
-
             });
-
         }
-
 
         function re_send_otp_user(){
             var mobile_no=($('.user_final_no').val());
             var country_code=($('.final_country_code').val());
-
-
             $.ajax({
-
                 url: base_url+"user/login/re_send_otp_user",
                 data: {'mobile_no':mobile_no,'country_code':country_code,'csrf_token_name':csrf_token},
                 type: 'POST',
                 dataType: 'JSON',
                 success: function(response){
-
                     if(response==2 ){
                         swal({
                             title: "OTP Send !",
@@ -990,13 +935,11 @@
                             closeOnClickOutside: false
                         });
                     }
-
                 }
             })
         }
 
         function plan_notification(){
-
             swal({
                 title: " Plan warning..!",
                 text: "Already buyed high range so choose higher plan....!",
@@ -1011,9 +954,7 @@
             var mobile_no=($('.provider_final_no').val());
             var country_code=($('.final_provider_c_code').val());
 
-
             $.ajax({
-
                 url: base_url+"user/login/re_send_otp_provider",
                 data: {'mobile_no':mobile_no,'country_code':country_code,'csrf_token_name':csrf_token},
                 type: 'POST',
@@ -1041,17 +982,13 @@
                     }
 
                 }
-
             })
         }
-
-
-
-
 
         function withdraw_wallet_value(input){
             $("#wallet_withdraw_amt").val(input);
         }
+
         function isNumber(evt) {
             evt = (evt) ? evt : window.event;
             var charCode = (evt.which) ? evt.which : evt.keyCode;
@@ -1060,7 +997,6 @@
             }
             return true;
         }
-
 
         function add_wallet_money(serviceid){
             $.ajax({
@@ -1078,18 +1014,7 @@
                     alert('Error while request..');
                 }
             });
-//  swal({
-//    title: "Insufficient wallet amount !",
-//    text: "Please recharge your wallet after book this service....!",
-//    icon: "error",
-//    button: "okay",
-//    closeOnEsc: false,
-//    closeOnClickOutside: false
-//  }).then(function() {
-//   window.location = base_url+'user-wallet';
-// });
         }
-
 
         function user_update_status(e){
             var user_status=$(e).val();
@@ -1105,7 +1030,6 @@
             var status=$(".update_user_status").val();
             var reason=$("#reject_reason").val();
             if(status==5){
-
                 if(reason ==''){
                     swal({
                         title: "Rejection reason.",
@@ -1117,18 +1041,13 @@
                     }).then(function(){
                         $("#reject_reason").focus();
                     });
-
                     sent=false;
-
                 }
-
             }
             return sent;
         }
 
-//LOGIN
-
-
+        //LOGIN
         function get_pro_subscription(){
             swal({
                 title: "Uh-Oh!",
@@ -1174,13 +1093,9 @@
             $('.cancel_reason').text(reason);
         }
 
-//new
-
-
+        //new
         function rate_booking(e)
         {
-
-
             rating = $("#myInput").val();
             review = $("#review").val();
             booking_id = $("#booking_id").val();
@@ -1188,7 +1103,6 @@
             user_id = $("#user_id").val();
             service_id = $("#service_id").val();
             type = $("#type").val();
-
 
             if(rating == '')
             {
@@ -1209,10 +1123,7 @@
                 return false;
             }
 
-
-
             $.ajax({
-
                 url: base_url+'user/dashboard/rate_review_post/',
                 data: {rating:rating,review:review,booking_id:booking_id,provider_id:provider_id,user_id:user_id,service_id:service_id,type:type,csrf_token_name:csrf_token},
                 type: 'POST',
@@ -1243,10 +1154,6 @@
 
                 }
             });
-
-
-
-
         }
 
         function cancel_booking(e){
@@ -1262,6 +1169,7 @@
             }
             update_user_booking_status(booking_id,5,0,review);
         }
+
         function provider_cancel_booking(e){
             review = $("#cancel_review").val();
             booking_id = $("#cancel_booking_id").val();
@@ -1282,19 +1190,15 @@
 
         }
 
-
         /*provider accept and reject scenarios*/
-
-        function update_pro_booking_status(bookid,status,rowid,category){
-
+        function update_pro_booking_status(bookid,status,rowid,category)
+        {
             $.confirm({
                 title: 'Confirmations..!',
                 content: 'Do you want continue on this process..',
                 buttons: {
                     confirm: function () {
-
                         $.ajax({
-
                             url: base_url+"update_bookingstatus",
                             data: {'booking_id':bookid,'status':status,'csrf_token_name':csrf_token},
                             type: 'POST',
@@ -1305,7 +1209,6 @@
                                 $(".btn").removeAttr('href');
                             },
                             success: function(response){
-
                                 if(response=='3'){ // session expiry
                                     swal({
                                         title: "Session was Expired... !",
@@ -1318,7 +1221,6 @@
                                         window.location.reload();
                                     });
                                 }
-
                                 if(response=='2'){ //not updated
                                     swal({
                                         title: "Somethings wrong !",
@@ -1331,7 +1233,6 @@
                                         window.location.reload();
                                     });
                                 }
-
                                 if(response=='1'){ //not updated
                                     swal({
                                         title: "Updated the booking status !",
@@ -1351,26 +1252,19 @@
                                         window.location.reload();
                                     });
                                 }
-
-
                             }
                         })
                     },cancel: function () {
-
                     },
                 }
             });
         }
 
-
         /*provider accept and reject scenarios*/
-
-        function update_pro_cancel_booking_status(bookid,status,rowid,review){
-
+        function update_pro_cancel_booking_status(bookid,status,rowid,review)
+        {
             $('#myCancel').modal('hide');
-
             $.ajax({
-
                 url: base_url+"update_bookingstatus",
                 data: {'booking_id':bookid,'status':status,'review':review,'csrf_token_name':csrf_token},
                 type: 'POST',
@@ -1381,7 +1275,6 @@
                     $(".btn").removeAttr('href');
                 },
                 success: function(response){
-
                     if(response=='3'){ // session expiry
                         swal({
                             title: "Session was Expired... !",
@@ -1394,7 +1287,6 @@
                             window.location.reload();
                         });
                     }
-
                     if(response=='2'){ //not updated
                         swal({
                             title: "Somethings wrong !",
@@ -1407,7 +1299,6 @@
                             window.location.reload();
                         });
                     }
-
                     if(response=='1'){ //not updated
                         swal({
                             title: "Updated the booking status !",
@@ -1417,16 +1308,11 @@
                             closeOnEsc: false,
                             closeOnClickOutside: false
                         }).then(function(){
-
-
                             window.location.reload();
                         });
                     }
-
-
                 }
             });
-
         }
 
         $("#categories").on('change',function(){
@@ -1452,10 +1338,9 @@
             });
         });
 
-
         /*user update the status*/
-
-        function update_user_booking_status(bookid,status,rowid,review){
+        function update_user_booking_status(bookid,status,rowid,review)
+        {
             if(status==5 || status==7){
                 $('#myCancel').modal('hide');
             }
@@ -1470,7 +1355,6 @@
                             type: 'POST',
                             dataType: 'JSON',
                             success: function(response){
-
                                 if(response=='3'){ // session expiry
                                     swal({
                                         title: "Session was Expired... !",
@@ -1483,7 +1367,6 @@
                                         window.location.reload();
                                     });
                                 }
-
                                 if(response=='2'){ //not updated
                                     swal({
                                         title: "Somethings wrong !",
@@ -1496,7 +1379,6 @@
                                         window.location.reload();
                                     });
                                 }
-
                                 if(response=='1'){ //not updated
                                     swal({
                                         title: "Updated the booking status !",
@@ -1510,21 +1392,18 @@
                                         window.location.reload();
                                     });
                                 }
-
-
                             }
                         })
                     },cancel: function () {
-
                     },
                 }
             });
         }
 
-        function update_user_cancel_booking_status(bookid,status,rowid,review){
+        function update_user_cancel_booking_status(bookid,status,rowid,review)
+        {
             $('#myCancel').modal('hide');
             $.ajax({
-
                 url: base_url+"update_status_user",
                 data: {'booking_id':bookid,'status':status,'review':review,'csrf_token_name':csrf_token},
                 type: 'POST',
@@ -1546,7 +1425,6 @@
                             window.location.reload();
                         });
                     }
-
                     if(response=='2'){ //not updated
                         swal({
                             title: "Somethings wrong !",
@@ -1559,7 +1437,6 @@
                             window.location.reload();
                         });
                     }
-
                     if(response=='1'){ //not updated
                         swal({
                             title: "Updated the booking status !",
@@ -1573,11 +1450,8 @@
                             window.location.reload();
                         });
                     }
-
-
                 }
             });
-
         }
 
         function noty_clear(id){
@@ -1588,14 +1462,11 @@
                     data:{csrf_token_name: csrf_token,id:id},
                     dataType:'json',
                     success: function (data) {
-
-
                         if(data.success){
                             $('.notification-list li').remove();
                             $('.bg-yellow').text(0);
                         }
                     }
-
                 });
             }
         }
@@ -1608,41 +1479,37 @@
                     data:{csrf_token_name: csrf_token,id:id},
                     dataType:'json',
                     success: function (data) {
-
-
                         if(data.success){
                             $('.chat-list li').remove();
                             $('.chat-bg-yellow').text(0);
                         }
                     }
-
                 });
             }
         }
 
-
-
-//location lat long
+        //location lat long
         function getLocation() {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(showPosition);
-            } else {
+            }else{
             }
         }
+
         function showPosition(position) {
             locations(position.coords.latitude,position.coords.longitude);
         }
+
         getLocation();
         function locations(lat,lng){
-
-
             var geocoder = new google.maps.Geocoder;
             var latlng = new google.maps.LatLng(lat,lng);
             geocoder.geocode({'location': latlng}, function(results, status) {
-                if (status === 'OK') {
-                    if (results[3]) {
+                if(status === 'OK')
+                {
+                    if(results[3])
+                    {
                         var location=results[3].formatted_address;
-
                         $.ajax({
                             type: "post",
                             url: base_url+"home/current_location",
@@ -1650,7 +1517,7 @@
                             dataType:'json',
                             success: function (data) {
                                 if(data==2){
-                                    if (results[5]) {
+                                    if (results[5]){
                                         var location=results[5].formatted_address;
                                         $.ajax({
                                             type: "post",
@@ -1658,18 +1525,16 @@
                                             data:{csrf_token_name: csrfHash,location:location},
                                             dataType:'json',
                                             success: function (data) {
-
-
                                             }
-
                                         });
                                     }
                                 }
                             }
-
                         });
-                    }else{
-                        if (results[5]) {
+                    }
+                    else
+                    {
+                        if (results[5]){
                             var location=results[5].formatted_address;
                             $.ajax({
                                 type: "post",
@@ -1677,23 +1542,19 @@
                                 data:{csrf_token_name: csrfHash,location:location},
                                 dataType:'json',
                                 success: function (data) {
-
-
                                 }
-
                             });
                         }
                     }
-
                 }
             });
         }
+
         var modules=$('#modules_page').val();
-        if(modules=="services" || modules=="service" || modules=="home"){
-
+        if(modules=="services" || modules=="service" || modules=="home")
+        {
             var placeSearch, autocomplete,placeSearch1, autocomplete1 ;
-
-            function initialize() {
+            function initialize(){
                 // Create the autocomplete object, restricting the search
                 // to geographical location types.
                 autocomplete = new google.maps.places.Autocomplete(
@@ -1701,34 +1562,27 @@
                     (document.getElementById('service_location')), {
                         types: ['geocode']
                     });
-
                 google.maps.event.addDomListener(document.getElementById('service_location'), 'focus', geolocate);
                 autocomplete.addListener('place_changed', get_latitude_longitude);
             }
 
-            function get_latitude_longitude() {
+            function get_latitude_longitude(){
                 // Get the place details from the autocomplete object.
                 var place = autocomplete.getPlace();
                 var key = "AIzaSyAlkFoFDrBXGkL2uvusBEVAa5yPtoiFNHY";
                 //var key = "AIzaSyDzviwvvZ_S6Y1wS6_b3siJWtSJ5uFQHoc";
                 $.get('https://maps.googleapis.com/maps/api/geocode/json',{address:place.formatted_address,key:key},function(data, status){
-
                     $(data.results).each(function(key,value){
-
                         $('#service_address').val(place.formatted_address);
                         $('#service_latitude').val(value.geometry.location.lat);
                         $('#service_longitude').val(value.geometry.location.lng);
-
-
                     });
                 });
             }
 
             function geolocate() {
-
-                if (navigator.geolocation) {
-                    navigator.geolocation.getCurrentPosition(function (position) {
-
+                if(navigator.geolocation){
+                    navigator.geolocation.getCurrentPosition(function (position){
                         var geolocation = new google.maps.LatLng(
                             position.coords.latitude, position.coords.longitude);
                         var circle = new google.maps.Circle({
@@ -1736,13 +1590,11 @@
                             radius: position.coords.accuracy
                         });
                         autocomplete.setBounds(circle.getBounds());
-
                     });
                 }
             }
 
-
-            function initialize1() {
+            function initialize1(){
                 // Create the autocomplete object, restricting the search
                 // to geographical location types.
                 autocomplete1 = new google.maps.places.Autocomplete(
@@ -1750,12 +1602,11 @@
                     (document.getElementById('user_address')), {
                         types: ['geocode']
                     });
-
                 google.maps.event.addDomListener(document.getElementById('user_address'), 'focus', geolocate1);
                 autocomplete1.addListener('place_changed', get_latitude_longitude1);
             }
 
-            function get_latitude_longitude1() {
+            function get_latitude_longitude1(){
                 // Get the place details from the autocomplete object.
                 var place = autocomplete1.getPlace();
                 var key = "AIzaSyAlkFoFDrBXGkL2uvusBEVAa5yPtoiFNHY";
@@ -1769,10 +1620,8 @@
             }
 
             function geolocate1() {
-
                 if (navigator.geolocation) {
-                    navigator.geolocation.getCurrentPosition(function (position) {
-
+                    navigator.geolocation.getCurrentPosition(function (position){
                         var geolocation = new google.maps.LatLng(
                             position.coords.latitude, position.coords.longitude);
                         var circle = new google.maps.Circle({
@@ -1780,31 +1629,23 @@
                             radius: position.coords.accuracy
                         });
                         autocomplete1.setBounds(circle.getBounds());
-
                     });
                 }
             }
-
-
-
             initialize();
             initialize1();
-
         }
 
         if(modules=="home"){
-
             function search_service() {
                 $('#search_service').submit();
             }
-
         }
 
-        function toaster_msg(status,msg){
-
+        function toaster_msg(status,msg)
+        {
             setTimeout(function () {
                 Command: toastr[status](msg);
-
                 toastr.options = {
                     "closeButton": false,
                     "debug": false,
@@ -1823,9 +1664,8 @@
                     "hideMethod": "fadeOut"
                 }
             }, 300);
-
-
         }
+
         function button_loading(){
             var $this = $('.btn');
             var loadingText = '<i class="fa fa-circle-o-notch fa-spin"></i> loading...';
@@ -1834,6 +1674,7 @@
                 $this.html(loadingText).prop('disabled','true').bind('click', false);
             }
         }
+
         function button_unloading(){
             var $this = $('.btn');
             $this.html($this.data('original-text')).prop('disabled','false');
@@ -1935,14 +1776,11 @@
             var categories=$('#categories').val();
             var service_latitude=$('#service_latitude').val();
             var service_longitude=$('#service_longitude').val();
-
             $.ajax({
                 method: "POST",
                 url: pagination_page+page,
                 data: { page:page,price_range:price_range,sort_by:sort_by,common_search:common_search,categories:categories,service_latitude:service_latitude,service_longitude:service_longitude,csrf_token_name:csrf_token},
-
                 success: function(data){
-
                     var obj=jQuery.parseJSON(data);
                     $('#service_count').html(obj.count);
                     $(target).html(obj.service_details);
@@ -1950,5 +1788,4 @@
             });
         }        
     });
-
 })(jQuery);

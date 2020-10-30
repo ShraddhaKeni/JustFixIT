@@ -15,7 +15,7 @@
 		setTimeout(function(){ $('#flash_success_message').hide(); }, 5000);
 		setTimeout(function(){ $('#flash_succ_message').hide(); }, 5000);
 		setTimeout(function(){ $('#flash_error_message').hide(); }, 5000);
-		$('.change_Status_Service').on('click',function(){
+		$(document).on('click','.change_Status_Service',function() {
 			var id=$(this).attr('data-id');
       		change_Status_Service(id);
     	});
@@ -310,9 +310,9 @@
 		})
 	}
 
-	if(page == 'service-providers' ||page == 'stripe_payment_gateway' || page == 'service-list' ||page == 'users'||page == 'provider_list' ||page == 'provider-details')
+	if(page == 'service-providers' ||page == 'admin' ||page == 'stripe_payment_gateway' || page == 'service-list' ||page == 'users'||page == 'provider_list' ||page == 'provider-details')
 	{
-		var providers_table = $('#providers_table').on('init.dt', function () {
+		var providers_table = $('.providers_table').on('init.dt', function () {
 			$(document).on('click','.delete_provider',function() {
     			var dataId = $(this).attr('data-id');
     			if(confirm("Are You Sure you want to delete this provider?"))
@@ -754,8 +754,8 @@
 		$('#service_id').val(id);
 	}
 
-	if(page == 'service-providers' ||page == 'stripe_payment_gateway' || page == 'service-list' ||page == 'users'||page == 'provider_list' ||page == 'provider-details')
-	{ 
+	//if(page == 'service-providers' ||page == 'admin' ||page == 'stripe_payment_gateway' || page == 'service-list' ||page == 'users'||page == 'provider_list' ||page == 'provider-details')
+	//{ 
 		/*service list Active And De Active*/
 		function change_Status_Service(service_id){
 			var stat= $('#status_'+service_id).prop('checked');
@@ -809,5 +809,5 @@
 			$.post(base_url+'admin/service/change_Status',{id:id,status:status},function(data){
 			});
 		}
-	}
+	//}
 })(jQuery);
