@@ -456,6 +456,158 @@ $country_list=$this->db->where('status',1)->order_by('country_name',"ASC")->get(
 	</div>
 </div>
 
+<div class="modal account-modal fade multi-step" id="modal-wizard2" data-keyboard="false" data-backdrop="static">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-header p-0 border-0">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="header-content-blk text-center">
+				<div class="alert alert-success text-center" id="flash_succ_message2" ></div>
+			</div> 
+			<div class="modal-body step-1" data-step="1">
+
+				<div class="account-content">
+					<div class="account-box">
+						<div class="login-right">
+							<div class="login-header">
+								<h3>Join as a Affiliate</h3>
+								<p class="text-muted">Registration for Affiliate</p>
+							</div> 
+
+							<form method='post' id="new_third_page_affiliate">
+								<div class="form-group">
+									<label>Name</label>
+									<input type="text" class="form-control" name="userName" id='user_name'>
+								</div>
+								<div class="form-group">
+									<label>Email</label>
+									<input type="email" class="form-control" name="userEmail" id='user_email'>
+								</div>
+								<div class="form-group">
+									<label>Mobile Number</label>
+									<div class="row">
+										<div class="col-4 pr-0">
+											<select name="countryCode" id="country_code" class="form-control final_country_code">
+												<?php
+												foreach ($country_list as $key => $country) { 
+													if($country['country_id']=='91'){$select='selected';}else{ $select='';} ?>
+													<option <?=$select;?> data-countryCode="<?=$country['country_code'];?>" value="<?=$country['country_id'];?>"><?=$country['country_name'];?></option>
+												<?php } ?>
+											</select>
+										</div>
+										<div class="col-8">
+											<input type="text" class="form-control user_final_no user_mobile" placeholder="Enter Mobile No" name="userMobile" id='user_mobile'>
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="custom-control custom-control-xs custom-checkbox">
+										<input type="checkbox" class="custom-control-input" name="agreeCheckboxAffiliate" id="agree_checkbox_affiliate" value="1">
+										<label class="custom-control-label" for="agree_checkbox_affiliate">I agree to <?=settingValue('website_name')?></label> <a tabindex="-1" href="<?php echo base_url().'privacy';?>">Privacy Policy</a> &amp; <a tabindex="-1" href="<?php echo base_url().'terms-conditions';?>"> Terms.</a>
+									</div>
+								</div>
+								<div class="form-group">
+									<button id="registration_submit_affiliate" type="submit" class="login-btn btn">Register</button>
+								</div>
+								<div class="account-footer text-center">
+									Already have an account? <a href="javascript:void(0);" data-dismiss="modal" data-toggle="modal" data-target="#tab_login_modal">Login</a>
+								</div>
+							</form>					
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="modal-body step-2" data-step="2">
+				<div class="login-header">
+					<h3>OTP</h3>
+					<p class="text-muted">Verification your account</p>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	$('#new_third_page_affiliate').bootstrapValidator({
+	     excluded: ':disabled',
+	     fields: {
+	       userName: {
+	         validators: {
+	           notEmpty: {
+	             message: 'Please Enter your name ..'
+	           }
+	         }
+	       },
+	       agreeCheckboxUser: {
+	         validators: {
+	           notEmpty: {
+	             message: 'Please select Agreement'
+	           }
+	         }
+	       },
+	       userEmail: {
+	         validators: {
+	          remote: {
+	           url: base_url + 'user/login/email_chk_user',
+	           data: function(validator) {
+	             return {
+	               userEmail: validator.getFieldElements('userEmail').val(),
+	               csrf_token_name:csrf_token,
+	               checked: checked
+
+	             };
+	           },
+	           message: 'This email is already exist...',
+	           type: 'POST'
+	         },
+	         notEmpty: {
+	           message: 'Please Enter Email Address...'
+	         },
+
+	         regexp: {
+	          regexp: '^[^@\\s]+@([^@\\s]+\\.)+[^@\\s]+$',
+	          message: 'The value is not a valid email address'
+	        },
+
+	      }
+	    },
+	    userMobile: {
+	     validators: {
+
+	      remote: {
+
+	       url: base_url + 'user/login/mobileno_chk_user',
+	       data: function(validator) {
+	         return {
+	           userMobile: validator.getFieldElements('userMobile').val(),
+	           countryCode: validator.getFieldElements('countryCode').val(),
+	           csrf_token_name:csrf_token,
+	           checked: checked
+	         };
+	       },
+
+	       message: 'This mobile number is already exist or invalid..',
+	       type: 'POST'
+	     },
+	     notEmpty: {
+	       message: 'Please Enter Mobile Number'
+	     },
+	     regexp: {
+	      regexp: /^[1-9][0-9]{0,15}$/,
+	      message: "Invalid Mobile Number"
+	    },
+	  }
+	},
+
+	}
+	})
+</script>
+
 <footer class="footer">
 	<?php 
 	$query = $this->db->query("select * from system_settings WHERE status = 1");

@@ -112,7 +112,6 @@ class Home extends CI_Controller
 		echo json_encode($request);		
 	}
 	public function show_service($id){
-
 		error_reporting(0);
 		$dataSplit = explode(".","$id"); //Added on 28-09-2020
 		$aftersplit = $dataSplit[1]; //Added on 28-09-2020

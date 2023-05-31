@@ -65,6 +65,7 @@
 						<?php if($this->session->userdata('id') == '') { ?>
 						<li><a href="javascript:void(0);" data-toggle="modal" data-target="#modal-wizard">Become a Professional</a></li>
 						<li><a href="javascript:void(0);" data-toggle="modal" data-target="#modal-wizard1">Become a User</a></li>
+						<li><a href="javascript:void(0);" data-toggle="modal" data-target="#modal-wizard2">Become a Affiliate</a></li>
 						<li class="login-link">
 							<a href="javascript:void(0);" data-toggle="modal" data-target="#tab_login_modal">Login</a>
 						</li>

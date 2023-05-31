@@ -5,7 +5,7 @@ RewriteEngine On
 
 
 
-RewriteBase /axzoraservices/
+RewriteBase /axzora2/
 
 
 
@@ -21,6 +21,6 @@ RewriteCond %{REQUEST_FILENAME} !-d
 
 
 
-RewriteRule . /axzoraservices/index.php [L]
+RewriteRule . /axzora2/index.php [L]
 
 

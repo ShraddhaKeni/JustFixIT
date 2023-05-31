@@ -177,7 +177,9 @@
             var serviceimg_id = $('#serviceimgid').val();
             if(confirm("Do you want to delete this image?")){
                 var url = base_url+'user/service/delete_image';
+
                 $.ajax({
+                    
                     url:url,
                     data:{s_id:s_id,csrf_token_name:csrf_token},
                     type:"POST",
